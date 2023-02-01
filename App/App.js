@@ -19,11 +19,10 @@ import {
 } from './screens/index';
 
 // ----------------------------------------------------------------
-// !! TODO: Make it work on android.
-// !! TODO: Header = false, change every screen to SafeAreaView
-// !! TODO: Change the screenOptions so that it does the ternary operators + return icon outside
-// !! TODO: Style each screen so that the name of the screen shows at the top in the center
-
+// TODO: Add firebase to login and signup
+// TODO:
+// TODO:
+// TODO:
 // ----------------------------------------------------------------
 
 function App() {

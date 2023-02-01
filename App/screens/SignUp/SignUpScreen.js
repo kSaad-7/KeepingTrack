@@ -10,18 +10,15 @@ import {
   InputView,
   RegisterButton,
   RegisterButtonText,
-  RegisterView,
-  NeedAccountText,
-  RegisterText,
-  RegisterTextInput,
+  LoginView,
+  AlreadyHaveAccountText,
+  LoginText,
 } from './SignUpScreen.styles';
 
 import KeepTrackLogo from '../../assets/images/KeepTrackLogo.png';
 
 // ----------------------------------------------------------------
 
-// !! TODO: Create login UI, logo on top, fields on bottom.
-// TODO: Make colors file and make sure to get all colors from there.
 // ?? TODO: Configure firebase and set it up.
 
 // ----------------------------------------------------------------
@@ -40,7 +37,7 @@ export const SignUpScreen = ({navigation}) => {
   };
 
   const handleLoginPress = () => {
-    hideNavigationBar();
+    hideNavigationBar(); // TODO: ?? !! ?? !! HIDE WHEN APP OPENS ?? ?? !!
     navigation.navigate('Login');
   };
 
@@ -88,12 +85,12 @@ export const SignUpScreen = ({navigation}) => {
           <RegisterButtonText>Create a new account</RegisterButtonText>
         </RegisterButton>
       </InputView>
-      <RegisterView>
-        <NeedAccountText>
+      <LoginView>
+        <AlreadyHaveAccountText>
           Already have an account?{' '}
-          <RegisterText onPress={handleLoginPress}>Login</RegisterText>
-        </NeedAccountText>
-      </RegisterView>
+          <LoginText onPress={handleLoginPress}>Login</LoginText>
+        </AlreadyHaveAccountText>
+      </LoginView>
     </StyledSafeAreaView>
   );
 };

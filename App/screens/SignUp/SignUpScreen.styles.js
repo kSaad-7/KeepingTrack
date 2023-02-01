@@ -9,17 +9,16 @@ export const StyledSafeAreaView = styled.SafeAreaView`
 `;
 
 export const Logo = styled.Image`
-  flex: 0.2;
+  flex: 0.4;
   width: 400px;
   height: 150px;
 `;
 
 export const InputView = styled.View`
-  flex: 0.8;
-  border-radius: 10px;
-  //   background-color: red;
+  flex: 0.9;
+  // background-color: red;
   min-width: 90%;
-  min-height: 10%;
+  min-height: 15%;
 `;
 
 export const RegisterButton = styled.TouchableOpacity`
@@ -38,19 +37,19 @@ export const RegisterButtonText = styled.Text`
   color: white;
 `;
 
-export const RegisterView = styled.View`
+export const LoginView = styled.View`
   flex: 0.1;
   justify-content: flex-end;
 `;
 
-export const NeedAccountText = styled.Text`
+export const AlreadyHaveAccountText = styled.Text`
   font-size: 16px;
   color: white;
 `;
 
-export const RegisterText = styled.Text`
+export const LoginText = styled.Text`
   font-size: 17px;
   font-style: italic;
-  color: #246ee9;
+  color: ${COLORS.blue};
   font-weight: bold;
 `;
