@@ -1,12 +1,4 @@
 import React, {useState} from 'react';
-import {
-  Text,
-  View,
-  SafeAreaView,
-  Image,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
 
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 

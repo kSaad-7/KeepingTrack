@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {StatusBar} from 'react-native';
 
 import {COLORS} from './assets/appColors/Colors';
@@ -18,6 +18,8 @@ import {
   SignUpScreen,
 } from './screens/index';
 
+import {UserContext} from './ContextCreator.js';
+
 // ----------------------------------------------------------------
 // TODO: Add firebase to login and signup
 // TODO:
@@ -26,6 +28,8 @@ import {
 // ----------------------------------------------------------------
 
 function App() {
+  const [user, setUser] = useState(null);
+
   StatusBar.setBarStyle('light-content', true);
 
   const getIcon = (focused, color, route) => {
@@ -74,15 +78,21 @@ function App() {
   };
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{headerShown: false}}
-        initialRouteName="Login">
-        <Stack.Screen name="HomeTabs" component={HomeTabs} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <UserContext.Provider
+      value={{
+        user,
+        setUser,
+      }}>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{headerShown: false}}
+          initialRouteName="Login">
+          <Stack.Screen name="HomeTabs" component={HomeTabs} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="SignUp" component={SignUpScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserContext.Provider>
   );
 }
 

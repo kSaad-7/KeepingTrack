@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 
@@ -17,6 +17,11 @@ import {
 
 import KeepTrackLogo from '../../assets/images/KeepTrackLogo.png';
 
+import {collection, addDoc, setDoc, doc} from 'firebase/firestore';
+import {db} from '../../firebase.config';
+
+import {UserContext} from '../../ContextCreator';
+
 // ----------------------------------------------------------------
 
 // ?? TODO: Configure firebase and set it up.
@@ -31,23 +36,75 @@ export const SignUpScreen = ({navigation}) => {
     firstName: '',
   });
 
+  const {setUser} = useContext(UserContext);
+
   const handleInput = (key, value) => {
-    console.log(signUpLog);
     setSignUpLog({...signUpLog, [key]: value});
   };
 
-  const handleLoginPress = () => {
+  const storeNewUserFirestore = async () => {
+    const userData = {
+      firstName: signUpLog.firstName,
+      userName: signUpLog.userName,
+      password: signUpLog.password,
+      email: signUpLog.email,
+    };
+    const newUserDocRef = await addDoc(collection(db, 'users'), userData);
+    console.log(
+      '🔹 ~ file: SignUpScreen.js:53 ~ storeNewUserFirestore ~ newUserDocRef',
+      newUserDocRef.id,
+      'DATA: ',
+      userData,
+    );
+    console.log(newUserDocRef.id);
+    setUser({...userData, docId: newUserDocRef.id});
+
+    // WorkoutSplit subcollection
+    const workoutSplitSubCollectionRef = collection(
+      db,
+      'users',
+      newUserDocRef.id,
+      'workoutSplit',
+    );
+    // Make 7 documents, one for each day in the workout split.
+    for (let i = 1; i < 8; i++) {
+      await setDoc(doc(workoutSplitSubCollectionRef, `day${i}`), {
+        name: `day${i}`,
+      });
+    }
+  };
+
+  const handleLoginPress = async () => {
     hideNavigationBar(); // TODO: ?? !! ?? !! HIDE WHEN APP OPENS ?? ?? !!
     navigation.navigate('Login');
   };
 
+  const validateInputs = () => {
+    if (
+      !signUpLog.email ||
+      !signUpLog.firstName ||
+      !signUpLog.password ||
+      !signUpLog.userName
+    ) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const handleRegisterPress = () => {
     // isValid = validateInputs() -> Check if all inputs are fine
-    // storeToFirebase() -> Function that stores it all to firebase
-    // setUser from context to the new object
-    // start session
-    ///navigate to homeTabs
-    alert('New account');
+    const isValid = validateInputs();
+    console.log(isValid);
+    if (isValid) {
+      storeNewUserFirestore();
+      navigation.navigate('HomeTabs');
+      return;
+    } else {
+      // eslint-disable-next-line no-alert
+      alert('Please enter all fields correctly');
+    }
+    // !! !! !! ! ! ! !!!! ! ! start async session
   };
 
   return (
@@ -64,14 +121,12 @@ export const SignUpScreen = ({navigation}) => {
           onChangeText={userInput => handleInput('userName', userInput)}
           value={signUpLog.userName}
           placeholder="Username"
-          secureTextEntry={true}
           isRegister
         />
         <CustomInput
           onChangeText={userInput => handleInput('email', userInput)}
           value={signUpLog.email}
           placeholder="Email"
-          secureTextEntry={true}
           isRegister
         />
         <CustomInput
