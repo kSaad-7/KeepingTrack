@@ -49,6 +49,6 @@ export const NeedAccountText = styled.Text`
 export const RegisterText = styled.Text`
   font-size: 17px;
   font-style: italic;
-  color: #246ee9;
+  color: ${COLORS.blue};
   font-weight: bold;
 `;
