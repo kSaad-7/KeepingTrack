@@ -50,12 +50,6 @@ export const SignUpScreen = ({navigation}) => {
       email: signUpLog.email,
     };
     const newUserDocRef = await addDoc(collection(db, 'users'), userData);
-    console.log(
-      '🔹 ~ file: SignUpScreen.js:53 ~ storeNewUserFirestore ~ newUserDocRef',
-      newUserDocRef.id,
-      'DATA: ',
-      userData,
-    );
     console.log(newUserDocRef.id);
     setUser({...userData, docId: newUserDocRef.id});
 

@@ -8,6 +8,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 
 import {
   WorkoutScreen,
@@ -16,6 +17,7 @@ import {
   AchievementsScreen,
   LoginScreen,
   SignUpScreen,
+  DeleteAccountScreen,
 } from './screens/index';
 
 import {UserContext} from './ContextCreator.js';
@@ -90,10 +92,42 @@ function App() {
           <Stack.Screen name="HomeTabs" component={HomeTabs} />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
+          <Stack.Screen name="DeleteAccount" component={DeleteAccountScreen} />
         </Stack.Navigator>
       </NavigationContainer>
+      <Toast config={toastConfig} />
     </UserContext.Provider>
   );
 }
 
+const toastConfig = {
+  success: props => (
+    <BaseToast
+      {...props}
+      style={{borderLeftColor: '#49fc03', borderLeftWidth: 7}}
+      text1Style={{
+        fontSize: 15,
+      }}
+      text2Style={{
+        fontSize: 12,
+      }}
+    />
+  ),
+  /*
+    Overwrite 'error' type,ƒ
+    by modifying the existing `ErrorToast` component
+  */
+  error: props => (
+    <ErrorToast
+      {...props}
+      style={{borderLeftColor: 'red', borderLeftWidth: 7}}
+      text1Style={{
+        fontSize: 15,
+      }}
+      text2Style={{
+        fontSize: 12,
+      }}
+    />
+  ),
+};
 export default App;

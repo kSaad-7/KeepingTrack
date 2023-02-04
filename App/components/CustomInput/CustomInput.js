@@ -7,6 +7,7 @@ export const CustomInput = ({
   keyboardType,
   secureTextEntry,
   isRegister,
+  isDeleteInput,
 }) => {
   return (
     <StyledTextInput
@@ -16,6 +17,7 @@ export const CustomInput = ({
       keyboardType={keyboardType}
       secureTextEntry={secureTextEntry}
       isRegister={isRegister}
+      isDeleteInput={isDeleteInput}
     />
   );
 };
