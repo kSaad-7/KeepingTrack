@@ -1,12 +1,6 @@
-import React, {useState} from 'react';
-import {
-  Text,
-  View,
-  SafeAreaView,
-  Image,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+/* eslint-disable no-alert */
+import React, {useState, useContext} from 'react';
+import {Button} from 'react-native';
 
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 
@@ -23,6 +17,13 @@ import {
 
 import KeepTrackLogo from '../../assets/images/KeepTrackLogo.png';
 
+import {UserContext} from '../../ContextCreator';
+
+import {db} from '../../firebase.config';
+import {collection, query, where, getDocs, doc} from 'firebase/firestore';
+
+import Toast from 'react-native-toast-message';
+
 // ----------------------------------------------------------------
 
 // ?? TODO: Configure firebase and set it up.
@@ -31,15 +32,42 @@ import KeepTrackLogo from '../../assets/images/KeepTrackLogo.png';
 
 export const LoginScreen = ({navigation}) => {
   const [loginLog, setLoginLog] = useState({email: '', password: ''});
+  const {setUser} = useContext(UserContext);
 
   const handleInput = (key, value) => {
-    console.log(loginLog);
     setLoginLog({...loginLog, [key]: value});
   };
 
-  const handleLoginPress = () => {
-    // isValid = validateLogin() -> firebase check
-    navigation.navigate('HomeTabs');
+  const handleLoginPress = async () => {
+    const loginQuery = query(
+      collection(db, 'users'),
+      where('email', '==', loginLog.email),
+      where('password', '==', loginLog.password),
+    );
+    const querySnapshot = await getDocs(loginQuery);
+    if (querySnapshot.empty) {
+      Toast.show({
+        type: 'error',
+        text1: 'Wrong details.',
+        text2: 'Your email or password is wrong please try again.',
+      });
+      return;
+    }
+
+    const user = querySnapshot.docs[0];
+    const userData = user.data();
+
+    if (!user) {
+      Toast.show({
+        type: 'success',
+        text1: 'Hello',
+        text2: 'This is some something 👋',
+      });
+      return;
+    } else if (user) {
+      setUser({...userData, docId: user.id});
+      navigation.navigate('HomeTabs');
+    }
   };
 
   return (
@@ -61,6 +89,11 @@ export const LoginScreen = ({navigation}) => {
         <LoginButton onPress={handleLoginPress}>
           <LoginButtonText>Login</LoginButtonText>
         </LoginButton>
+        <Button
+          style={{backgroundColor: 'red', color: 'red'}}
+          title="Straight to tabs"
+          onPress={() => navigation.navigate('HomeTabs')}
+        />
       </InputView>
       <RegisterView>
         <NeedAccountText>

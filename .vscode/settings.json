@@ -1,8 +1,11 @@
 {
+  "editor.cursorStyle": "line-thin",
+  "editor.cursorBlinking": "expand",
   "workbench.colorCustomizations": {
-    "activityBar.background": "#0007",
+    "activityBar.background": "#0006",
+    "editorCursor.foreground": "#fff",
     "icon.foreground": "#fff",
-    "activityBar.inactiveForeground": "#246EE9",
-    "tab.activeBorder": "#246EE9"
+    "activityBar.inactiveForeground": "#f33",
+    "tab.activeBorder": "#f55"
   }
 }
