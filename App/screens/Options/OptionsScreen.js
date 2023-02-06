@@ -26,14 +26,14 @@ export const OptionsScreen = ({navigation}) => {
     navigation.navigate('DeleteAccount');
   };
 
-  const onNoAnswer = () => {
-    setShowAlert(false);
-  };
-
-  const onYesAnswer = () => {
-    setUser(null);
-    navigation.navigate('Login');
-    setShowAlert(false);
+  const handleAlertAnswer = userChoice => {
+    if (userChoice === 'no') {
+      setShowAlert(false);
+    } else {
+      setUser(null);
+      navigation.navigate('Login');
+      setShowAlert(false);
+    }
   };
 
   const handleSignOutPress = () => {
@@ -61,10 +61,9 @@ export const OptionsScreen = ({navigation}) => {
         <SettingsItem title="Sign out" onPress={handleSignOutPress} />
         {showAlert && (
           <CustomAlert
-            onNoAnswer={onNoAnswer}
-            onYesAnswer={onYesAnswer}
             alertTitle={user.userName}
             alertText={'Are you sure you want to sign out?'}
+            handleAlertAnswer={handleAlertAnswer}
           />
         )}
         <SettingsItem
