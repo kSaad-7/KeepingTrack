@@ -6,6 +6,12 @@ export const StyledContainer = styled.SafeAreaView`
   background-color: #1a1a1a;
 `;
 
+export const BackTouchable = styled.TouchableOpacity`
+  margin: 0px 5px;
+  flex-direction: row;
+  align-items: center;
+`;
+
 export const StyledView = styled.View`
   margin-top: 20px;
   flex: 0.4;

@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import {
   StyledContainer,
+  BackTouchable,
   StyledView,
   Heading,
   StyledParagraph,
@@ -73,16 +74,10 @@ export const DeleteAccountScreen = ({navigation}) => {
 
   return (
     <StyledContainer>
-      <TouchableOpacity
-        style={{
-          marginHorizontal: 5,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
-        onPress={() => navigation.navigate('Options')}>
+      <BackTouchable onPress={() => navigation.navigate('Options')}>
         <Icon name={'chevron-back-outline'} size={15} color={'#246EE9'} />
         <Text style={{color: '#246EE9'}}>Options</Text>
-      </TouchableOpacity>
+      </BackTouchable>
       <StyledView>
         <Heading>Are you sure?</Heading>
         <StyledParagraph>

@@ -90,7 +90,7 @@ export const LoginScreen = ({navigation}) => {
           <LoginButtonText>Login</LoginButtonText>
         </LoginButton>
         <Button
-          style={{backgroundColor: 'red', color: 'red'}}
+          style={{color: 'red'}}
           title="Straight to tabs"
           onPress={() => navigation.navigate('HomeTabs')}
         />

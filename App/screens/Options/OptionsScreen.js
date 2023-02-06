@@ -5,7 +5,7 @@ import {UserContext} from '../../ContextCreator';
 
 import {SettingsItem} from '../../components/SettingsItem/SettingsItem';
 
-import {SignOutAlert} from '../../components/SignOutAlert/SignOutAlert';
+import {CustomAlert} from '../../components/CustomAlert/CustomAlert';
 
 import {
   StyledContainer,
@@ -27,7 +27,6 @@ export const OptionsScreen = ({navigation}) => {
   };
 
   const onNoAnswer = () => {
-    console.log('NO');
     setShowAlert(false);
   };
 
@@ -41,29 +40,31 @@ export const OptionsScreen = ({navigation}) => {
     setShowAlert(true);
   };
 
+  const handleChangeDetailsPress = () => {
+    navigation.navigate('ChangeDetails');
+  };
+
   return (
     <StyledContainer>
+      <Button title="back" onPress={() => navigation.navigate('Login')} />
       <ScreenTitle>Settings</ScreenTitle>
-      <Button
-        title="Hello"
-        onPress={() => {
-          navigation.navigate('Login');
-        }}
-      />
       <ThemeView>
         <SettingHeaderText>Theme</SettingHeaderText>
         <SettingsItem title="Switch theme" />
       </ThemeView>
       <AccountView>
         <SettingHeaderText>Account</SettingHeaderText>
-        <SettingsItem title="Change account details" />
+        <SettingsItem
+          title="Change account details"
+          onPress={handleChangeDetailsPress}
+        />
         <SettingsItem title="Sign out" onPress={handleSignOutPress} />
         {showAlert && (
-          <SignOutAlert
-            setShowAlert={setShowAlert}
+          <CustomAlert
             onNoAnswer={onNoAnswer}
             onYesAnswer={onYesAnswer}
-            user={user}
+            alertTitle={user.userName}
+            alertText={'Are you sure you want to sign out?'}
           />
         )}
         <SettingsItem
