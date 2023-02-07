@@ -18,6 +18,7 @@ import {
   LoginScreen,
   SignUpScreen,
   DeleteAccountScreen,
+  ChangeDetails,
 } from './screens/index';
 
 import {UserContext} from './ContextCreator.js';
@@ -93,6 +94,7 @@ function App() {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="SignUp" component={SignUpScreen} />
           <Stack.Screen name="DeleteAccount" component={DeleteAccountScreen} />
+          <Stack.Screen name="ChangeDetails" component={ChangeDetails} />
         </Stack.Navigator>
       </NavigationContainer>
       <Toast config={toastConfig} />

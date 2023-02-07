@@ -1,15 +1,17 @@
 import React, {useContext, useState} from 'react';
-import {Text, View, Button, SafeAreaView} from 'react-native';
+
+import {COLORS} from '../../assets/appColors/Colors';
 
 import {UserContext} from '../../ContextCreator';
 
 import {SettingsItem} from '../../components/SettingsItem/SettingsItem';
 
-import {SignOutAlert} from '../../components/SignOutAlert/SignOutAlert';
+import {CustomAlert} from '../../components/CustomAlert/CustomAlert';
 
 import {
   StyledContainer,
   ScreenTitle,
+  SettingsView,
   ThemeView,
   SettingHeaderText,
   AccountView,
@@ -26,50 +28,55 @@ export const OptionsScreen = ({navigation}) => {
     navigation.navigate('DeleteAccount');
   };
 
-  const onNoAnswer = () => {
-    console.log('NO');
-    setShowAlert(false);
-  };
-
-  const onYesAnswer = () => {
-    setUser(null);
-    navigation.navigate('Login');
-    setShowAlert(false);
+  const handleAlertAnswer = userChoice => {
+    if (userChoice === 'no') {
+      setShowAlert(false);
+    } else {
+      setUser(null);
+      navigation.navigate('Login');
+      setShowAlert(false);
+    }
   };
 
   const handleSignOutPress = () => {
     setShowAlert(true);
   };
 
+  const handleChangeDetailsPress = () => {
+    navigation.navigate('ChangeDetails');
+  };
+
   return (
     <StyledContainer>
       <ScreenTitle>Settings</ScreenTitle>
-      <Button
-        title="Hello"
-        onPress={() => {
-          navigation.navigate('Login');
-        }}
-      />
       <ThemeView>
         <SettingHeaderText>Theme</SettingHeaderText>
-        <SettingsItem title="Switch theme" />
+        <SettingsItem title="Switch theme" iconName={'chevron-forward-sharp'} />
       </ThemeView>
       <AccountView>
         <SettingHeaderText>Account</SettingHeaderText>
-        <SettingsItem title="Change account details" />
-        <SettingsItem title="Sign out" onPress={handleSignOutPress} />
+        <SettingsItem
+          title="Change account details"
+          onPress={handleChangeDetailsPress}
+          iconName={'chevron-forward-sharp'}
+        />
+        <SettingsItem
+          title="Sign out"
+          onPress={handleSignOutPress}
+          iconName={'log-out-outline'}
+        />
         {showAlert && (
-          <SignOutAlert
-            setShowAlert={setShowAlert}
-            onNoAnswer={onNoAnswer}
-            onYesAnswer={onYesAnswer}
-            user={user}
+          <CustomAlert
+            alertTitle={user.userName}
+            alertText={'Are you sure you want to sign out?'}
+            handleAlertAnswer={handleAlertAnswer}
           />
         )}
         <SettingsItem
           title="Delete account"
-          isDeleteAccount
+          iconName="close-sharp"
           onPress={handleDeleteAccountPress}
+          style={{backgroundColor: COLORS.red}}
         />
       </AccountView>
     </StyledContainer>

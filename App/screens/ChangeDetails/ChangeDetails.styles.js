@@ -6,6 +6,11 @@ export const StyledContainer = styled.SafeAreaView`
   background-color: #1a1a1a;
 `;
 
+export const InputView = styled.View`
+  flex: 0.6;
+  margin-top: 7%;
+`;
+
 export const BackTouchable = styled.TouchableOpacity`
   margin: 0px 5px;
   flex-direction: row;
@@ -17,44 +22,25 @@ export const BackTouchableText = styled.Text`
 `;
 
 export const StyledView = styled.View`
-  margin-top: 20px;
-  flex: 0.4;
+  margin-top: 10px;
+  flex: 1;
   background-color: #1a1a1a;
-  padding: 20px;
 `;
 
-export const Heading = styled.Text`
+export const DetailName = styled.Text`
   color: white;
   font-weight: bold;
-  font-size: 25px;
-  margin-bottom: 15px;
-`;
-
-export const StyledParagraph = styled.Text`
-  color: white;
-  font-size: 16px;
-`;
-
-export const RedText = styled.Text`
-  color: ${COLORS.red}
-  font-style: italic;
-  font-weight: bold;
-`;
-
-export const TypeCodeText = styled.Text`
-  color: white;
-  margin-top: 30px;
-  font-size: 15px;
-`;
-
-export const Code = styled.Text`
-  color: white;
   font-size: 18px;
-  font-weight: bold;
+  margin-left: 3%;
 `;
 
-export const DeleteAccountButton = styled.TouchableOpacity`
-  background-color: ${COLORS.red}
+export const ButtonView = styled.View`
+  flex: 0.4;
+  //   margin-top: 10px;
+`;
+
+export const ChangeTouchable = styled.TouchableOpacity`
+  background-color: ${COLORS.blue}
   color: white;
   height: 60px;
   margin: 15px;
@@ -63,7 +49,7 @@ export const DeleteAccountButton = styled.TouchableOpacity`
   border-radius: 10px;
 `;
 
-export const ButtonText = styled.Text`
+export const ChangeText = styled.Text`
   font-size: 20px;
   font-weight: bold;
   color: white;

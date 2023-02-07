@@ -1,6 +1,4 @@
-import React, {useEffect, useState} from 'react';
-
-import {Modal, View, SafeAreaView, Text, TouchableOpacity} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
 
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 
@@ -10,8 +8,12 @@ import Toast from 'react-native-toast-message';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 
+import {db} from '../../firebase.config';
+import {deleteDoc, doc} from 'firebase/firestore';
+
 import {
   StyledContainer,
+  BackTouchable,
   StyledView,
   Heading,
   StyledParagraph,
@@ -20,11 +22,16 @@ import {
   Code,
   DeleteAccountButton,
   ButtonText,
+  BackTouchableText,
 } from './DeleteAccountScreen.styles';
+
+import {UserContext} from '../../ContextCreator';
 
 export const DeleteAccountScreen = ({navigation}) => {
   const [deleteCode, setDeleteCode] = useState('');
   const [userCodeInput, setUserCodeInput] = useState('');
+
+  const {user} = useContext(UserContext);
 
   const generateRandomCode = () => {
     if (deleteCode === '') {
@@ -51,11 +58,23 @@ export const DeleteAccountScreen = ({navigation}) => {
     }
   };
 
+  const deleteAccount = async () => {
+    const userDocRef = doc(db, 'users', `${user.docId}`);
+    //Delete document
+    await deleteDoc(userDocRef);
+  };
+
   const handleDeleteButtonPress = () => {
     const isValid = validateCodeInput();
     if (isValid) {
-      console.log('Deleting account');
-      // deleteAccountFirebase() -> FIREBASE DELETE DOCUMENT
+      Toast.show({
+        visibilityTime: 2500,
+        type: 'success',
+        text1: 'Account deleted',
+        text2: `${user.userName} has been permenantly deleted.`,
+      });
+      navigation.navigate('Login');
+      deleteAccount();
     } else {
       Toast.show({
         visibilityTime: 2000,
@@ -73,16 +92,10 @@ export const DeleteAccountScreen = ({navigation}) => {
 
   return (
     <StyledContainer>
-      <TouchableOpacity
-        style={{
-          marginHorizontal: 5,
-          flexDirection: 'row',
-          alignItems: 'center',
-        }}
-        onPress={() => navigation.navigate('Options')}>
+      <BackTouchable onPress={() => navigation.navigate('Options')}>
         <Icon name={'chevron-back-outline'} size={15} color={'#246EE9'} />
-        <Text style={{color: '#246EE9'}}>Options</Text>
-      </TouchableOpacity>
+        <BackTouchableText>Options</BackTouchableText>
+      </BackTouchable>
       <StyledView>
         <Heading>Are you sure?</Heading>
         <StyledParagraph>
