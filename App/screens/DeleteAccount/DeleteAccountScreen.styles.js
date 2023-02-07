@@ -12,6 +12,10 @@ export const BackTouchable = styled.TouchableOpacity`
   align-items: center;
 `;
 
+export const BackTouchableText = styled.Text`
+  color: ${COLORS.blue};
+`;
+
 export const StyledView = styled.View`
   margin-top: 20px;
   flex: 0.4;

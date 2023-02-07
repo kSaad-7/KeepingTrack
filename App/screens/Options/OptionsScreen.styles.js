@@ -16,6 +16,7 @@ export const ThemeView = styled.View`
   flex: 0.3;
   width: 100%;
   align-items: center;
+  margin-top: 30px;
 `;
 
 export const SettingHeaderText = styled.Text`

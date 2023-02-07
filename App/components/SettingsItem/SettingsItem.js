@@ -11,17 +11,14 @@ import {StyledContainer, TitleText} from './SettingsItem.styles';
 export const SettingsItem = ({
   title,
   isThemeChange,
-  isDeleteAccount,
+  iconName,
   onPress,
+  style,
 }) => {
   return (
-    <StyledContainer isDeleteAccount={isDeleteAccount} onPress={onPress}>
+    <StyledContainer onPress={onPress} style={style}>
       <TitleText>{title}</TitleText>
-      <Icon
-        name={isDeleteAccount ? 'close-sharp' : 'chevron-forward-sharp'}
-        size={15}
-        color={'white'}
-      />
+      <Icon name={iconName} size={15} color={'white'} />
     </StyledContainer>
   );
 };

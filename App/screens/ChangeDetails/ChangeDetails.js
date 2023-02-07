@@ -1,11 +1,12 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, {useState, useContext} from 'react';
 
-import {Text, View} from 'react-native';
 import {UserContext} from '../../ContextCreator';
 
 import {
   StyledContainer,
   BackTouchable,
+  BackTouchableText,
   StyledView,
   DetailName,
   InputView,
@@ -41,12 +42,6 @@ export const ChangeDetails = ({navigation}) => {
     setShowConfirmAlert(true);
   };
 
-  console.log('USER -----', user);
-
-  // todo: ?? FIX STATE CHANGE ?? // ?? FIX STATE CHANGE ?? // ?? FIX STATE CHANGE ?? // ?? FIX STATE CHANGE ??
-  // !! !! !! !! !! !! !! !!  WORKS BUT DOESNT SAVE STATE PROPERLY !! !! !! !! !! !! !! !!
-  // todo: ?? FIX STATE CHANGE ?? // ?? FIX STATE CHANGE ?? // ?? FIX STATE CHANGE ?? // ?? FIX STATE CHANGE ??
-
   const saveToBackend = async () => {
     const userDocRef = doc(db, 'users', `${user.docId}`);
     //If userName input is NOT empty
@@ -56,24 +51,22 @@ export const ChangeDetails = ({navigation}) => {
         userName: changeLog.userName,
       });
       //Use setUser function to change the current users object value aswell
-      setUser({...user, userName: changeLog.userName});
+      setUser(prevState => ({...prevState, userName: changeLog.userName}));
     }
 
     if (!changeLog.email.length < 1) {
       await updateDoc(userDocRef, {
         email: changeLog.email,
       });
-      setUser({...user, email: changeLog.email});
+      setUser(prevState => ({...prevState, email: changeLog.email}));
     }
 
     if (!changeLog.password.length < 1) {
       await updateDoc(userDocRef, {
         password: changeLog.password,
       });
-      setUser({...user, password: changeLog.password});
+      setUser(prevState => ({...prevState, password: changeLog.password}));
     }
-
-    console.log('CONFIMED CHANGES - check firebase');
   };
 
   const handleAlertAnswer = userChoice => {
@@ -87,10 +80,9 @@ export const ChangeDetails = ({navigation}) => {
 
   return (
     <StyledContainer>
-      {/* MAYBE HAVE BACK TOUCH = FUNCTION THAT FETCHES USER AGAIN. (BAD WAY TO SOLVE PROBLEM) */}
       <BackTouchable onPress={() => navigation.navigate('Options')}>
         <Icon name={'chevron-back-outline'} size={15} color={'#246EE9'} />
-        <Text style={{color: '#246EE9'}}>Options</Text>
+        <BackTouchableText>Options</BackTouchableText>
       </BackTouchable>
       <InputView>
         <StyledView>

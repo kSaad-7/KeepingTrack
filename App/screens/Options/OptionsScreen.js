@@ -1,5 +1,6 @@
 import React, {useContext, useState} from 'react';
-import {Text, View, Button, SafeAreaView} from 'react-native';
+
+import {COLORS} from '../../assets/appColors/Colors';
 
 import {UserContext} from '../../ContextCreator';
 
@@ -10,6 +11,7 @@ import {CustomAlert} from '../../components/CustomAlert/CustomAlert';
 import {
   StyledContainer,
   ScreenTitle,
+  SettingsView,
   ThemeView,
   SettingHeaderText,
   AccountView,
@@ -46,19 +48,23 @@ export const OptionsScreen = ({navigation}) => {
 
   return (
     <StyledContainer>
-      <Button title="back" onPress={() => navigation.navigate('Login')} />
       <ScreenTitle>Settings</ScreenTitle>
       <ThemeView>
         <SettingHeaderText>Theme</SettingHeaderText>
-        <SettingsItem title="Switch theme" />
+        <SettingsItem title="Switch theme" iconName={'chevron-forward-sharp'} />
       </ThemeView>
       <AccountView>
         <SettingHeaderText>Account</SettingHeaderText>
         <SettingsItem
           title="Change account details"
           onPress={handleChangeDetailsPress}
+          iconName={'chevron-forward-sharp'}
         />
-        <SettingsItem title="Sign out" onPress={handleSignOutPress} />
+        <SettingsItem
+          title="Sign out"
+          onPress={handleSignOutPress}
+          iconName={'log-out-outline'}
+        />
         {showAlert && (
           <CustomAlert
             alertTitle={user.userName}
@@ -68,8 +74,9 @@ export const OptionsScreen = ({navigation}) => {
         )}
         <SettingsItem
           title="Delete account"
-          isDeleteAccount
+          iconName="close-sharp"
           onPress={handleDeleteAccountPress}
+          style={{backgroundColor: COLORS.red}}
         />
       </AccountView>
     </StyledContainer>
