@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {StatusBar} from 'react-native';
 
 import {COLORS} from './assets/appColors/Colors';
@@ -18,13 +18,13 @@ import {
   LoginScreen,
   SignUpScreen,
   DeleteAccountScreen,
-  ChangeDetails,
+  ChangeDetailsScreen,
+  ExercisesScreen,
 } from './screens/index';
 
-import {UserContext} from './ContextCreator.js';
+import {UserContext, WorkoutContext} from './ContextCreator.js';
 
 // ----------------------------------------------------------------
-// TODO: Add firebase to login and signup
 // TODO:
 // TODO:
 // TODO:
@@ -32,6 +32,8 @@ import {UserContext} from './ContextCreator.js';
 
 function App() {
   const [user, setUser] = useState(null);
+  let workoutDayRef = useRef(null);
+  let exercisesRef = useRef(null); // todo: talk about how you changed it from useState -> useRef to avoid re-renders and thus fix your proble
 
   StatusBar.setBarStyle('light-content', true);
 
@@ -86,18 +88,31 @@ function App() {
         user,
         setUser,
       }}>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{headerShown: false}}
-          initialRouteName="Login">
-          <Stack.Screen name="HomeTabs" component={HomeTabs} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen name="DeleteAccount" component={DeleteAccountScreen} />
-          <Stack.Screen name="ChangeDetails" component={ChangeDetails} />
-        </Stack.Navigator>
-      </NavigationContainer>
-      <Toast config={toastConfig} />
+      <WorkoutContext.Provider
+        value={{
+          workoutDayRef,
+          exercisesRef,
+        }}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{headerShown: false}}
+            initialRouteName="Login">
+            <Stack.Screen name="HomeTabs" component={HomeTabs} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
+            <Stack.Screen
+              name="DeleteAccount"
+              component={DeleteAccountScreen}
+            />
+            <Stack.Screen
+              name="ChangeDetails"
+              component={ChangeDetailsScreen}
+            />
+            <Stack.Screen name="Exercises" component={ExercisesScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+        <Toast config={toastConfig} />
+      </WorkoutContext.Provider>
     </UserContext.Provider>
   );
 }
@@ -115,10 +130,6 @@ const toastConfig = {
       }}
     />
   ),
-  /*
-    Overwrite 'error' type,ƒ
-    by modifying the existing `ErrorToast` component
-  */
   error: props => (
     <ErrorToast
       {...props}

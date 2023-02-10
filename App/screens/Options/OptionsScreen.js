@@ -11,14 +11,10 @@ import {CustomAlert} from '../../components/CustomAlert/CustomAlert';
 import {
   StyledContainer,
   ScreenTitle,
-  SettingsView,
   ThemeView,
   SettingHeaderText,
   AccountView,
 } from './OptionsScreen.styles';
-
-// TODO: Use figma to make the buttons, have one custom component + use props to display text
-// TODO: Make sure 'Sign out' button has different styles.
 
 export const OptionsScreen = ({navigation}) => {
   const [showAlert, setShowAlert] = useState(false);
