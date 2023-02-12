@@ -6,23 +6,25 @@ import {UserContext, WorkoutContext} from '../../ContextCreator';
 import {
   BackTouchable,
   BackTouchableText,
-  StyledContainer,
-  ScreenTitle,
-  TopHeaderView,
   EmptyView,
+  ScreenTitle,
+  StyledContainer,
   TitleView,
+  TopHeaderView,
 } from './ExercisesScreen.styles';
 
-import {db} from '../../firebase.config';
 import {collection, getDocs} from 'firebase/firestore';
 import {Text, View} from 'react-native';
+import {db} from '../../firebase.config';
 
 import {ExercisesSection} from '../../components/ExercisesSection/ExercisesSection';
 import {LoadingIndicator} from '../../components/LoadingIndicator/LoadingIndicator';
 
 export const ExercisesScreen = ({navigation}) => {
+  const [exercises, setExercises] = useState();
+
   const {user} = useContext(UserContext);
-  const {workoutDayRef, exercisesRef} = useContext(WorkoutContext);
+  const {workoutDayRef} = useContext(WorkoutContext);
 
   const fetchExercises = async () => {
     const exercisesSubCollRef = collection(
@@ -38,20 +40,16 @@ export const ExercisesScreen = ({navigation}) => {
       docId: doc.id,
       ...doc.data(),
     }));
-    exercisesRef.current = exercisesData;
+    setExercises(exercisesData);
   };
-
-  console.log('🔹 ~user', user);
-  console.log('🔹 ~ workoutDayRef', workoutDayRef.current);
-  console.log('🔹 ~ exercisesRef', exercisesRef.current);
 
   useEffect(() => {
     fetchExercises();
   }, []);
 
-  // while (!exercisesRef.current) {
-  //   return <LoadingIndicator />;
-  // }
+  if (!exercises) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <StyledContainer>
@@ -66,7 +64,7 @@ export const ExercisesScreen = ({navigation}) => {
         <EmptyView />
       </TopHeaderView>
       <View style={{flex: 0.95, width: '90%'}}>
-        <ExercisesSection exercises={exercisesRef.current} />
+        <ExercisesSection exercises={exercises} />
         <Text style={{color: 'white'}}>hello</Text>
       </View>
     </StyledContainer>

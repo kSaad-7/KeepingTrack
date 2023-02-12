@@ -22,6 +22,7 @@ import {db} from '../../firebase.config';
 
 import {UserContext} from '../../ContextCreator';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
+import {LoadingIndicator} from '../../components/LoadingIndicator/LoadingIndicator';
 
 // ----------------------------------------------------------------
 
@@ -30,6 +31,7 @@ import {Toast} from 'react-native-toast-message/lib/src/Toast';
 // ----------------------------------------------------------------
 
 export const SignUpScreen = ({navigation}) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [signUpLog, setSignUpLog] = useState({
     email: '',
     password: '',
@@ -42,8 +44,6 @@ export const SignUpScreen = ({navigation}) => {
   const handleInput = (key, value) => {
     setSignUpLog({...signUpLog, [key]: value});
   };
-
-  const delay = ms => new Promise(res => setTimeout(res, ms));
 
   const storeNewUserFirestore = async () => {
     const userData = {
@@ -76,39 +76,36 @@ export const SignUpScreen = ({navigation}) => {
     navigation.navigate('Login');
   };
 
-  const validateInputs = () => {
-    if (
-      !signUpLog.email ||
-      !signUpLog.firstName ||
-      !signUpLog.password ||
-      !signUpLog.userName
-    ) {
-      return false;
-    } else {
-      return true;
-    }
-  };
+  const validateInputs = () =>
+    !!signUpLog.email ||
+    !!signUpLog.firstName ||
+    !!signUpLog.password ||
+    !!signUpLog.userName;
 
   const handleRegisterPress = async () => {
     const isValid = validateInputs();
-    if (isValid) {
-      storeNewUserFirestore();
-      Toast.show({
-        type: 'success',
-        text1: 'Creating account...',
-      });
-      await delay(1500);
-      Toast.hide();
-      navigation.navigate('HomeTabs');
-      return;
-    } else {
+    if (!isValid) {
       Toast.show({
         type: 'error',
         text1: 'Wrong details',
         text2: 'Please fill in all the fields properly',
       });
+      return;
     }
+    setIsLoading(true);
+    Toast.show({
+      type: 'success',
+      text1: 'Creating account...',
+    });
+    await storeNewUserFirestore();
+    Toast.hide();
+    navigation.navigate('HomeTabs');
+    setIsLoading(false);
   };
+
+  if (isLoading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <StyledSafeAreaView>

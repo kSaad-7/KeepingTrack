@@ -4,9 +4,7 @@ import {Text, View} from 'react-native';
 import {ExerciseName, StyledTouchable} from './ExercisesSection.styles';
 
 export const ExercisesSection = ({exercises}) => {
-  console.log('Exercises section -- : ', exercises);
   return exercises.map(exercise => {
-    console.log(exercise);
     const {weight, docId, name} = exercise;
     return (
       //Exercise item
