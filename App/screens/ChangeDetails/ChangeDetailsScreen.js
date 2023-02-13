@@ -13,7 +13,7 @@ import {
   ButtonView,
   ChangeTouchable,
   ChangeText,
-} from './ChangeDetails.styles';
+} from './ChangeDetailsScreen.styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {CustomInput} from '../../components/CustomInput/CustomInput';
@@ -23,7 +23,7 @@ import {CustomAlert} from '../../components/CustomAlert/CustomAlert';
 import {db} from '../../firebase.config';
 import {updateDoc, doc} from 'firebase/firestore';
 
-export const ChangeDetails = ({navigation}) => {
+export const ChangeDetailsScreen = ({navigation}) => {
   const [changeLog, setChangeLog] = useState({
     userName: '',
     email: '',

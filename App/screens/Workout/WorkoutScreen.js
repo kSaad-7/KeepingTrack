@@ -1,21 +1,72 @@
-import React, {useContext} from 'react';
-import {Text, SafeAreaView, View} from 'react-native';
+import React, {useContext, useEffect, useState, useRef} from 'react';
+import {Text, View} from 'react-native';
+
+import {db} from '../../firebase.config';
+import {collection, getDocs} from 'firebase/firestore';
 
 import {UserContext} from '../../ContextCreator';
+import {WorkoutContext} from '../../ContextCreator';
 
-export const WorkoutScreen = () => {
+import {LoadingIndicator} from '../../components/LoadingIndicator/LoadingIndicator';
+import {WorkoutSplit} from '../../components/WorkoutSplit/WorkoutSplit';
+import {
+  ScreenHeadingText,
+  StyledContainer,
+  WorkoutSplitView,
+} from './WorkoutScreen.styles';
+
+export const WorkoutScreen = ({navigation}) => {
+  const [data, setData] = useState(null);
+
+  //Getting context
   const {user} = useContext(UserContext);
+  const {workoutDayRef} = useContext(WorkoutContext);
+
+  const fetchData = async () => {
+    try {
+      const workoutSplitRef = collection(
+        db,
+        'users',
+        user.docId,
+        'workoutSplit',
+      );
+      const allDocuments = await getDocs(workoutSplitRef);
+      const workoutSplitData = allDocuments.docs.map(doc => ({
+        docId: doc.id,
+        ...doc.data(),
+      }));
+      setData(workoutSplitData);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDayClick = selectedDay => {
+    workoutDayRef.current = selectedDay;
+    navigation.navigate('Exercises');
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (!data) {
+    return <LoadingIndicator />;
+  }
+
   return (
-    <SafeAreaView
-      style={{flex: 1, backgroundColor: '#1A1A1A', alignItems: 'center'}}>
+    <StyledContainer>
       <View>
-        {/* -------------------------------- */}
-        {/*/ MAYBE CHANGE TO "Welcome back, [user.firstName] or something" */}
-        {/* -------------------------------- */}
-        <Text style={{color: 'white', fontWeight: 'bold', fontSize: 15}}>
-          Workout screen
+        <ScreenHeadingText>Workout screen</ScreenHeadingText>
+      </View>
+      <WorkoutSplitView>
+        <WorkoutSplit data={data} onDayClick={handleDayClick} />
+      </WorkoutSplitView>
+      <View>
+        <Text style={{color: 'white'}}>
+          *[PRE MADE PLANS] horizontal scrollview*
         </Text>
       </View>
-    </SafeAreaView>
+    </StyledContainer>
   );
 };

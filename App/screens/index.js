@@ -5,4 +5,5 @@ export * from './Workout/WorkoutScreen';
 export * from './SignUp/SignUpScreen';
 export * from './Login/LoginScreen';
 export * from './DeleteAccount/DeleteAccountScreen';
-export * from './ChangeDetails/ChangeDetails';
+export * from './ChangeDetails/ChangeDetailsScreen';
+export * from './Exercises/ExercisesScreen';

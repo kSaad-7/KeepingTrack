@@ -67,6 +67,7 @@ export const LoginScreen = ({navigation}) => {
     } else if (user) {
       setUser({...userData, docId: user.id});
       navigation.navigate('HomeTabs');
+      setLoginLog({email: '', password: ''});
     }
   };
 

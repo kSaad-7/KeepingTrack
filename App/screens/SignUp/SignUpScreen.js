@@ -17,10 +17,12 @@ import {
 
 import KeepTrackLogo from '../../assets/images/KeepTrackLogo.png';
 
-import {collection, addDoc, setDoc, doc} from 'firebase/firestore';
+import {collection, addDoc, setDoc, doc, updateDoc} from 'firebase/firestore';
 import {db} from '../../firebase.config';
 
 import {UserContext} from '../../ContextCreator';
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
+import {LoadingIndicator} from '../../components/LoadingIndicator/LoadingIndicator';
 
 // ----------------------------------------------------------------
 
@@ -29,6 +31,7 @@ import {UserContext} from '../../ContextCreator';
 // ----------------------------------------------------------------
 
 export const SignUpScreen = ({navigation}) => {
+  const [isLoading, setIsLoading] = useState(false);
   const [signUpLog, setSignUpLog] = useState({
     email: '',
     password: '',
@@ -50,7 +53,6 @@ export const SignUpScreen = ({navigation}) => {
       email: signUpLog.email,
     };
     const newUserDocRef = await addDoc(collection(db, 'users'), userData);
-    console.log(newUserDocRef.id);
     setUser({...userData, docId: newUserDocRef.id});
 
     // WorkoutSplit subcollection
@@ -63,7 +65,8 @@ export const SignUpScreen = ({navigation}) => {
     // Make 7 documents, one for each day in the workout split.
     for (let i = 1; i < 8; i++) {
       await setDoc(doc(workoutSplitSubCollectionRef, `day${i}`), {
-        name: `day${i}`,
+        name: `Day ${i}`,
+        docId: `day${i}`,
       });
     }
   };
@@ -73,33 +76,36 @@ export const SignUpScreen = ({navigation}) => {
     navigation.navigate('Login');
   };
 
-  const validateInputs = () => {
-    if (
-      !signUpLog.email ||
-      !signUpLog.firstName ||
-      !signUpLog.password ||
-      !signUpLog.userName
-    ) {
-      return false;
-    } else {
-      return true;
+  const validateInputs = () =>
+    !!signUpLog.email ||
+    !!signUpLog.firstName ||
+    !!signUpLog.password ||
+    !!signUpLog.userName;
+
+  const handleRegisterPress = async () => {
+    const isValid = validateInputs();
+    if (!isValid) {
+      Toast.show({
+        type: 'error',
+        text1: 'Wrong details',
+        text2: 'Please fill in all the fields properly',
+      });
+      return;
     }
+    setIsLoading(true);
+    Toast.show({
+      type: 'success',
+      text1: 'Creating account...',
+    });
+    await storeNewUserFirestore();
+    Toast.hide();
+    navigation.navigate('HomeTabs');
+    setIsLoading(false);
   };
 
-  const handleRegisterPress = () => {
-    // isValid = validateInputs() -> Check if all inputs are fine
-    const isValid = validateInputs();
-    console.log(isValid);
-    if (isValid) {
-      storeNewUserFirestore();
-      navigation.navigate('HomeTabs');
-      return;
-    } else {
-      // eslint-disable-next-line no-alert
-      alert('Please enter all fields correctly');
-    }
-    // !! !! !! ! ! ! !!!! ! ! start async session
-  };
+  if (isLoading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <StyledSafeAreaView>
