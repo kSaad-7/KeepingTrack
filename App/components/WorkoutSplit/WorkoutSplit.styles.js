@@ -3,7 +3,7 @@ import {COLORS} from '../../assets/appColors/Colors';
 
 export const StyledTouchable = styled.TouchableOpacity`
   flex: 1;
-  background-color: ${COLORS.greyBlack}
+  background-color: ${COLORS.itemGrey}
   margin: 20px 0px;
   justify-content: center;
   padding-left: 10px;

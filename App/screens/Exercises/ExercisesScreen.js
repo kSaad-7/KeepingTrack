@@ -7,14 +7,15 @@ import {
   BackTouchable,
   BackTouchableText,
   EmptyView,
+  ExercisesScrollView,
   ScreenTitle,
   StyledContainer,
   TitleView,
   TopHeaderView,
 } from './ExercisesScreen.styles';
 
-import {collection, getDocs} from 'firebase/firestore';
-import {Text, View} from 'react-native';
+import {addDoc, collection, getDocs} from 'firebase/firestore';
+import {Button, ScrollView, Text, View} from 'react-native';
 import {db} from '../../firebase.config';
 
 import {ExercisesSection} from '../../components/ExercisesSection/ExercisesSection';
@@ -43,6 +44,25 @@ export const ExercisesScreen = ({navigation}) => {
     setExercises(exercisesData);
   };
 
+  const addNewExercise = async () => {
+    const exercisesSubCollRef = collection(
+      db,
+      'users',
+      user.docId,
+      'workoutSplit',
+      workoutDayRef.current.docId,
+      'exercises',
+    );
+
+    const x = await addDoc(exercisesSubCollRef, {
+      name: 'Pitfall',
+      weight: 20,
+      sets: 3,
+      reps: 20,
+    });
+    console.log('New doc: ', x.id);
+  };
+
   useEffect(() => {
     fetchExercises();
   }, []);
@@ -63,10 +83,10 @@ export const ExercisesScreen = ({navigation}) => {
         </TitleView>
         <EmptyView />
       </TopHeaderView>
-      <View style={{flex: 0.95, width: '90%'}}>
+      <ExercisesScrollView>
         <ExercisesSection exercises={exercises} />
-        <Text style={{color: 'white'}}>hello</Text>
-      </View>
+        <Button title="Add new exerise" onPress={addNewExercise} />
+      </ExercisesScrollView>
     </StyledContainer>
   );
 };

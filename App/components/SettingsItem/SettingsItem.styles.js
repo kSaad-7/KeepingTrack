@@ -3,7 +3,7 @@ import {COLORS} from '../../assets/appColors/Colors';
 
 export const StyledContainer = styled.TouchableOpacity`
   background-color: ${props =>
-    props.isDeleteAccount ? '#f44' : COLORS.greyBlack}
+    props.isDeleteAccount ? '#f44' : COLORS.itemGrey}
   width: 80%;
   padding: 15px;
   border-radius: 10px;

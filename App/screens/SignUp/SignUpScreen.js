@@ -77,14 +77,14 @@ export const SignUpScreen = ({navigation}) => {
   };
 
   const validateInputs = () =>
-    !!signUpLog.email ||
-    !!signUpLog.firstName ||
-    !!signUpLog.password ||
-    !!signUpLog.userName;
+    !signUpLog.email ||
+    !signUpLog.firstName ||
+    !signUpLog.password ||
+    !signUpLog.userName;
 
   const handleRegisterPress = async () => {
-    const isValid = validateInputs();
-    if (!isValid) {
+    const isNotValid = validateInputs();
+    if (isNotValid) {
       Toast.show({
         type: 'error',
         text1: 'Wrong details',

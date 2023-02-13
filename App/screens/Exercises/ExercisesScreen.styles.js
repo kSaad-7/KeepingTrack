@@ -38,3 +38,8 @@ export const ScreenTitle = styled.Text`
   font-weight: bold;
   font-size: 15px;
 `;
+
+export const ExercisesScrollView = styled.ScrollView`
+  flex: 1;
+  margin: 0px 20px;
+`;
