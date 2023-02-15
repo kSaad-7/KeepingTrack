@@ -4,28 +4,25 @@ import {COLORS} from '../../assets/appColors/Colors';
 export const StyledTouchable = styled.TouchableOpacity`
   height: 80px;
   background-color: ${COLORS.itemGrey};
-  margin: 20px 0px;
-  border-radius: 7px;
+  margin: 15px 0px;
+  border-radius: 8px;
 `;
 
 export const ExerciseNameView = styled.View`
-  // background-color: green;
   margin-bottom: 10px;
   padding-top: 10px;
   margin-left: 10px;
 `;
 
 export const ExerciseName = styled.Text`
-  // color: ${COLORS.offWhite};
   color: white;
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
 `;
 
-export const BlueInfoText = styled.Text`
-  color: ${COLORS.blue};
+export const BoldInfoText = styled.Text`
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
 `;
 
 export const InfoView = styled.View`
@@ -35,7 +32,7 @@ export const InfoView = styled.View`
 `;
 
 export const StyledText = styled.Text`
-  font-size: 14px;
+  font-size: 13px;
   color: ${COLORS.offWhite};
-  font-weight: 600;
+  font-weight: 500;
 `;

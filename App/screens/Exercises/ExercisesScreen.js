@@ -4,10 +4,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {UserContext, WorkoutContext} from '../../ContextCreator';
 
 import {
+  AddNewExerciseView,
   BackTouchable,
   BackTouchableText,
   EmptyView,
   ExercisesScrollView,
+  NewExerciseTouchable,
   ScreenTitle,
   StyledContainer,
   TitleView,
@@ -15,14 +17,23 @@ import {
 } from './ExercisesScreen.styles';
 
 import {addDoc, collection, getDocs} from 'firebase/firestore';
-import {Button, ScrollView, Text, View} from 'react-native';
+import {TouchableOpacity, View} from 'react-native';
 import {db} from '../../firebase.config';
 
 import {ExercisesSection} from '../../components/ExercisesSection/ExercisesSection';
 import {LoadingIndicator} from '../../components/LoadingIndicator/LoadingIndicator';
+import {ExerciseInputModal} from '../../components/ExerciseInputModal/ExerciseInputModal';
+import {COLORS} from '../../assets/appColors/Colors';
 
 export const ExercisesScreen = ({navigation}) => {
   const [exercises, setExercises] = useState();
+  const [showInputModal, setShowInputModal] = useState(false);
+  const [exerciseValues, setExerciseValues] = useState({
+    name: '',
+    weight: '',
+    sets: '',
+    reps: '',
+  });
 
   const {user} = useContext(UserContext);
   const {workoutDayRef} = useContext(WorkoutContext);
@@ -45,22 +56,34 @@ export const ExercisesScreen = ({navigation}) => {
   };
 
   const addNewExercise = async () => {
-    const exercisesSubCollRef = collection(
-      db,
-      'users',
-      user.docId,
-      'workoutSplit',
-      workoutDayRef.current.docId,
-      'exercises',
-    );
+    setShowInputModal(true);
+    // let randomExerciseArray = [
+    //   'Dumbell Press',
+    //   'Crunches',
+    //   'Bench press',
+    //   'Incline bench',
+    //   'Pushups',
+    // ];
 
-    const x = await addDoc(exercisesSubCollRef, {
-      name: 'Pitfall',
-      weight: 20,
-      sets: 3,
-      reps: 20,
-    });
-    console.log('New doc: ', x.id);
+    // let randomIndex = Math.floor(Math.random() * randomExerciseArray.length);
+    // let randomExercise = randomExerciseArray[randomIndex];
+
+    // const exercisesSubCollRef = collection(
+    //   db,
+    //   'users',
+    //   user.docId,
+    //   'workoutSplit',
+    //   workoutDayRef.current.docId,
+    //   'exercises',
+    // );
+
+    // const x = await addDoc(exercisesSubCollRef, {
+    //   name: randomExercise,
+    //   weight: 20,
+    //   sets: 3,
+    //   reps: 20,
+    // });
+    // console.log('New doc: ', x.id);
   };
 
   useEffect(() => {
@@ -84,9 +107,25 @@ export const ExercisesScreen = ({navigation}) => {
         <EmptyView />
       </TopHeaderView>
       <ExercisesScrollView>
-        <ExercisesSection exercises={exercises} />
-        <Button title="Add new exerise" onPress={addNewExercise} />
+        <ExercisesSection
+          exercises={exercises}
+          setShowInputModal={setShowInputModal}
+          setExerciseValues={setExerciseValues}
+        />
+        <AddNewExerciseView>
+          <NewExerciseTouchable onPress={addNewExercise}>
+            <Icon name={'add-outline'} size={30} color={COLORS.offWhite} />
+          </NewExerciseTouchable>
+        </AddNewExerciseView>
       </ExercisesScrollView>
+      {showInputModal && (
+        <ExerciseInputModal
+          showInputModal={showInputModal}
+          setShowInputModal={setShowInputModal}
+          exerciseValues={exerciseValues}
+          setExerciseValues={setExerciseValues}
+        />
+      )}
     </StyledContainer>
   );
 };

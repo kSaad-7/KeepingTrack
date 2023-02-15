@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {StatusBar} from 'react-native';
 
 import {COLORS} from './assets/appColors/Colors';

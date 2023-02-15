@@ -3,7 +3,7 @@ import {COLORS} from '../../assets/appColors/Colors';
 
 export const StyledContainer = styled.SafeAreaView`
   flex: 1;
-  background-color: #1a1a1a;
+  background-color: ${COLORS.backgroundBlack};
 `;
 
 export const TopHeaderView = styled.View`
@@ -42,4 +42,18 @@ export const ScreenTitle = styled.Text`
 export const ExercisesScrollView = styled.ScrollView`
   flex: 1;
   margin: 0px 20px;
+`;
+
+export const AddNewExerciseView = styled.View`
+  margin-top: 20px;
+  align-items: center;
+`;
+
+export const NewExerciseTouchable = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  background-color: ${COLORS.blue};
+  border-radius: 5px;
+  width: 28px;
+  height: 30px;
 `;
