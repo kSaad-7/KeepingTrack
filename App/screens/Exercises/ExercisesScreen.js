@@ -55,37 +55,6 @@ export const ExercisesScreen = ({navigation}) => {
     setExercises(exercisesData);
   };
 
-  const addNewExercise = async () => {
-    setShowInputModal(true);
-    // let randomExerciseArray = [
-    //   'Dumbell Press',
-    //   'Crunches',
-    //   'Bench press',
-    //   'Incline bench',
-    //   'Pushups',
-    // ];
-
-    // let randomIndex = Math.floor(Math.random() * randomExerciseArray.length);
-    // let randomExercise = randomExerciseArray[randomIndex];
-
-    // const exercisesSubCollRef = collection(
-    //   db,
-    //   'users',
-    //   user.docId,
-    //   'workoutSplit',
-    //   workoutDayRef.current.docId,
-    //   'exercises',
-    // );
-
-    // const x = await addDoc(exercisesSubCollRef, {
-    //   name: randomExercise,
-    //   weight: 20,
-    //   sets: 3,
-    //   reps: 20,
-    // });
-    // console.log('New doc: ', x.id);
-  };
-
   useEffect(() => {
     fetchExercises();
   }, []);
@@ -113,7 +82,7 @@ export const ExercisesScreen = ({navigation}) => {
           setExerciseValues={setExerciseValues}
         />
         <AddNewExerciseView>
-          <NewExerciseTouchable onPress={addNewExercise}>
+          <NewExerciseTouchable onPress={() => setShowInputModal(true)}>
             <Icon name={'add-outline'} size={30} color={COLORS.offWhite} />
           </NewExerciseTouchable>
         </AddNewExerciseView>

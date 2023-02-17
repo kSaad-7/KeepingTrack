@@ -4,7 +4,7 @@ import {COLORS} from '../../assets/appColors/Colors';
 export const Container = styled.View`
   flex: 1;
   justify-content: flex-end;
-  // background-color: rgba(0, 0, 0, 0.9);
+  background-color: rgba(0, 0, 0, 0.5);
 `;
 
 export const StyledView = styled.View`
@@ -42,6 +42,47 @@ export const ModalTitleView = styled.View`
 `;
 
 export const TitleText = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+`;
+
+export const SearchExercise = styled.View`
+  flex: 0.2;
+  flex-direction: row;
+  // background-color: red;
+  margin-left: 20px;
+`;
+
+export const SetsRepsView = styled.View`
+  flex-direction: row;
+  margin-top: 15px;
+`;
+
+export const ExercieseInfoView = styled.View`
+  flex: 0.3;
+  align-items: center;
+`;
+
+export const ButtonView = styled.View`
+  flex: 0.4;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ExerciseButton = styled.TouchableOpacity`
+  background-color: ${COLORS.blue};
+  color: white;
+  height: 60px;
+  width: 70%;
+  margin: 30px 20px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  padding: 20px;
+`;
+
+export const ButtonText = styled.Text`
   font-size: 18px;
   font-weight: bold;
   color: white;

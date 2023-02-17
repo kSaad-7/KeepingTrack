@@ -21,15 +21,15 @@ export const ExercisesSection = ({
   return exercises.map(exercise => {
     const {weight, docId, name, sets, reps} = exercise;
 
-    const handleExercisePress = () => {
+    const handleExercisePress = async () => {
       const exerciseValuesObject = {
         name: name,
         weight: weight,
         sets: sets,
         reps: reps,
       };
-      setShowInputModal(true);
       setExerciseValues(exerciseValuesObject);
+      setShowInputModal(true);
     };
     return (
       //Exercise item
