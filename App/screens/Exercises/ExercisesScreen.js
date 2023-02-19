@@ -16,8 +16,7 @@ import {
   TopHeaderView,
 } from './ExercisesScreen.styles';
 
-import {addDoc, collection, getDocs} from 'firebase/firestore';
-import {TouchableOpacity, View} from 'react-native';
+import {collection, onSnapshot, orderBy, query} from 'firebase/firestore';
 import {db} from '../../firebase.config';
 
 import {ExercisesSection} from '../../components/ExercisesSection/ExercisesSection';
@@ -28,15 +27,22 @@ import {COLORS} from '../../assets/appColors/Colors';
 export const ExercisesScreen = ({navigation}) => {
   const [exercises, setExercises] = useState();
   const [showInputModal, setShowInputModal] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(true);
   const [exerciseValues, setExerciseValues] = useState({
     name: '',
     weight: '',
     sets: '',
     reps: '',
+    docId: '',
   });
 
   const {user} = useContext(UserContext);
   const {workoutDayRef} = useContext(WorkoutContext);
+
+  const handleAddTouchablePress = () => {
+    setIsEditMode(false);
+    setShowInputModal(true);
+  };
 
   const fetchExercises = async () => {
     const exercisesSubCollRef = collection(
@@ -47,12 +53,14 @@ export const ExercisesScreen = ({navigation}) => {
       workoutDayRef.current.docId,
       'exercises',
     );
-    const allDocuments = await getDocs(exercisesSubCollRef);
-    const exercisesData = allDocuments.docs.map(doc => ({
-      docId: doc.id,
-      ...doc.data(),
-    }));
-    setExercises(exercisesData);
+    let exercisesData = [{}];
+    onSnapshot(query(exercisesSubCollRef, orderBy('createdAt')), docsSnap => {
+      exercisesData = docsSnap.docs.map(doc => ({
+        docId: doc.id,
+        ...doc.data(),
+      }));
+      setExercises(exercisesData);
+    });
   };
 
   useEffect(() => {
@@ -80,9 +88,10 @@ export const ExercisesScreen = ({navigation}) => {
           exercises={exercises}
           setShowInputModal={setShowInputModal}
           setExerciseValues={setExerciseValues}
+          setIsEditMode={setIsEditMode}
         />
         <AddNewExerciseView>
-          <NewExerciseTouchable onPress={() => setShowInputModal(true)}>
+          <NewExerciseTouchable onPress={handleAddTouchablePress}>
             <Icon name={'add-outline'} size={30} color={COLORS.offWhite} />
           </NewExerciseTouchable>
         </AddNewExerciseView>
@@ -93,6 +102,7 @@ export const ExercisesScreen = ({navigation}) => {
           setShowInputModal={setShowInputModal}
           exerciseValues={exerciseValues}
           setExerciseValues={setExerciseValues}
+          isEditMode={isEditMode}
         />
       )}
     </StyledContainer>

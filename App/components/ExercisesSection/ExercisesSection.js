@@ -13,22 +13,34 @@ import {
 
 // TODO: Change background to gradient maybe, try it. !! !!!  ! !  !! !
 
+import {autoCompleteDataSet} from '../../assets/data/autoCompleteDataSet';
+
 export const ExercisesSection = ({
   exercises,
   setShowInputModal,
   setExerciseValues,
+  setIsEditMode,
 }) => {
   return exercises.map(exercise => {
     const {weight, docId, name, sets, reps} = exercise;
 
+    const findExerciseInDataSet = () => {
+      const exerciseInDataSet = autoCompleteDataSet.find(e => e.title === name);
+      return exerciseInDataSet;
+    };
+
     const handleExercisePress = async () => {
+      const exerciseInDataSet = findExerciseInDataSet();
       const exerciseValuesObject = {
-        name: name,
+        name: exerciseInDataSet.title,
         weight: weight,
         sets: sets,
         reps: reps,
+        docId: docId,
+        dataSetId: exerciseInDataSet.id,
       };
       setExerciseValues(exerciseValuesObject);
+      setIsEditMode(true);
       setShowInputModal(true);
     };
     return (

@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, Modal, View} from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
@@ -26,49 +26,87 @@ import {
 } from './ExerciseInputModal.styles';
 
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
-import {addDoc, collection} from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  Timestamp,
+  updateDoc,
+} from 'firebase/firestore';
 import {db} from '../../firebase.config';
+
 import {UserContext, WorkoutContext} from '../../ContextCreator';
+import {autoCompleteDataSet} from '../../assets/data/autoCompleteDataSet';
+import {COLORS} from '../../assets/appColors/Colors';
 
 export const ExerciseInputModal = ({
   showInputModal,
   setShowInputModal,
   exerciseValues,
   setExerciseValues,
+  isEditMode,
 }) => {
   const [selectedExercise, setSelectedExercise] = useState(null);
-  const {name, weight, sets, reps} = exerciseValues;
+
+  const {weight, sets, reps, docId, dataSetId} = exerciseValues;
 
   const {user} = useContext(UserContext);
   const {workoutDayRef} = useContext(WorkoutContext);
 
   const closeModal = () => {
     setShowInputModal(false);
-    setExerciseValues({name: '', weight: '', sets: '', reps: ''});
+    setExerciseValues({
+      name: '',
+      weight: '',
+      sets: '',
+      reps: '',
+      docId: '',
+      dataSetId: '',
+    });
   };
 
   const handleInput = (key, input) => {
     setExerciseValues({...exerciseValues, [key]: input});
   };
 
-  const validateInputs = () => !weight || !sets || !reps;
+  const validateInputs = () => !weight || !sets || !reps || !selectedExercise;
 
-  const saveToFirebase = async () => {
-    const newExercise = {
-      name: name,
+  const saveExcersiseToFirebase = async () => {
+    const exercise = {
+      name: selectedExercise.title,
       weight: Number(weight),
       sets: Number(sets),
       reps: Number(reps),
     };
-    const exercisesSubCollRef = collection(
-      db,
-      'users',
-      user.docId,
-      'workoutSplit',
-      workoutDayRef.current.docId,
-      'exercises',
-    );
-    await addDoc(exercisesSubCollRef, newExercise);
+
+    const firebaseRef = isEditMode
+      ? doc(
+          db,
+          'users',
+          user.docId,
+          'workoutSplit',
+          workoutDayRef.current.docId,
+          'exercises',
+          docId,
+        )
+      : collection(
+          db,
+          'users',
+          user.docId,
+          'workoutSplit',
+          workoutDayRef.current.docId,
+          'exercises',
+        );
+    //if EditMode -> updateDoc instead of creating new one
+    if (isEditMode) {
+      await updateDoc(firebaseRef, exercise);
+      return;
+    }
+    //if not EditMode -> addDoc instead of updating old one
+    await addDoc(firebaseRef, {
+      ...exercise,
+      createdAt: Timestamp.fromDate(new Date()),
+    });
   };
 
   const handleButtonClick = async () => {
@@ -81,19 +119,14 @@ export const ExerciseInputModal = ({
       });
       return;
     }
-    await saveToFirebase();
+    await saveExcersiseToFirebase();
     closeModal();
     Toast.show({
       type: 'success',
-      text1: 'Added exercise',
-      visibilityTime: 2000,
+      text1: isEditMode ? 'Saved changes' : 'Added exercise',
+      visibilityTime: 1500,
     });
   };
-
-  let isEdit = false;
-  if (weight || sets || reps) {
-    isEdit = true;
-  }
 
   return (
     <GestureRecognizer onSwipeDown={closeModal}>
@@ -119,7 +152,7 @@ export const ExerciseInputModal = ({
               <MainContent>
                 <ModalTitleView>
                   <TitleText>
-                    {isEdit ? 'Edit Exercise' : 'Create new exercise'}
+                    {isEditMode ? 'Edit Exercise' : 'Create new exercise'}
                   </TitleText>
                 </ModalTitleView>
                 <SearchExercise style={{zIndex: 1}}>
@@ -128,13 +161,34 @@ export const ExerciseInputModal = ({
                       clearOnFocus={false}
                       closeOnBlur={true}
                       closeOnSubmit={false}
-                      // initialValue={{id: '2'}} // or just '2'
+                      initialValue={isEditMode ? {id: dataSetId} : {id: ''}}
                       onSelectItem={setSelectedExercise}
-                      dataSet={[
-                        {id: '1', title: 'Alpha'},
-                        {id: '2', title: 'Beta'},
-                        {id: '3', title: 'Gamma'},
-                      ]}
+                      dataSet={autoCompleteDataSet}
+                      suggestionsListTextStyle={{
+                        fontSize: 15,
+                        fontWeight: 'bold',
+                        color: 'white',
+                      }}
+                      suggestionsListContainerStyle={{
+                        backgroundColor: `${COLORS.backgroundBlack}`,
+                      }}
+                      textInputProps={{
+                        style: {
+                          backgroundColor: `${COLORS.backgroundBlack}`,
+                          color: `${COLORS.offWhite}`,
+                          width: '100%',
+                          borderRadius: 10,
+                        },
+                      }}
+                      inputContainerStyle={{
+                        backgroundColor: `${COLORS.backgroundBlack}`,
+                        borderRadius: 10,
+                      }}
+                      rightButtonsContainerStyle={{
+                        right: 7,
+                        borderRadius: 10,
+                        backgroundColor: `${COLORS.backgroundBlack}`,
+                      }}
                     />
                   </View>
                 </SearchExercise>
@@ -162,7 +216,7 @@ export const ExerciseInputModal = ({
                 <ButtonView>
                   <ExerciseButton onPress={handleButtonClick}>
                     <ButtonText>
-                      {isEdit ? 'Confirm changes' : 'Create exercise'}
+                      {isEditMode ? 'Confirm changes' : 'Create exercise'}
                     </ButtonText>
                   </ExerciseButton>
                 </ButtonView>

@@ -8,7 +8,7 @@ export const Container = styled.View`
 `;
 
 export const StyledView = styled.View`
-  flex: 0.64;
+  flex: 0.7;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
   background-color: black;
@@ -22,7 +22,7 @@ export const ModalContent = styled.View`
 `;
 
 export const TopHeaderView = styled.View`
-  flex: 0.06;
+  flex: 0.05;
   flex-direction: row;
   justify-content: center;
 `;
@@ -48,10 +48,9 @@ export const TitleText = styled.Text`
 `;
 
 export const SearchExercise = styled.View`
-  flex: 0.2;
+  flex: 0.4;
   flex-direction: row;
-  // background-color: red;
-  margin-left: 20px;
+  justify-content: center;
 `;
 
 export const SetsRepsView = styled.View`
@@ -62,6 +61,7 @@ export const SetsRepsView = styled.View`
 export const ExercieseInfoView = styled.View`
   flex: 0.3;
   align-items: center;
+  margin-top: 10px;
 `;
 
 export const ButtonView = styled.View`
