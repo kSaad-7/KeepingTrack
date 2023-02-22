@@ -37,9 +37,8 @@ import {UserContext, WorkoutContext} from '../../ContextCreator';
 import {autoCompleteDataSet} from '../../assets/data/autoCompleteDataSet';
 
 import {AutoCompleteInput} from '../AutoCompleteInput/AutoCompleteInput';
-import {CustomInput} from '../CustomInput/CustomInput';
-import {COLORS} from '../../assets/appColors/Colors';
 import {CustomExerciseInput} from '../CustomExerciseInput/CustomExerciseInput';
+import {ChangeInputTouchable} from '../ChangeInputTouchable/ChangeInputTouchable';
 
 export const ExerciseInputModal = ({
   showInputModal,
@@ -134,6 +133,7 @@ export const ExerciseInputModal = ({
   };
 
   console.log(isCustomExercise);
+  console.log(selectedExercise);
 
   return (
     <GestureRecognizer onSwipeDown={closeModal}>
@@ -172,65 +172,11 @@ export const ExerciseInputModal = ({
                   ) : (
                     <View style={{flex: 0.4}} />
                   )}
-                  {isCustomExercise ? (
-                    <TouchableOpacity
-                      style={{
-                        flex: 0.15,
-                        zIndex: -1,
-                        marginVertical: 10,
-                        backgroundColor: COLORS.blue,
-                        justifyContent: 'center',
-                        marginHorizontal: '20%',
-                        borderRadius: 20,
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                      }}
-                      onPress={() => setIsCustomExercise(!isCustomExercise)}>
-                      <Icon
-                        name={'caret-back-outline'}
-                        size={15}
-                        color={COLORS.offWhite}
-                      />
-                      <Text
-                        style={{
-                          color: COLORS.offWhite,
-                          fontSize: 16,
-                          fontWeight: '600',
-                          marginRight: 10,
-                        }}>
-                        Use dropdown
-                      </Text>
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      style={{
-                        flex: 0.15,
-                        zIndex: -1,
-                        marginVertical: 10,
-                        backgroundColor: COLORS.blue,
-                        justifyContent: 'center',
-                        marginHorizontal: '20%',
-                        borderRadius: 20,
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                      }}
-                      onPress={() => setIsCustomExercise(!isCustomExercise)}>
-                      <Text
-                        style={{
-                          color: COLORS.offWhite,
-                          fontSize: 16,
-                          fontWeight: '600',
-                          marginRight: 10,
-                        }}>
-                        Use custom exercise
-                      </Text>
-                      <Icon
-                        name={'caret-forward-outline'}
-                        size={15}
-                        color={COLORS.offWhite}
-                      />
-                    </TouchableOpacity>
-                  )}
+                  <ChangeInputTouchable
+                    isCustomExercise={isCustomExercise}
+                    setIsCustomExercise={setIsCustomExercise}
+                    setSelectedExercise={setSelectedExercise}
+                  />
                   {isCustomExercise && (
                     <CustomExerciseInput
                       onChangeText={input =>
