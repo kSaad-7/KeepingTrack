@@ -14,7 +14,7 @@ export const CustomInput = ({
     <StyledTextInput
       onChangeText={onChangeText}
       placeholder={placeholder}
-      placeholderTextColor="rgba(255, 255, 255, 0.4)"
+      placeholderTextColor="rgba(255, 255, 255, 0.2)"
       keyboardType={keyboardType}
       secureTextEntry={secureTextEntry}
       isRegister={isRegister}

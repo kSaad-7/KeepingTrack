@@ -3,7 +3,7 @@ import {COLORS} from '../../assets/appColors/Colors';
 
 export const StyledContainer = styled.SafeAreaView`
   flex: 1;
-  background-color: #1a1a1a;
+  background-color: ${COLORS.backgroundBlack};
 `;
 
 export const BackTouchable = styled.TouchableOpacity`
@@ -19,7 +19,6 @@ export const BackTouchableText = styled.Text`
 export const StyledView = styled.View`
   margin-top: 20px;
   flex: 0.4;
-  background-color: #1a1a1a;
   padding: 20px;
 `;
 

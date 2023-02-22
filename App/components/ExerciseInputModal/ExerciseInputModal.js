@@ -1,12 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useState} from 'react';
-import {Button, Modal, View} from 'react-native';
+import {Modal, Text, View, TouchableOpacity, TextInput} from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import {ModalInput} from '../ModalInput/ModalInput';
-
-import {AutocompleteDropdown} from 'react-native-autocomplete-dropdown';
 
 import {
   BackTouchable,
@@ -17,7 +15,7 @@ import {
   ModalTitleView,
   TitleText,
   StyledView,
-  SearchExercise,
+  SearchExerciseView,
   SetsRepsView,
   ExercieseInfoView,
   ExerciseButton,
@@ -37,6 +35,9 @@ import {db} from '../../firebase.config';
 
 import {UserContext, WorkoutContext} from '../../ContextCreator';
 import {autoCompleteDataSet} from '../../assets/data/autoCompleteDataSet';
+
+import {AutoCompleteInput} from '../AutoCompleteInput/AutoCompleteInput';
+import {CustomInput} from '../CustomInput/CustomInput';
 import {COLORS} from '../../assets/appColors/Colors';
 
 export const ExerciseInputModal = ({
@@ -97,11 +98,13 @@ export const ExerciseInputModal = ({
           workoutDayRef.current.docId,
           'exercises',
         );
+
     //if EditMode -> updateDoc instead of creating new one
     if (isEditMode) {
       await updateDoc(firebaseRef, exercise);
       return;
     }
+
     //if not EditMode -> addDoc instead of updating old one
     await addDoc(firebaseRef, {
       ...exercise,
@@ -127,6 +130,8 @@ export const ExerciseInputModal = ({
       visibilityTime: 1500,
     });
   };
+
+  console.log(selectedExercise);
 
   return (
     <GestureRecognizer onSwipeDown={closeModal}>
@@ -155,43 +160,61 @@ export const ExerciseInputModal = ({
                     {isEditMode ? 'Edit Exercise' : 'Create new exercise'}
                   </TitleText>
                 </ModalTitleView>
-                <SearchExercise style={{zIndex: 1}}>
-                  <View style={{flex: 0.8}}>
-                    <AutocompleteDropdown
-                      clearOnFocus={false}
-                      closeOnBlur={true}
-                      closeOnSubmit={false}
-                      initialValue={isEditMode ? {id: dataSetId} : {id: ''}}
-                      onSelectItem={setSelectedExercise}
-                      dataSet={autoCompleteDataSet}
-                      suggestionsListTextStyle={{
-                        fontSize: 15,
-                        fontWeight: 'bold',
-                        color: 'white',
-                      }}
-                      suggestionsListContainerStyle={{
-                        backgroundColor: `${COLORS.backgroundBlack}`,
-                      }}
-                      textInputProps={{
-                        style: {
-                          backgroundColor: `${COLORS.backgroundBlack}`,
-                          color: `${COLORS.offWhite}`,
-                          width: '100%',
-                          borderRadius: 10,
-                        },
-                      }}
-                      inputContainerStyle={{
-                        backgroundColor: `${COLORS.backgroundBlack}`,
+                <SearchExerciseView>
+                  <AutoCompleteInput
+                    initialValue={isEditMode ? {id: dataSetId} : {id: ''}}
+                    onSelectItem={setSelectedExercise}
+                    dataSet={autoCompleteDataSet}
+                  />
+                  <TouchableOpacity
+                    style={{
+                      flex: 0.15,
+                      zIndex: -1,
+                      backgroundColor: COLORS.blue,
+                      justifyContent: 'space-around',
+                      marginHorizontal: '20%',
+                      borderRadius: 20,
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                    }}>
+                    <Text
+                      style={{
+                        color: COLORS.offWhite,
+                        fontSize: 16,
+                        fontWeight: '600',
+                        marginRight: 10,
+                      }}>
+                      Use custom exercise
+                    </Text>
+                    <Icon
+                      name={'caret-forward-outline'}
+                      size={15}
+                      color={COLORS.offWhite}
+                    />
+                  </TouchableOpacity>
+                  <View
+                    style={{
+                      flex: 0.4,
+                      justifyContent: 'center',
+                      zIndex: -1,
+                      marginHorizontal: 30,
+                    }}>
+                    <TextInput
+                      style={{
+                        backgroundColor: COLORS.backgroundBlack,
+                        padding: 12,
                         borderRadius: 10,
+                        fontSize: 16,
+                        color: COLORS.offWhite,
                       }}
-                      rightButtonsContainerStyle={{
-                        right: 7,
-                        borderRadius: 10,
-                        backgroundColor: `${COLORS.backgroundBlack}`,
-                      }}
+                      placeholder="Custom exercise"
+                      placeholderTextColor="rgba(255, 255, 255, 0.2)"
+                      onChangeText={input =>
+                        setSelectedExercise({title: input})
+                      }
                     />
                   </View>
-                </SearchExercise>
+                </SearchExerciseView>
                 <ExercieseInfoView>
                   <View style={{flex: 1}}>
                     <ModalInput

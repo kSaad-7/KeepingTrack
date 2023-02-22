@@ -1,8 +1,9 @@
 export const COLORS = {
   blue: '#246EE9',
-  backgroundBlack: '#1A1A1A',
-  darkBlack: '#131313',
-  itemGrey: '#474747bb',
+  backgroundBlack: '#121212',
+  black: '#111',
+  itemGrey: '#242528',
+  input: '#191919',
   offWhite: '#eee',
   red: '#f44',
 };

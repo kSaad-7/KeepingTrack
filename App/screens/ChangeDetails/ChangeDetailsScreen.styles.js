@@ -3,7 +3,7 @@ import {COLORS} from '../../assets/appColors/Colors';
 
 export const StyledContainer = styled.SafeAreaView`
   flex: 1;
-  background-color: #1a1a1a;
+  background-color: ${COLORS.backgroundBlack};
 `;
 
 export const InputView = styled.View`
@@ -24,7 +24,6 @@ export const BackTouchableText = styled.Text`
 export const StyledView = styled.View`
   margin-top: 10px;
   flex: 1;
-  background-color: #1a1a1a;
 `;
 
 export const DetailName = styled.Text`

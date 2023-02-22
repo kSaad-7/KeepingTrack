@@ -1,8 +1,9 @@
 import styled from 'styled-components';
+import {COLORS} from '../../assets/appColors/Colors';
 
 export const StyledContainer = styled.SafeAreaView`
   flex: 1;
-  background-color: #1a1a1a;
+  background-color: ${COLORS.backgroundBlack};
   align-items: center;
 `;
 

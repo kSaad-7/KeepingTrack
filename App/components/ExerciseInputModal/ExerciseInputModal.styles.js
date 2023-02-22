@@ -11,7 +11,6 @@ export const StyledView = styled.View`
   flex: 0.7;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
-  background-color: black;
 `;
 
 export const ModalContent = styled.View`
@@ -47,10 +46,11 @@ export const TitleText = styled.Text`
   color: white;
 `;
 
-export const SearchExercise = styled.View`
+export const SearchExerciseView = styled.View`
   flex: 0.4;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: column;
+  // background-color: blue;
+  z-index: 1;
 `;
 
 export const SetsRepsView = styled.View`

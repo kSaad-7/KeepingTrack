@@ -9,6 +9,7 @@ export const StyledTouchable = styled.TouchableOpacity`
   margin: 20px 0px;
   padding-left: 10px;
   border-radius: 7px;
+  justify-content: center;
 `;
 
 export const DayName = styled.Text`
@@ -19,7 +20,7 @@ export const DayName = styled.Text`
 
 export const Gradient = styled(LinearGradient)`
   flex: 1;
-  justify-content: center;
+
   padding-left: 10px;
   border-radius: 7px;
   border-top-left-radius: 0px;
