@@ -39,6 +39,7 @@ import {autoCompleteDataSet} from '../../assets/data/autoCompleteDataSet';
 import {AutoCompleteInput} from '../AutoCompleteInput/AutoCompleteInput';
 import {CustomInput} from '../CustomInput/CustomInput';
 import {COLORS} from '../../assets/appColors/Colors';
+import {CustomExerciseInput} from '../CustomExerciseInput/CustomExerciseInput';
 
 export const ExerciseInputModal = ({
   showInputModal,
@@ -48,6 +49,7 @@ export const ExerciseInputModal = ({
   isEditMode,
 }) => {
   const [selectedExercise, setSelectedExercise] = useState(null);
+  const [isCustomExercise, setIsCustomExercise] = useState(false);
 
   const {weight, sets, reps, docId, dataSetId} = exerciseValues;
 
@@ -131,7 +133,7 @@ export const ExerciseInputModal = ({
     });
   };
 
-  console.log(selectedExercise);
+  console.log(isCustomExercise);
 
   return (
     <GestureRecognizer onSwipeDown={closeModal}>
@@ -161,59 +163,81 @@ export const ExerciseInputModal = ({
                   </TitleText>
                 </ModalTitleView>
                 <SearchExerciseView>
-                  <AutoCompleteInput
-                    initialValue={isEditMode ? {id: dataSetId} : {id: ''}}
-                    onSelectItem={setSelectedExercise}
-                    dataSet={autoCompleteDataSet}
-                  />
-                  <TouchableOpacity
-                    style={{
-                      flex: 0.15,
-                      zIndex: -1,
-                      backgroundColor: COLORS.blue,
-                      justifyContent: 'space-around',
-                      marginHorizontal: '20%',
-                      borderRadius: 20,
-                      alignItems: 'center',
-                      flexDirection: 'row',
-                    }}>
-                    <Text
-                      style={{
-                        color: COLORS.offWhite,
-                        fontSize: 16,
-                        fontWeight: '600',
-                        marginRight: 10,
-                      }}>
-                      Use custom exercise
-                    </Text>
-                    <Icon
-                      name={'caret-forward-outline'}
-                      size={15}
-                      color={COLORS.offWhite}
+                  {!isCustomExercise ? (
+                    <AutoCompleteInput
+                      initialValue={isEditMode ? {id: dataSetId} : {id: ''}}
+                      onSelectItem={setSelectedExercise}
+                      dataSet={autoCompleteDataSet}
                     />
-                  </TouchableOpacity>
-                  <View
-                    style={{
-                      flex: 0.4,
-                      justifyContent: 'center',
-                      zIndex: -1,
-                      marginHorizontal: 30,
-                    }}>
-                    <TextInput
+                  ) : (
+                    <View style={{flex: 0.4}} />
+                  )}
+                  {isCustomExercise ? (
+                    <TouchableOpacity
                       style={{
-                        backgroundColor: COLORS.backgroundBlack,
-                        padding: 12,
-                        borderRadius: 10,
-                        fontSize: 16,
-                        color: COLORS.offWhite,
+                        flex: 0.15,
+                        zIndex: -1,
+                        marginVertical: 10,
+                        backgroundColor: COLORS.blue,
+                        justifyContent: 'center',
+                        marginHorizontal: '20%',
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        flexDirection: 'row',
                       }}
-                      placeholder="Custom exercise"
-                      placeholderTextColor="rgba(255, 255, 255, 0.2)"
+                      onPress={() => setIsCustomExercise(!isCustomExercise)}>
+                      <Icon
+                        name={'caret-back-outline'}
+                        size={15}
+                        color={COLORS.offWhite}
+                      />
+                      <Text
+                        style={{
+                          color: COLORS.offWhite,
+                          fontSize: 16,
+                          fontWeight: '600',
+                          marginRight: 10,
+                        }}>
+                        Use dropdown
+                      </Text>
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      style={{
+                        flex: 0.15,
+                        zIndex: -1,
+                        marginVertical: 10,
+                        backgroundColor: COLORS.blue,
+                        justifyContent: 'center',
+                        marginHorizontal: '20%',
+                        borderRadius: 20,
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                      }}
+                      onPress={() => setIsCustomExercise(!isCustomExercise)}>
+                      <Text
+                        style={{
+                          color: COLORS.offWhite,
+                          fontSize: 16,
+                          fontWeight: '600',
+                          marginRight: 10,
+                        }}>
+                        Use custom exercise
+                      </Text>
+                      <Icon
+                        name={'caret-forward-outline'}
+                        size={15}
+                        color={COLORS.offWhite}
+                      />
+                    </TouchableOpacity>
+                  )}
+                  {isCustomExercise && (
+                    <CustomExerciseInput
                       onChangeText={input =>
                         setSelectedExercise({title: input})
                       }
                     />
-                  </View>
+                  )}
                 </SearchExerciseView>
                 <ExercieseInfoView>
                   <View style={{flex: 1}}>
