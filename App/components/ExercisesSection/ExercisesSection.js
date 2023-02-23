@@ -20,9 +20,10 @@ export const ExercisesSection = ({
   setShowInputModal,
   setExerciseValues,
   setIsEditMode,
+  setIsCustomExercise,
 }) => {
   return exercises.map(exercise => {
-    const {weight, docId, name, sets, reps} = exercise;
+    const {weight, docId, name, sets, reps, isCustom} = exercise;
 
     const findExerciseInDataSet = () => {
       const exerciseInDataSet = autoCompleteDataSet.find(e => e.title === name);
@@ -32,13 +33,18 @@ export const ExercisesSection = ({
     const handleExercisePress = async () => {
       const exerciseInDataSet = findExerciseInDataSet();
       const exerciseValuesObject = {
-        name: exerciseInDataSet.title,
+        name: name,
         weight: weight,
         sets: sets,
         reps: reps,
         docId: docId,
-        dataSetId: exerciseInDataSet.id,
+        dataSetId: exerciseInDataSet?.id,
       };
+      if (isCustom) {
+        setIsCustomExercise(true);
+      } else {
+        setIsCustomExercise(false);
+      }
       setExerciseValues(exerciseValuesObject);
       setIsEditMode(true);
       setShowInputModal(true);

@@ -28,6 +28,7 @@ export const ExercisesScreen = ({navigation}) => {
   const [exercises, setExercises] = useState();
   const [showInputModal, setShowInputModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(true);
+  const [isCustomExercise, setIsCustomExercise] = useState(false);
   const [exerciseValues, setExerciseValues] = useState({
     name: '',
     weight: '',
@@ -89,6 +90,7 @@ export const ExercisesScreen = ({navigation}) => {
           setShowInputModal={setShowInputModal}
           setExerciseValues={setExerciseValues}
           setIsEditMode={setIsEditMode}
+          setIsCustomExercise={setIsCustomExercise}
         />
         <AddNewExerciseView>
           <NewExerciseTouchable onPress={handleAddTouchablePress}>
@@ -100,6 +102,8 @@ export const ExercisesScreen = ({navigation}) => {
         <ExerciseInputModal
           showInputModal={showInputModal}
           setShowInputModal={setShowInputModal}
+          isCustomExercise={isCustomExercise}
+          setIsCustomExercise={setIsCustomExercise}
           exerciseValues={exerciseValues}
           setExerciseValues={setExerciseValues}
           isEditMode={isEditMode}

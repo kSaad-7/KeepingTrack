@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useContext, useState} from 'react';
-import {Modal, Text, View, TouchableOpacity, TextInput} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {Modal, View} from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -46,11 +46,12 @@ export const ExerciseInputModal = ({
   exerciseValues,
   setExerciseValues,
   isEditMode,
+  isCustomExercise,
+  setIsCustomExercise,
 }) => {
   const [selectedExercise, setSelectedExercise] = useState(null);
-  const [isCustomExercise, setIsCustomExercise] = useState(false);
 
-  const {weight, sets, reps, docId, dataSetId} = exerciseValues;
+  const {weight, sets, reps, docId, dataSetId, name} = exerciseValues;
 
   const {user} = useContext(UserContext);
   const {workoutDayRef} = useContext(WorkoutContext);
@@ -71,14 +72,16 @@ export const ExerciseInputModal = ({
     setExerciseValues({...exerciseValues, [key]: input});
   };
 
-  const validateInputs = () => !weight || !sets || !reps || !selectedExercise;
+  const validateInputs = () =>
+    !weight || !sets || !reps || isCustomExercise ? !name : !selectedExercise;
 
   const saveExcersiseToFirebase = async () => {
     const exercise = {
-      name: selectedExercise.title,
+      name: isCustomExercise ? name : selectedExercise.title,
       weight: Number(weight),
       sets: Number(sets),
       reps: Number(reps),
+      isCustom: isCustomExercise,
     };
 
     const firebaseRef = isEditMode
@@ -132,8 +135,15 @@ export const ExerciseInputModal = ({
     });
   };
 
-  console.log(isCustomExercise);
-  console.log(selectedExercise);
+  useEffect(() => {
+    const resetInputChoice = () => {
+      if (isEditMode === false) {
+        setIsCustomExercise(false);
+        return;
+      }
+    };
+    resetInputChoice();
+  }, []);
 
   return (
     <GestureRecognizer onSwipeDown={closeModal}>
@@ -165,7 +175,7 @@ export const ExerciseInputModal = ({
                 <SearchExerciseView>
                   {!isCustomExercise ? (
                     <AutoCompleteInput
-                      initialValue={isEditMode ? {id: dataSetId} : {id: ''}}
+                      initalValue={isEditMode ? {id: dataSetId} : {id: ''}}
                       onSelectItem={setSelectedExercise}
                       dataSet={autoCompleteDataSet}
                     />
@@ -179,9 +189,8 @@ export const ExerciseInputModal = ({
                   />
                   {isCustomExercise && (
                     <CustomExerciseInput
-                      onChangeText={input =>
-                        setSelectedExercise({title: input})
-                      }
+                      exerciseValues={exerciseValues}
+                      onChangeText={input => handleInput('name', input)}
                     />
                   )}
                 </SearchExerciseView>
