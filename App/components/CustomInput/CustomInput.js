@@ -20,6 +20,7 @@ export const CustomInput = ({
       isRegister={isRegister}
       isDeleteInput={isDeleteInput}
       style={style}
+      autoComplete="off"
     />
   );
 };

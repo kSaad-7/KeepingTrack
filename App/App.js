@@ -67,7 +67,6 @@ function App() {
           tabBarShowLabel: false,
           tabBarStyle: {
             height: 70,
-            paddingTop: 0,
             backgroundColor: COLORS.backgroundBlack,
             borderTopColor: COLORS.backgroundBlack, // ?????? This or white, decide later ??????
           },

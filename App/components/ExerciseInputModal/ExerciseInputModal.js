@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {Modal, View} from 'react-native';
+import {KeyboardAvoidingView, Modal, View} from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -39,6 +39,8 @@ import {autoCompleteDataSet} from '../../assets/data/autoCompleteDataSet';
 import {AutoCompleteInput} from '../AutoCompleteInput/AutoCompleteInput';
 import {CustomExerciseInput} from '../CustomExerciseInput/CustomExerciseInput';
 import {ChangeInputTouchable} from '../ChangeInputTouchable/ChangeInputTouchable';
+
+//TODO: Style properly while using keyboard avoiding view
 
 export const ExerciseInputModal = ({
   showInputModal,
@@ -166,7 +168,12 @@ export const ExerciseInputModal = ({
                   />
                 </BackTouchable>
               </TopHeaderView>
-              <MainContent>
+              <KeyboardAvoidingView
+                behavior={'padding'}
+                style={{
+                  flex: 1,
+                  marginVertical: '5%',
+                }}>
                 <ModalTitleView>
                   <TitleText>
                     {isEditMode ? 'Edit Exercise' : 'Create new exercise'}
@@ -222,7 +229,7 @@ export const ExerciseInputModal = ({
                     </ButtonText>
                   </ExerciseButton>
                 </ButtonView>
-              </MainContent>
+              </KeyboardAvoidingView>
             </ModalContent>
           </StyledView>
         </Container>

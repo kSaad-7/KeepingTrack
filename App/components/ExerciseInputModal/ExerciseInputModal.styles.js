@@ -8,7 +8,7 @@ export const Container = styled.View`
 `;
 
 export const StyledView = styled.View`
-  flex: 0.7;
+  flex: 0.8;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
 `;
@@ -30,7 +30,7 @@ export const BackTouchable = styled.TouchableOpacity`
   flex-direction: row;
 `;
 
-export const MainContent = styled.View`
+export const MainContent = styled.KeyboardAvoidingView`
   flex: 1;
   margin-top: 5%;
 `;
@@ -65,7 +65,7 @@ export const ExercieseInfoView = styled.View`
 `;
 
 export const ButtonView = styled.View`
-  flex: 0.4;
+  flex: 0.5;
   justify-content: center;
   align-items: center;
 `;

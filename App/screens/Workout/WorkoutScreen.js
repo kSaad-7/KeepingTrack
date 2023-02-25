@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {ImageBackground, Text, View} from 'react-native';
+import {Text, View} from 'react-native';
 
 import {db} from '../../firebase.config';
 import {collection, getDocs} from 'firebase/firestore';
@@ -14,8 +14,6 @@ import {
   StyledContainer,
   WorkoutSplitView,
 } from './WorkoutScreen.styles';
-
-import LinearGradient from 'react-native-linear-gradient';
 
 export const WorkoutScreen = ({navigation}) => {
   const [data, setData] = useState(null);
@@ -59,7 +57,7 @@ export const WorkoutScreen = ({navigation}) => {
   return (
     <StyledContainer>
       <View>
-        <ScreenHeadingText>Workout screen</ScreenHeadingText>
+        <ScreenHeadingText>Workout</ScreenHeadingText>
       </View>
       <WorkoutSplitView>
         <WorkoutSplit data={data} onDayClick={handleDayClick} />

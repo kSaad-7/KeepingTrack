@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import {COLORS} from '../../assets/appColors/Colors';
 
 export const Container = styled.View`
-  flex: 0.4;
   justify-content: center;
   z-index: -1;
   margin: 0px 30px;

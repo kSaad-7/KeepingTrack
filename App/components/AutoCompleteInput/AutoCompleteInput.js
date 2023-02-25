@@ -18,21 +18,22 @@ export const AutoCompleteInput = ({initalValue, onSelectItem, dataSet}) => {
         suggestionsListTextStyle={{
           fontSize: 15,
           fontWeight: 'bold',
-          color: 'white',
+          color: COLORS.offWhite,
         }}
         suggestionsListContainerStyle={{
           backgroundColor: `${COLORS.backgroundBlack}`,
         }}
         textInputProps={{
           style: {
-            backgroundColor: `${COLORS.backgroundBlack}`,
-            color: `${COLORS.offWhite}`,
+            backgroundColor: COLORS.backgroundBlack,
+            color: COLORS.offWhite,
             borderRadius: 10,
           },
         }}
         inputContainerStyle={{
           backgroundColor: `${COLORS.backgroundBlack}`,
           borderRadius: 10,
+          color: COLORS.offWhite,
         }}
         rightButtonsContainerStyle={{
           right: 7,

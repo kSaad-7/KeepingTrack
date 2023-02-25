@@ -2,7 +2,9 @@ import styled from 'styled-components';
 import {COLORS} from '../../assets/appColors/Colors';
 
 export const TouchableContainer = styled.TouchableOpacity`
-  flex: 0.17;
+  flex: 0.25;
+  max-height: 30px;
+  min-height: 30px;
   z-index: -1;
   margin: 10px 80px;
   background-color: ${COLORS.blue};
