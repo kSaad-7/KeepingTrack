@@ -79,11 +79,11 @@ export const ExercisesScreen = ({navigation}) => {
           <Icon name={'chevron-back-outline'} size={15} color={'#246EE9'} />
           <BackTouchableText>Workout</BackTouchableText>
         </BackTouchable>
-        <TitleView>
-          <ScreenTitle>{workoutDayRef.current.name}</ScreenTitle>
-        </TitleView>
         <EmptyView />
       </TopHeaderView>
+      <TitleView>
+        <ScreenTitle>{workoutDayRef.current.name}</ScreenTitle>
+      </TitleView>
       <ExercisesScrollView>
         <ExercisesSection
           exercises={exercises}

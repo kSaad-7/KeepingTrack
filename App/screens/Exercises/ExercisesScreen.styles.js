@@ -27,16 +27,16 @@ export const EmptyView = styled.View`
 `;
 
 export const TitleView = styled.View`
-  flex: 0.33;
-  justify-content: flex-start;
+  flex: 0.1;
+  justify-content: center;
   align-items: center;
   margin-right: 5px;
 `;
 
 export const ScreenTitle = styled.Text`
   color: white;
-  font-weight: bold;
-  font-size: 15px;
+  font-weight: 600;
+  font-size: 25px;
 `;
 
 export const ExercisesScrollView = styled.ScrollView`

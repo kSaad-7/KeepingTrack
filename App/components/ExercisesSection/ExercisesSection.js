@@ -53,13 +53,11 @@ export const ExercisesSection = ({
       //Exercise item
       <StyledTouchable key={docId} onPress={handleExercisePress}>
         <LinearGradient
-          colors={['#0e174f', '#1d2b85']}
+          // colors={['#3B00DB', COLORS.blue]}
+          colors={['#6F00FF99', COLORS.blue]}
           style={{
-            width: '100%',
             height: '100%',
             borderRadius: 8,
-            borderWidth: 1,
-            borderColor: COLORS.blue,
           }}
           start={{x: 0, y: 0}}
           end={{x: 0.6, y: 1}}>

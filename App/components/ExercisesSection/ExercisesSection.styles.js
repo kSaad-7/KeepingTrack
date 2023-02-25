@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import {COLORS} from '../../assets/appColors/Colors';
 
 export const StyledTouchable = styled.TouchableOpacity`
-  height: 80px;
+  height: 70px;
   background-color: ${COLORS.itemGrey};
   margin: 15px 0px;
   border-radius: 8px;
@@ -27,12 +27,12 @@ export const BoldInfoText = styled.Text`
 
 export const InfoView = styled.View`
   flex-direction: row;
-  justify-content: space-evenly
-  margin: 10px 20px;
+  justify-content: space-evenly;
+  margin: 0px 20px;
 `;
 
 export const StyledText = styled.Text`
   font-size: 13px;
   color: ${COLORS.offWhite};
-  font-weight: 500;
+  font-weight: bold;
 `;
