@@ -9,6 +9,8 @@ export const CustomInput = ({
   isRegister,
   isDeleteInput,
   style,
+  value,
+  defaultValue,
 }) => {
   return (
     <StyledTextInput
@@ -19,8 +21,10 @@ export const CustomInput = ({
       secureTextEntry={secureTextEntry}
       isRegister={isRegister}
       isDeleteInput={isDeleteInput}
+      defaultValue={defaultValue}
       style={style}
       autoComplete="off"
+      value={value}
     />
   );
 };

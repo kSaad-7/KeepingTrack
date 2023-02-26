@@ -20,6 +20,7 @@ import {
   DeleteAccountScreen,
   ChangeDetailsScreen,
   ExercisesScreen,
+  ChangeDayNameScreen,
 } from './screens/index';
 
 import {UserContext, WorkoutContext} from './ContextCreator.js';
@@ -108,6 +109,10 @@ function App() {
               component={ChangeDetailsScreen}
             />
             <Stack.Screen name="Exercises" component={ExercisesScreen} />
+            <Stack.Screen
+              name="ChangeDayName"
+              component={ChangeDayNameScreen}
+            />
           </Stack.Navigator>
         </NavigationContainer>
         <Toast config={toastConfig} />

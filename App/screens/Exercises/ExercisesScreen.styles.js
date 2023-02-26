@@ -28,20 +28,21 @@ export const EmptyView = styled.View`
 
 export const TitleView = styled.View`
   flex: 0.1;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  margin-right: 5px;
 `;
 
 export const ScreenTitle = styled.Text`
   color: white;
   font-weight: 600;
   font-size: 25px;
+  margin-right: 20px;
 `;
 
 export const ExercisesScrollView = styled.ScrollView`
   flex: 1;
-  margin: 0px 20px;
+  margin: 10px 20px;
 `;
 
 export const AddNewExerciseView = styled.View`

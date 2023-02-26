@@ -1,6 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
+import {TouchableOpacity} from 'react-native';
 
-import Icon from 'react-native-vector-icons/Ionicons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import AntIcon from 'react-native-vector-icons/AntDesign';
 import {UserContext, WorkoutContext} from '../../ContextCreator';
 
 import {
@@ -76,13 +78,16 @@ export const ExercisesScreen = ({navigation}) => {
     <StyledContainer>
       <TopHeaderView>
         <BackTouchable onPress={() => navigation.navigate('Workout')}>
-          <Icon name={'chevron-back-outline'} size={15} color={'#246EE9'} />
+          <IonIcon name={'chevron-back-outline'} size={15} color={'#246EE9'} />
           <BackTouchableText>Workout</BackTouchableText>
         </BackTouchable>
         <EmptyView />
       </TopHeaderView>
       <TitleView>
         <ScreenTitle>{workoutDayRef.current.name}</ScreenTitle>
+        <TouchableOpacity onPress={() => navigation.navigate('ChangeDayName')}>
+          <AntIcon name={'edit'} size={18} color={'#555'} />
+        </TouchableOpacity>
       </TitleView>
       <ExercisesScrollView>
         <ExercisesSection
@@ -94,7 +99,7 @@ export const ExercisesScreen = ({navigation}) => {
         />
         <AddNewExerciseView>
           <NewExerciseTouchable onPress={handleAddTouchablePress}>
-            <Icon name={'add-outline'} size={30} color={COLORS.offWhite} />
+            <IonIcon name={'add-outline'} size={30} color={COLORS.offWhite} />
           </NewExerciseTouchable>
         </AddNewExerciseView>
       </ExercisesScrollView>

@@ -24,6 +24,7 @@ import {
 } from './ExerciseInputModal.styles';
 
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
+
 import {
   addDoc,
   collection,
