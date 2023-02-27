@@ -99,7 +99,7 @@ export const ExercisesScreen = ({navigation}) => {
         />
         <AddNewExerciseView>
           <NewExerciseTouchable onPress={handleAddTouchablePress}>
-            <IonIcon name={'add-outline'} size={30} color={COLORS.offWhite} />
+            <IonIcon name={'ios-add-circle'} size={40} color={COLORS.blue} />
           </NewExerciseTouchable>
         </AddNewExerciseView>
       </ExercisesScrollView>

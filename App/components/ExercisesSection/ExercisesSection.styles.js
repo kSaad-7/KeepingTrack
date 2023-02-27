@@ -25,14 +25,14 @@ export const BoldInfoText = styled.Text`
   font-size: 16px;
 `;
 
+export const StyledText = styled.Text`
+  font-size: 12px;
+  color: ${COLORS.offWhite};
+  font-weight: 600;
+`;
+
 export const InfoView = styled.View`
   flex-direction: row;
   justify-content: space-evenly;
   margin: 0px 20px;
-`;
-
-export const StyledText = styled.Text`
-  font-size: 13px;
-  color: ${COLORS.offWhite};
-  font-weight: bold;
 `;

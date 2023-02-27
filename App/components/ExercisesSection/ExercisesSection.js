@@ -54,13 +54,13 @@ export const ExercisesSection = ({
       <StyledTouchable key={docId} onPress={handleExercisePress}>
         <LinearGradient
           // colors={['#3B00DB', COLORS.blue]}
-          colors={['#6F00FF99', COLORS.blue]}
+          colors={['#3a1c71', COLORS.blue]}
           style={{
             height: '100%',
             borderRadius: 8,
           }}
           start={{x: 0, y: 0}}
-          end={{x: 0.6, y: 1}}>
+          end={{x: 1, y: 1}}>
           <ExerciseNameView>
             <ExerciseName>{name}</ExerciseName>
           </ExerciseNameView>
@@ -69,9 +69,9 @@ export const ExercisesSection = ({
               <BoldInfoText>{weight}</BoldInfoText> KG
             </StyledText>
             <StyledText>
-              <BoldInfoText>{sets}</BoldInfoText> sets
-              {'   x   '}
-              <BoldInfoText>{reps}</BoldInfoText> reps
+              <BoldInfoText>{sets}</BoldInfoText> {sets === 1 ? 'Set' : 'Sets'}
+              {'    x    '}
+              <BoldInfoText>{reps}</BoldInfoText> {reps === 1 ? 'Rep' : 'Reps'}
             </StyledText>
           </InfoView>
         </LinearGradient>

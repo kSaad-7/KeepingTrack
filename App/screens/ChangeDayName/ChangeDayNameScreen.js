@@ -14,6 +14,7 @@ import {
   ConfirmButtonText,
   Container,
   InputView,
+  ScreenTitle,
 } from './ChangeDayNameScreen.styles';
 
 import {db} from '../../firebase.config';
@@ -42,8 +43,6 @@ export const ChangeDayNameScreen = ({navigation}) => {
   const validateInput = () =>
     !newName.newName || newName.newName === workoutDayRef.current.name;
 
-  console.log(workoutDayRef.current.name);
-
   const handleConfirmPress = () => {
     const isNotValid = validateInput();
     if (isNotValid) {
@@ -51,7 +50,7 @@ export const ChangeDayNameScreen = ({navigation}) => {
         type: 'error',
         text1: 'Failed to update',
         text2: 'Please make some changes to update',
-        visibilityTime: 2000,
+        visibilityTime: 2500,
       });
       return;
     }
@@ -63,10 +62,6 @@ export const ChangeDayNameScreen = ({navigation}) => {
   const handleInput = input => {
     setNewName({newName: input});
   };
-
-  //   const handleInput = (key, value) => {
-  //     setLoginLog({...loginLog, [key]: value});
-  //   };
 
   return (
     <Container>

@@ -51,10 +51,5 @@ export const AddNewExerciseView = styled.View`
 `;
 
 export const NewExerciseTouchable = styled.TouchableOpacity`
-  justify-content: center;
-  align-items: center;
-  background-color: ${COLORS.blue};
-  border-radius: 5px;
-  width: 28px;
-  height: 30px;
+  // background-color: ${COLORS.offWhite};
 `;
