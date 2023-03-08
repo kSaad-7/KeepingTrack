@@ -1,8 +1,8 @@
-import React, {useContext, useEffect, useState, useRef} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Text, View} from 'react-native';
 
 import {db} from '../../firebase.config';
-import {collection, getDocs} from 'firebase/firestore';
+import {collection, getDocs, onSnapshot} from 'firebase/firestore';
 
 import {UserContext} from '../../ContextCreator';
 import {WorkoutContext} from '../../ContextCreator';
@@ -23,22 +23,15 @@ export const WorkoutScreen = ({navigation}) => {
   const {workoutDayRef} = useContext(WorkoutContext);
 
   const fetchData = async () => {
-    try {
-      const workoutSplitRef = collection(
-        db,
-        'users',
-        user.docId,
-        'workoutSplit',
-      );
-      const allDocuments = await getDocs(workoutSplitRef);
-      const workoutSplitData = allDocuments.docs.map(doc => ({
+    const workoutSplitRef = collection(db, 'users', user.docId, 'workoutSplit');
+    let workoutSplitData = [{}];
+    onSnapshot(workoutSplitRef, docsSnap => {
+      workoutSplitData = docsSnap.docs.map(doc => ({
         docId: doc.id,
         ...doc.data(),
       }));
       setData(workoutSplitData);
-    } catch (err) {
-      console.log(err);
-    }
+    });
   };
 
   const handleDayClick = selectedDay => {
@@ -57,7 +50,7 @@ export const WorkoutScreen = ({navigation}) => {
   return (
     <StyledContainer>
       <View>
-        <ScreenHeadingText>Workout screen</ScreenHeadingText>
+        <ScreenHeadingText>Workout</ScreenHeadingText>
       </View>
       <WorkoutSplitView>
         <WorkoutSplit data={data} onDayClick={handleDayClick} />

@@ -1,30 +1,44 @@
 import React, {useContext, useEffect, useState} from 'react';
+import {TouchableOpacity} from 'react-native';
 
-import Icon from 'react-native-vector-icons/Ionicons';
+import IonIcon from 'react-native-vector-icons/Ionicons';
+import AntIcon from 'react-native-vector-icons/AntDesign';
 import {UserContext, WorkoutContext} from '../../ContextCreator';
 
 import {
+  AddNewExerciseView,
   BackTouchable,
   BackTouchableText,
   EmptyView,
+  ExercisesScrollView,
+  NewExerciseTouchable,
   ScreenTitle,
   StyledContainer,
   TitleView,
   TopHeaderView,
 } from './ExercisesScreen.styles';
 
-import {collection, getDocs} from 'firebase/firestore';
-import {Text, View} from 'react-native';
+import {collection, onSnapshot, orderBy, query} from 'firebase/firestore';
 import {db} from '../../firebase.config';
 
 import {ExercisesSection} from '../../components/ExercisesSection/ExercisesSection';
 import {LoadingIndicator} from '../../components/LoadingIndicator/LoadingIndicator';
+import {ExerciseInputModal} from '../../components/ExerciseInputModal/ExerciseInputModal';
+import {COLORS} from '../../assets/appColors/Colors';
 
 export const ExercisesScreen = ({navigation}) => {
   const [exercises, setExercises] = useState();
+  const [showInputModal, setShowInputModal] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(true);
+  const [isCustomExercise, setIsCustomExercise] = useState(false);
 
   const {user} = useContext(UserContext);
   const {workoutDayRef} = useContext(WorkoutContext);
+
+  const handleAddTouchablePress = () => {
+    setIsEditMode(false);
+    setShowInputModal(true);
+  };
 
   const fetchExercises = async () => {
     const exercisesSubCollRef = collection(
@@ -35,12 +49,14 @@ export const ExercisesScreen = ({navigation}) => {
       workoutDayRef.current.docId,
       'exercises',
     );
-    const allDocuments = await getDocs(exercisesSubCollRef);
-    const exercisesData = allDocuments.docs.map(doc => ({
-      docId: doc.id,
-      ...doc.data(),
-    }));
-    setExercises(exercisesData);
+    let exercisesData = [{}];
+    onSnapshot(query(exercisesSubCollRef, orderBy('createdAt')), docsSnap => {
+      exercisesData = docsSnap.docs.map(doc => ({
+        docId: doc.id,
+        ...doc.data(),
+      }));
+      setExercises(exercisesData);
+    });
   };
 
   useEffect(() => {
@@ -55,18 +71,39 @@ export const ExercisesScreen = ({navigation}) => {
     <StyledContainer>
       <TopHeaderView>
         <BackTouchable onPress={() => navigation.navigate('Workout')}>
-          <Icon name={'chevron-back-outline'} size={15} color={'#246EE9'} />
+          <IonIcon name={'chevron-back-outline'} size={15} color={'#246EE9'} />
           <BackTouchableText>Workout</BackTouchableText>
         </BackTouchable>
-        <TitleView>
-          <ScreenTitle>{workoutDayRef.current.name}</ScreenTitle>
-        </TitleView>
         <EmptyView />
       </TopHeaderView>
-      <View style={{flex: 0.95, width: '90%'}}>
-        <ExercisesSection exercises={exercises} />
-        <Text style={{color: 'white'}}>hello</Text>
-      </View>
+      <TitleView>
+        <ScreenTitle>{workoutDayRef.current.name}</ScreenTitle>
+        <TouchableOpacity onPress={() => navigation.navigate('ChangeDayName')}>
+          <AntIcon name={'edit'} size={18} color={'#555'} />
+        </TouchableOpacity>
+      </TitleView>
+      <ExercisesScrollView>
+        <ExercisesSection
+          exercises={exercises}
+          setShowInputModal={setShowInputModal}
+          setIsEditMode={setIsEditMode}
+          setIsCustomExercise={setIsCustomExercise}
+        />
+        <AddNewExerciseView>
+          <NewExerciseTouchable onPress={handleAddTouchablePress}>
+            <IonIcon name={'ios-add-circle'} size={40} color={COLORS.blue} />
+          </NewExerciseTouchable>
+        </AddNewExerciseView>
+      </ExercisesScrollView>
+      {showInputModal && (
+        <ExerciseInputModal
+          showInputModal={showInputModal}
+          setShowInputModal={setShowInputModal}
+          isCustomExercise={isCustomExercise}
+          setIsCustomExercise={setIsCustomExercise}
+          isEditMode={isEditMode}
+        />
+      )}
     </StyledContainer>
   );
 };

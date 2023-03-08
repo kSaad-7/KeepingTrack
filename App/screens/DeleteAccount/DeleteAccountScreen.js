@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 
-import {alphabetArray} from '../../assets/alphabetArray';
+import {alphabetArray} from '../../assets/data/alphabetArray';
 
 import Toast from 'react-native-toast-message';
 

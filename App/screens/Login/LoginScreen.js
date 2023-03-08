@@ -58,16 +58,11 @@ export const LoginScreen = ({navigation}) => {
     const userData = user.data();
 
     if (!user) {
-      Toast.show({
-        type: 'success',
-        text1: 'Hello',
-        text2: 'This is some something 👋',
-      });
       return;
     } else if (user) {
       setUser({...userData, docId: user.id});
       navigation.navigate('HomeTabs');
-      setLoginLog({email: '', password: ''});
+      setLoginLog({email: null, password: null});
     }
   };
 
@@ -77,13 +72,13 @@ export const LoginScreen = ({navigation}) => {
       <InputView>
         <CustomInput
           onChangeText={userInput => handleInput('email', userInput)}
-          value={loginLog.email}
+          value={loginLog?.email}
           placeholder="Email"
           keyboardType="email-address"
         />
         <CustomInput
           onChangeText={userInput => handleInput('password', userInput)}
-          value={loginLog.password}
+          value={loginLog?.password}
           placeholder="Password"
           secureTextEntry={true}
         />

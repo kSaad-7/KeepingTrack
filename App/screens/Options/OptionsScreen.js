@@ -17,7 +17,7 @@ import {
 } from './OptionsScreen.styles';
 
 export const OptionsScreen = ({navigation}) => {
-  const [showAlert, setShowAlert] = useState(false);
+  const [showOptionsAlert, setShowOptionsAlert] = useState(false);
   const {setUser, user} = useContext(UserContext);
 
   const handleDeleteAccountPress = () => {
@@ -26,16 +26,16 @@ export const OptionsScreen = ({navigation}) => {
 
   const handleAlertAnswer = userChoice => {
     if (userChoice === 'no') {
-      setShowAlert(false);
+      setShowOptionsAlert(false);
     } else {
       setUser(null);
       navigation.navigate('Login');
-      setShowAlert(false);
+      setShowOptionsAlert(false);
     }
   };
 
   const handleSignOutPress = () => {
-    setShowAlert(true);
+    setShowOptionsAlert(true);
   };
 
   const handleChangeDetailsPress = () => {
@@ -61,7 +61,7 @@ export const OptionsScreen = ({navigation}) => {
           onPress={handleSignOutPress}
           iconName={'log-out-outline'}
         />
-        {showAlert && (
+        {showOptionsAlert && (
           <CustomAlert
             alertTitle={user.userName}
             alertText={'Are you sure you want to sign out?'}

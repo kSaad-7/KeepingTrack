@@ -3,11 +3,14 @@ import {COLORS} from '../../assets/appColors/Colors';
 
 export const StyledTouchable = styled.TouchableOpacity`
   flex: 1;
-  background-color: ${COLORS.greyBlack}
+  background-color: ${COLORS.itemGrey};
+  // border-color: ${COLORS.blue};
+  // border-left-width: 5px;
+  box-shadow: 4px 4px ${COLORS.blue};
   margin: 20px 0px;
-  justify-content: center;
   padding-left: 10px;
-  border-radius: 7px;
+  border-radius: 5px;
+  justify-content: center;
 `;
 
 export const DayName = styled.Text`

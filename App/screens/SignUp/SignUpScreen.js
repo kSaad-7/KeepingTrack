@@ -51,6 +51,13 @@ export const SignUpScreen = ({navigation}) => {
       userName: signUpLog.userName,
       password: signUpLog.password,
       email: signUpLog.email,
+      achievements: [],
+      stats: {
+        dumbellChestPressMax: 0,
+        squatMax: 0,
+        benchPressMax: 0,
+        totalSetsCompleted: 0,
+      },
     };
     const newUserDocRef = await addDoc(collection(db, 'users'), userData);
     setUser({...userData, docId: newUserDocRef.id});
@@ -77,14 +84,14 @@ export const SignUpScreen = ({navigation}) => {
   };
 
   const validateInputs = () =>
-    !!signUpLog.email ||
-    !!signUpLog.firstName ||
-    !!signUpLog.password ||
-    !!signUpLog.userName;
+    !signUpLog.email ||
+    !signUpLog.firstName ||
+    !signUpLog.password ||
+    !signUpLog.userName;
 
   const handleRegisterPress = async () => {
-    const isValid = validateInputs();
-    if (!isValid) {
+    const isNotValid = validateInputs();
+    if (isNotValid) {
       Toast.show({
         type: 'error',
         text1: 'Wrong details',
