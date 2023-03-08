@@ -3,7 +3,7 @@ import {Text, View, SafeAreaView, ScrollView} from 'react-native';
 
 import {collection, getDocs, onSnapshot} from 'firebase/firestore';
 
-import {AchievementsSection} from '../../components/AchievementsSection/AchievementsSection';
+import {AchievementsSection} from '../../components/Achievements/AchievementsSection';
 import {db} from '../../firebase.config';
 import {LoadingIndicator} from '../../components/LoadingIndicator/LoadingIndicator';
 import {COLORS} from '../../assets/appColors/Colors';

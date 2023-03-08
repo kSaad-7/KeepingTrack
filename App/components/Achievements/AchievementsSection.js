@@ -3,12 +3,13 @@ import React from 'react';
 import {
   Container,
   Description,
+  Logo,
   PictureView,
   TextView,
   Title,
 } from './AchievementsSection.styles';
 
-// START BRANCH
+import AchievementBadge2 from '../../assets/images/AchievementBadge2.png';
 
 export const AchievementsSection = ({achievementsData}) => {
   return achievementsData.map(achievement => {
@@ -16,7 +17,7 @@ export const AchievementsSection = ({achievementsData}) => {
     return (
       <Container key={docId}>
         <PictureView>
-          {/* Put image component here wihth the src = pictureUrl (hosted on web) */}
+          <Logo source={AchievementBadge2} />
         </PictureView>
         <TextView>
           <Title>{title}</Title>

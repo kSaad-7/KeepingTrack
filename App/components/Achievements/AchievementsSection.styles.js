@@ -11,9 +11,16 @@ export const Container = styled.View`
 
 export const PictureView = styled.View`
   flex: 0.2;
-  //   background-color: pink;
+  // background-color: pink;
+  justify-content: center;
+  align-items: center;
   border-left-width: 5px;
   border-left-color: ${COLORS.blue};
+`;
+
+export const Logo = styled.Image`
+  width: 60px;
+  height: 60px;
 `;
 
 export const TextView = styled.View`
