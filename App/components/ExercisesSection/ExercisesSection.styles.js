@@ -34,5 +34,6 @@ export const StyledText = styled.Text`
 export const InfoView = styled.View`
   flex-direction: row;
   justify-content: space-evenly;
-  margin: 0px 20px;
+  margin-left: 20px;
+  // background-color: red;
 `;

@@ -7,7 +7,7 @@ export const Container = styled.SafeAreaView`
 `;
 
 export const BackTouchable = styled.TouchableOpacity`
-  flex: 0.15;
+  flex: 0.1;
   margin-left: 5px;
   flex-direction: row;
 `;

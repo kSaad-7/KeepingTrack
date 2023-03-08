@@ -51,6 +51,13 @@ export const SignUpScreen = ({navigation}) => {
       userName: signUpLog.userName,
       password: signUpLog.password,
       email: signUpLog.email,
+      achievements: [],
+      stats: {
+        dumbellChestPressMax: 0,
+        squatMax: 0,
+        benchPressMax: 0,
+        totalSetsCompleted: 0,
+      },
     };
     const newUserDocRef = await addDoc(collection(db, 'users'), userData);
     setUser({...userData, docId: newUserDocRef.id});

@@ -72,14 +72,16 @@ export const ButtonView = styled.View`
 
 export const ExerciseButton = styled.TouchableOpacity`
   background-color: ${COLORS.blue};
-  color: white;
-  height: 60px;
+  height: 50px;
   width: 70%;
-  margin: 30px 20px;
+  margin: 10px 0px;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  padding: 20px;
+`;
+
+export const DeleteButton = styled(ExerciseButton)`
+  background-color: ${COLORS.red};
 `;
 
 export const ButtonText = styled.Text`

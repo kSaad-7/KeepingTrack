@@ -8,7 +8,6 @@ import {ModalInput} from '../ModalInput/ModalInput';
 
 import {
   BackTouchable,
-  MainContent,
   Container,
   ModalContent,
   TopHeaderView,
@@ -21,6 +20,7 @@ import {
   ExerciseButton,
   ButtonText,
   ButtonView,
+  DeleteButton,
 } from './ExerciseInputModal.styles';
 
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
@@ -28,6 +28,7 @@ import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   Timestamp,
   updateDoc,
@@ -41,27 +42,24 @@ import {AutoCompleteInput} from '../AutoCompleteInput/AutoCompleteInput';
 import {CustomExerciseInput} from '../CustomExerciseInput/CustomExerciseInput';
 import {ChangeInputTouchable} from '../ChangeInputTouchable/ChangeInputTouchable';
 
-//TODO: Style properly while using keyboard avoiding view
-
 export const ExerciseInputModal = ({
   showInputModal,
   setShowInputModal,
-  exerciseValues,
-  setExerciseValues,
   isEditMode,
   isCustomExercise,
   setIsCustomExercise,
 }) => {
   const [selectedExercise, setSelectedExercise] = useState(null);
 
-  const {weight, sets, reps, docId, dataSetId, name} = exerciseValues;
-
   const {user} = useContext(UserContext);
-  const {workoutDayRef} = useContext(WorkoutContext);
+  const {workoutDayRef, setCurrentExercise, currentExercise} =
+    useContext(WorkoutContext);
+
+  const {weight, sets, reps, docId, dataSetId, name} = currentExercise;
 
   const closeModal = () => {
     setShowInputModal(false);
-    setExerciseValues({
+    setCurrentExercise({
       name: '',
       weight: '',
       sets: '',
@@ -72,7 +70,7 @@ export const ExerciseInputModal = ({
   };
 
   const handleInput = (key, input) => {
-    setExerciseValues({...exerciseValues, [key]: input});
+    setCurrentExercise(prevState => ({...prevState, [key]: input}));
   };
 
   const validateInputs = () =>
@@ -111,7 +109,6 @@ export const ExerciseInputModal = ({
       await updateDoc(firebaseRef, exercise);
       return;
     }
-
     //if not EditMode -> addDoc instead of updating old one
     await addDoc(firebaseRef, {
       ...exercise,
@@ -119,13 +116,20 @@ export const ExerciseInputModal = ({
     });
   };
 
-  const handleButtonClick = async () => {
+  const handleNewExercisePress = async () => {
     const isNotValid = validateInputs();
     if (isNotValid) {
       Toast.show({
         type: 'error',
         text1: 'Wrong details',
         text2: 'Please fill in all the fields properly',
+      });
+      return;
+    } else if (weight?.length > 4) {
+      Toast.show({
+        type: 'error',
+        text1: 'Invalid weight',
+        text2: 'You cannot have that high of a weight.',
       });
       return;
     }
@@ -136,6 +140,25 @@ export const ExerciseInputModal = ({
       text1: isEditMode ? 'Saved changes' : 'Added exercise',
       visibilityTime: 1500,
     });
+  };
+
+  const handleDeletePress = async () => {
+    const exercisesRef = doc(
+      db,
+      'users',
+      user.docId,
+      'workoutSplit',
+      workoutDayRef.current.docId,
+      'exercises',
+      docId,
+    );
+    try {
+      await deleteDoc(exercisesRef);
+    } catch (e) {
+      console.log(e);
+      return;
+    }
+    closeModal();
   };
 
   useEffect(() => {
@@ -197,7 +220,6 @@ export const ExerciseInputModal = ({
                   />
                   {isCustomExercise && (
                     <CustomExerciseInput
-                      exerciseValues={exerciseValues}
                       onChangeText={input => handleInput('name', input)}
                     />
                   )}
@@ -208,33 +230,41 @@ export const ExerciseInputModal = ({
                       value={`${weight}`}
                       label="KG"
                       onChangeText={input => handleInput('weight', input)}
+                      defaultValue={isEditMode ? `${reps}` : ''}
                     />
                     <SetsRepsView>
                       <ModalInput
                         label="Sets"
                         value={`${sets}`}
                         onChangeText={input => handleInput('sets', input)}
+                        defaultValue={isEditMode ? `${reps}` : ''}
                       />
                       <ModalInput
                         value={`${reps}`}
                         label="Reps"
                         onChangeText={input => handleInput('reps', input)}
+                        defaultValue={isEditMode ? `${reps}` : ''}
                       />
                     </SetsRepsView>
                   </View>
                 </ExercieseInfoView>
                 <ButtonView>
-                  <ExerciseButton onPress={handleButtonClick}>
+                  <ExerciseButton onPress={handleNewExercisePress}>
                     <ButtonText>
                       {isEditMode ? 'Confirm changes' : 'Create exercise'}
                     </ButtonText>
                   </ExerciseButton>
+                  {isEditMode && (
+                    <DeleteButton onPress={handleDeletePress}>
+                      <ButtonText>Delete exercise</ButtonText>
+                    </DeleteButton>
+                  )}
                 </ButtonView>
               </KeyboardAvoidingView>
             </ModalContent>
           </StyledView>
+          <Toast />
         </Container>
-        <Toast />
       </Modal>
     </GestureRecognizer>
   );

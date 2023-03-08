@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef} from 'react';
 import {StatusBar} from 'react-native';
 
 import {COLORS} from './assets/appColors/Colors';
@@ -33,8 +33,8 @@ import {UserContext, WorkoutContext} from './ContextCreator.js';
 
 function App() {
   const [user, setUser] = useState(null);
-  let workoutDayRef = useRef(null);
-  let exercisesRef = useRef(null); // todo: talk about how you changed it from useState -> useRef to avoid re-renders and thus fix your proble
+  const [currentExercise, setCurrentExercise] = useState({});
+  let workoutDayRef = useRef(null); // todo: talk about how you changed it from useState -> useRef to avoid re-renders and thus fix your proble
 
   StatusBar.setBarStyle('light-content', true);
 
@@ -91,7 +91,8 @@ function App() {
       <WorkoutContext.Provider
         value={{
           workoutDayRef,
-          exercisesRef,
+          currentExercise,
+          setCurrentExercise,
         }}>
         <NavigationContainer>
           <Stack.Navigator

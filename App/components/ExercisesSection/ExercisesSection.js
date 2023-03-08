@@ -1,5 +1,10 @@
-import React from 'react';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useContext} from 'react';
+
 import LinearGradient from 'react-native-linear-gradient';
+
+import IonIcon from 'react-native-vector-icons/Ionicons';
+
 import {COLORS} from '../../assets/appColors/Colors';
 
 import {
@@ -11,17 +16,16 @@ import {
   StyledTouchable,
 } from './ExercisesSection.styles';
 
-// TODO: Change background to gradient maybe, try it. !! !!!  ! !  !! !
-
 import {autoCompleteDataSet} from '../../assets/data/autoCompleteDataSet';
+import {WorkoutContext} from '../../ContextCreator';
 
 export const ExercisesSection = ({
   exercises,
   setShowInputModal,
-  setExerciseValues,
   setIsEditMode,
   setIsCustomExercise,
 }) => {
+  const {setCurrentExercise} = useContext(WorkoutContext);
   return exercises.map(exercise => {
     const {weight, docId, name, sets, reps, isCustom} = exercise;
 
@@ -30,28 +34,25 @@ export const ExercisesSection = ({
       return exerciseInDataSet;
     };
 
-    const handleExercisePress = async () => {
+    const handleExercisePress = async selectedExercise => {
       const exerciseInDataSet = findExerciseInDataSet();
-      const exerciseValuesObject = {
-        name: name,
-        weight: weight,
-        sets: sets,
-        reps: reps,
-        docId: docId,
+      setCurrentExercise({
+        ...selectedExercise,
         dataSetId: exerciseInDataSet?.id,
-      };
+      });
       if (isCustom) {
         setIsCustomExercise(true);
       } else {
         setIsCustomExercise(false);
       }
-      setExerciseValues(exerciseValuesObject);
       setIsEditMode(true);
       setShowInputModal(true);
     };
     return (
       //Exercise item
-      <StyledTouchable key={docId} onPress={handleExercisePress}>
+      <StyledTouchable
+        key={docId}
+        onPress={() => handleExercisePress(exercise)}>
         <LinearGradient
           // colors={['#3B00DB', COLORS.blue]}
           colors={['#3a1c71', COLORS.blue]}

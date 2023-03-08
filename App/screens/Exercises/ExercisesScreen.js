@@ -31,13 +31,6 @@ export const ExercisesScreen = ({navigation}) => {
   const [showInputModal, setShowInputModal] = useState(false);
   const [isEditMode, setIsEditMode] = useState(true);
   const [isCustomExercise, setIsCustomExercise] = useState(false);
-  const [exerciseValues, setExerciseValues] = useState({
-    name: '',
-    weight: '',
-    sets: '',
-    reps: '',
-    docId: '',
-  });
 
   const {user} = useContext(UserContext);
   const {workoutDayRef} = useContext(WorkoutContext);
@@ -93,7 +86,6 @@ export const ExercisesScreen = ({navigation}) => {
         <ExercisesSection
           exercises={exercises}
           setShowInputModal={setShowInputModal}
-          setExerciseValues={setExerciseValues}
           setIsEditMode={setIsEditMode}
           setIsCustomExercise={setIsCustomExercise}
         />
@@ -109,8 +101,6 @@ export const ExercisesScreen = ({navigation}) => {
           setShowInputModal={setShowInputModal}
           isCustomExercise={isCustomExercise}
           setIsCustomExercise={setIsCustomExercise}
-          exerciseValues={exerciseValues}
-          setExerciseValues={setExerciseValues}
           isEditMode={isEditMode}
         />
       )}
