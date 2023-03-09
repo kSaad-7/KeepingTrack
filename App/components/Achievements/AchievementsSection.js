@@ -5,24 +5,31 @@ import {
   Description,
   Logo,
   PictureView,
+  Points,
+  PointsView,
   TextView,
   Title,
 } from './AchievementsSection.styles';
 
-import AchievementBadge2 from '../../assets/images/AchievementBadge2.png';
+import AchievementBadge5 from '../../assets/images/AchievementBadge5.png';
 
 export const AchievementsSection = ({achievementsData}) => {
   return achievementsData.map(achievement => {
-    const {title, description, docId, pictureUrl} = achievement;
+    const {title, description, docId, points, doesUserHave} = achievement;
     return (
       <Container key={docId}>
         <PictureView>
-          <Logo source={AchievementBadge2} />
+          <Logo source={AchievementBadge5} />
         </PictureView>
         <TextView>
           <Title>{title}</Title>
           <Description>{description}</Description>
         </TextView>
+        <PointsView>
+          <Points style={{color: doesUserHave ? '#49fc03' : '#f00c'}}>
+            {points}
+          </Points>
+        </PointsView>
       </Container>
     );
   });

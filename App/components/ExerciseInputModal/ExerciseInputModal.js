@@ -227,23 +227,20 @@ export const ExerciseInputModal = ({
                 <ExercieseInfoView>
                   <View style={{flex: 1}}>
                     <ModalInput
-                      value={`${weight}`}
+                      value={currentExercise?.weight ? `${weight}` : ''}
                       label="KG"
                       onChangeText={input => handleInput('weight', input)}
-                      defaultValue={isEditMode ? `${reps}` : ''}
                     />
                     <SetsRepsView>
                       <ModalInput
                         label="Sets"
-                        value={`${sets}`}
+                        value={currentExercise?.sets ? `${sets}` : ''}
                         onChangeText={input => handleInput('sets', input)}
-                        defaultValue={isEditMode ? `${reps}` : ''}
                       />
                       <ModalInput
-                        value={`${reps}`}
+                        value={currentExercise?.reps ? `${reps}` : ''}
                         label="Reps"
                         onChangeText={input => handleInput('reps', input)}
-                        defaultValue={isEditMode ? `${reps}` : ''}
                       />
                     </SetsRepsView>
                   </View>
