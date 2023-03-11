@@ -8,6 +8,9 @@ export const LeaderboardsScreen = () => {
       <Text style={{color: 'white', fontWeight: 'bold', fontSize: 15}}>
         Leaderboards
       </Text>
+      {/*Each leaderboard item will have: 
+      - userRef: REFERENCE VALUE (use this to get userName + points)
+      */}
     </SafeAreaView>
   );
 };

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Text, View, SafeAreaView, ScrollView} from 'react-native';
+import {ScrollView} from 'react-native';
 
 import {collection, getDocs} from 'firebase/firestore';
 import {db} from '../../firebase.config';
@@ -8,28 +8,48 @@ import {AchievementsSection} from '../../components/Achievements/AchievementsSec
 
 import {LoadingIndicator} from '../../components/LoadingIndicator/LoadingIndicator';
 
-import {COLORS} from '../../assets/appColors/Colors';
-
 import {UserContext} from '../../ContextCreator';
+import {AchievementsFilterTouchable} from '../../components/AchievementsFilterTouchable/AchievementsFilterTouchable';
+import {
+  Container,
+  FilterSection,
+  HeaderView,
+  ScreenTitle,
+} from './AcheivementsScreen.styles';
 
 export const AchievementsScreen = () => {
   const [achievementsData, setAchievementsData] = useState();
+  const [filterType, setfilterType] = useState('All');
 
   const {user} = useContext(UserContext);
 
-  // check if owner.id === user.docId
   const checkUserAchievements = achievementsArray => {
+    //Loop through the array of objects using forEach function
     achievementsArray.forEach(achievement => {
       const owners = achievement.owners;
-      owners.forEach(owner => {
-        if (owner.id === user.docId) {
+      //Loop through the "owners" array using for loop
+      for (let i = 0; i < owners.length; i++) {
+        if (owners[i].id === user.docId) {
           achievement.doesUserHave = true;
-        } else {
-          achievement.doesUserHave = false;
+          return;
         }
-      });
+      }
     });
     return achievementsArray;
+  };
+
+  const filterAchievements = () => {
+    if (filterType === 'All') {
+      return achievementsData;
+    } else if (filterType === 'Unlocked') {
+      return achievementsData.filter(
+        achievement => achievement.doesUserHave === true,
+      );
+    } else if (filterType === 'Locked') {
+      return achievementsData.filter(
+        achievement => achievement.doesUserHave === false,
+      );
+    }
   };
 
   const fetchData = async () => {
@@ -53,25 +73,30 @@ export const AchievementsScreen = () => {
   }
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: COLORS.backgroundBlack}}>
-      <View
-        style={{
-          flex: 0.1,
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-        <Text style={{color: 'white', fontWeight: 'bold', fontSize: 15}}>
-          Achievements
-        </Text>
-        <View style={{flex: 0.5, backgroundColor: 'red'}}>
-          <Text>
-            ...........................................FILTERS............................................
-          </Text>
-        </View>
-      </View>
+    <Container>
+      <HeaderView>
+        <ScreenTitle>Achievements</ScreenTitle>
+        <FilterSection>
+          <AchievementsFilterTouchable
+            label="All"
+            onPress={() => setfilterType('All')}
+            filterType={filterType}
+          />
+          <AchievementsFilterTouchable
+            label="Unlocked"
+            onPress={() => setfilterType('Unlocked')}
+            filterType={filterType}
+          />
+          <AchievementsFilterTouchable
+            label="Locked"
+            onPress={() => setfilterType('Locked')}
+            filterType={filterType}
+          />
+        </FilterSection>
+      </HeaderView>
       <ScrollView style={{flex: 1}}>
-        <AchievementsSection achievementsData={achievementsData} />
+        <AchievementsSection achievementsData={filterAchievements()} />
       </ScrollView>
-    </SafeAreaView>
+    </Container>
   );
 };
