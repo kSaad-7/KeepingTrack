@@ -1,0 +1,47 @@
+{
+  "version": "2.0.0",
+
+  "tasks": [
+    {
+      "label": "New react component",
+
+      "command": "cd App/components && mkdir ${input:dirName} && touch '${input:dirName}/${input:dirName}.component.js' '${input:dirName}/${input:dirName}.styles.js'",
+
+      "type": "shell",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    },
+    {
+      "label": "New react screen",
+
+      "command": "cd App/screens && mkdir ${input:dirName} && touch '${input:dirName}/${input:dirName}.component.js' '${input:dirName}/${input:dirName}.styles.js'",
+
+      "type": "shell",
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "reveal": "silent",
+        "focus": false,
+        "panel": "shared",
+        "showReuseMessage": false,
+        "clear": true
+      }
+    }
+  ],
+
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "dirName",
+      "description": "Enter screen/component name",
+      "default": "folderName"
+    }
+  ]
+}

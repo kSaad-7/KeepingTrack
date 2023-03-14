@@ -4,7 +4,7 @@ import React from 'react';
 import {
   Container,
   Description,
-  Logo,
+  Badge,
   PictureView,
   Points,
   PointsView,
@@ -20,7 +20,7 @@ export const AchievementsSection = ({achievementsData}) => {
     return (
       <Container key={docId}>
         <PictureView>
-          <Logo source={AchievementBadge5} />
+          <Badge source={AchievementBadge5} />
         </PictureView>
         <TextView>
           <Title>{title}</Title>

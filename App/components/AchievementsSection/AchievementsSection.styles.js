@@ -19,7 +19,7 @@ export const PictureView = styled.View`
   border-left-color: ${COLORS.blue};
 `;
 
-export const Logo = styled.Image`
+export const Badge = styled.Image`
   width: 60px;
   height: 60px;
 `;

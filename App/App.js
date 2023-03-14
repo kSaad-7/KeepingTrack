@@ -21,6 +21,7 @@ import {
   ChangeDetailsScreen,
   ExercisesScreen,
   ChangeDayNameScreen,
+  AchievementStatsScreen,
 } from './screens/index';
 
 import {UserContext, WorkoutContext} from './ContextCreator.js';

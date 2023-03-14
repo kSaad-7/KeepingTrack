@@ -1,26 +1,38 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {ScrollView} from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import React, {useContext, useEffect, useRef, useState} from 'react';
+import {ScrollView, View} from 'react-native';
 
-import {collection, getDocs} from 'firebase/firestore';
+import {collection, doc, getDocs, setDoc} from 'firebase/firestore';
 import {db} from '../../firebase.config';
 
-import {AchievementsSection} from '../../components/Achievements/AchievementsSection';
+import {AchievementsSection} from '../../components/AchievementsSection/AchievementsSection';
 
 import {LoadingIndicator} from '../../components/LoadingIndicator/LoadingIndicator';
 
 import {UserContext} from '../../ContextCreator';
+
+import {AchievementStatsModal} from '../../components/AchievementStats/AchievementStatsModal';
+
 import {AchievementsFilterTouchable} from '../../components/AchievementsFilterTouchable/AchievementsFilterTouchable';
+
 import {
   Container,
   FilterSection,
   HeaderView,
   ScreenTitle,
+  StatsTouchable,
+  StyledView,
 } from './AcheivementsScreen.styles';
 
+import Icon from 'react-native-vector-icons/Ionicons';
+import {COLORS} from '../../assets/appColors/Colors';
+
 export const AchievementsScreen = () => {
-  const [achievementsData, setAchievementsData] = useState();
+  const [achievementsData, setAchievementsData] = useState([]);
+  const [showStatsModal, setShowStatsModal] = useState(false);
   const [filterType, setfilterType] = useState('All');
 
+  const achievementStatsRef = useRef({});
   const {user} = useContext(UserContext);
 
   const checkUserAchievements = achievementsArray => {
@@ -29,6 +41,7 @@ export const AchievementsScreen = () => {
       const owners = achievement.owners;
       //Loop through the "owners" array using for loop
       for (let i = 0; i < owners.length; i++) {
+        // Check if the ID of the owner is the same as the users
         if (owners[i].id === user.docId) {
           achievement.doesUserHave = true;
           return;
@@ -42,9 +55,10 @@ export const AchievementsScreen = () => {
     if (filterType === 'All') {
       return achievementsData;
     } else if (filterType === 'Unlocked') {
-      return achievementsData.filter(
+      const unlockedAchievementsArray = achievementsData.filter(
         achievement => achievement.doesUserHave === true,
       );
+      return unlockedAchievementsArray;
     } else if (filterType === 'Locked') {
       return achievementsData.filter(
         achievement => achievement.doesUserHave === false,
@@ -62,20 +76,63 @@ export const AchievementsScreen = () => {
     }));
     checkUserAchievements(achievementsAllData);
     setAchievementsData(achievementsAllData);
+    getStats(achievementsAllData);
   };
 
+  const getStats = achievementsArray => {
+    const unlockedAchievementsArray = achievementsArray.filter(
+      achievement => achievement.doesUserHave === true,
+    );
+    const lockedAchievementsArray = achievementsArray.filter(
+      achievement => achievement.doesUserHave === false,
+    );
+    let totalUnlocked = unlockedAchievementsArray.length;
+    let totalLocked = lockedAchievementsArray.length;
+    let progressBarNum = totalUnlocked / totalLocked;
+    achievementStatsRef.current = {
+      totalUnlocked: totalUnlocked,
+      totalLocked: totalLocked,
+      progressBarNum: progressBarNum,
+      totalPoints: user.points,
+      totalSets: user.stats.totalSets,
+    };
+  };
+
+  const x = async () => {
+    await setDoc(doc(db, 'achievements', 'squat180'), {
+      title: 'Titanium legs ',
+      description: 'Hit 180kg on squat',
+      points: 500,
+      owners: [],
+    });
+    console.log('added');
+  };
   useEffect(() => {
     fetchData();
+    x();
   }, []);
 
-  if (!achievementsData) {
+  if (achievementsData.length === 0) {
     return <LoadingIndicator />;
   }
 
   return (
     <Container>
       <HeaderView>
-        <ScreenTitle>Achievements</ScreenTitle>
+        <StyledView>
+          <View style={{flex: 0.33}}></View>
+          <ScreenTitle>Achievements</ScreenTitle>
+          <StatsTouchable onPress={() => setShowStatsModal(true)}>
+            <Icon name={'list-circle-sharp'} size={30} color={COLORS.purple} />
+          </StatsTouchable>
+          {showStatsModal && (
+            <AchievementStatsModal
+              showStatsModal={showStatsModal}
+              setShowStatsModal={setShowStatsModal}
+              achievementStatsRef={achievementStatsRef}
+            />
+          )}
+        </StyledView>
         <FilterSection>
           <AchievementsFilterTouchable
             label="All"

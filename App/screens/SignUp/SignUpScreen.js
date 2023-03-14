@@ -51,7 +51,7 @@ export const SignUpScreen = ({navigation}) => {
       userName: signUpLog.userName,
       password: signUpLog.password,
       email: signUpLog.email,
-      achievements: [],
+      points: 0,
       stats: {
         dumbellChestPressMax: 0,
         squatMax: 0,
