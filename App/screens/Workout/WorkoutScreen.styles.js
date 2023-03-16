@@ -13,7 +13,25 @@ export const ScreenHeadingText = styled.Text`
   font-size: 15px;
 `;
 
-export const WorkoutSplitView = styled.View`
+export const WorkoutSplitView = styled.ScrollView`
+  // background-color: red;
   flex: 0.95;
   width: 90%;
+`;
+
+export const PreMadePlansView = styled.TouchableOpacity`
+  flex: 0.05;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  width: 70%;
+  background-color: ${COLORS.blue};
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const StyledText = styled.Text`
+  color: white;
+  font-size: 13px;
+  font-weight: bold;
 `;

@@ -22,6 +22,7 @@ import {
   ExercisesScreen,
   ChangeDayNameScreen,
   AchievementStatsScreen,
+  PreMadePlansScreen,
 } from './screens/index';
 
 import {UserContext, WorkoutContext} from './ContextCreator.js';
@@ -102,6 +103,7 @@ function App() {
             <Stack.Screen name="HomeTabs" component={HomeTabs} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
+            <Stack.Screen name="PreMadePlans" component={PreMadePlansScreen} />
             <Stack.Screen
               name="DeleteAccount"
               component={DeleteAccountScreen}

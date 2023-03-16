@@ -98,18 +98,8 @@ export const AchievementsScreen = () => {
     };
   };
 
-  const x = async () => {
-    await setDoc(doc(db, 'achievements', 'squat180'), {
-      title: 'Titanium legs ',
-      description: 'Hit 180kg on squat',
-      points: 500,
-      owners: [],
-    });
-    console.log('added');
-  };
   useEffect(() => {
     fetchData();
-    x();
   }, []);
 
   if (achievementsData.length === 0) {

@@ -17,18 +17,12 @@ import {
 
 import KeepTrackLogo from '../../assets/images/KeepTrackLogo.png';
 
-import {collection, addDoc, setDoc, doc, updateDoc} from 'firebase/firestore';
+import {collection, addDoc, setDoc, doc} from 'firebase/firestore';
 import {db} from '../../firebase.config';
 
 import {UserContext} from '../../ContextCreator';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {LoadingIndicator} from '../../components/LoadingIndicator/LoadingIndicator';
-
-// ----------------------------------------------------------------
-
-// ?? TODO: Configure firebase and set it up.
-
-// ----------------------------------------------------------------
 
 export const SignUpScreen = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
