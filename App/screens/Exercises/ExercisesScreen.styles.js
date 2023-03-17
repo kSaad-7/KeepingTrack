@@ -36,7 +36,7 @@ export const TitleView = styled.View`
 export const ScreenTitle = styled.Text`
   color: white;
   font-weight: 600;
-  font-size: 25px;
+  font-size: 23px;
   margin-right: 20px;
 `;
 

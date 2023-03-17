@@ -23,24 +23,27 @@ export const PlanName = styled.Text`
 
 export const DaysView = styled.View`
   flex: 0.55;
-  margin-top: 20px;
+  margin-top: 25px;
   padding-left: 10px;
-  justify-content: space-between;
+  justify-content: space-evenly;
+  // background-color: pink;
 `;
 
 export const DayLabel = styled.Text`
   color: ${COLORS.offWhite};
-  font-size: 15px;
+  font-size: 16px;
   margin: 15px 10px;
   font-weight: 600;
 `;
 
 export const Muscles = styled.Text`
+  font-size: 15px;
   font-weight: 400;
 `;
 
 export const Description = styled.View`
   flex: 0.35;
+  // background-color: red;
 `;
 
 export const DescrioptionTitle = styled.Text`

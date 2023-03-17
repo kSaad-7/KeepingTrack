@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -19,12 +20,31 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import {COLORS} from '../../assets/appColors/Colors';
 
-export const PreMadePlanItem = () => {
-  return preMadePlansDataSet.map(preMadePlan => {
-    const {title, color, days, description} = preMadePlan;
-
+const DaysSection = ({preMadePlan}) => {
+  const planDaysArray = preMadePlan.days;
+  return planDaysArray.map((muscles, index) => {
+    index += 1;
     return (
-      <TouchableContainer key={title}>
+      <DayLabel key={index}>
+        Day {index}{' '}
+        <Icon
+          name={'caret-forward-outline'}
+          size={15}
+          color={`${preMadePlan.color}`}
+        />{' '}
+        <Muscles>{muscles}</Muscles>
+      </DayLabel>
+    );
+  });
+};
+
+export const PreMadePlanItem = ({onPreMadePlanPress}) => {
+  return preMadePlansDataSet.map(preMadePlan => {
+    const {title, color, description, id} = preMadePlan;
+    return (
+      <TouchableContainer
+        key={id}
+        onPress={() => onPreMadePlanPress(preMadePlan)}>
         <LinearGradient
           colors={[COLORS.itemGrey, `${color}`]}
           style={{
@@ -38,69 +58,7 @@ export const PreMadePlanItem = () => {
             <PlanName style={{color: `${color}`}}>{title}</PlanName>
           </Header>
           <DaysView>
-            <DayLabel>
-              Day 1{' '}
-              <Icon
-                name={'caret-forward-outline'}
-                size={15}
-                color={`${color}`}
-              />{' '}
-              <Muscles>{days.day1}</Muscles>
-            </DayLabel>
-            <DayLabel>
-              Day 2{' '}
-              <Icon
-                name={'caret-forward-outline'}
-                size={15}
-                color={`${color}`}
-              />{' '}
-              <Muscles>{days.day2}</Muscles>
-            </DayLabel>
-            <DayLabel>
-              Day 3{' '}
-              <Icon
-                name={'caret-forward-outline'}
-                size={15}
-                color={`${color}`}
-              />{' '}
-              <Muscles>{days.day3}</Muscles>
-            </DayLabel>
-            <DayLabel>
-              Day 4{' '}
-              <Icon
-                name={'caret-forward-outline'}
-                size={15}
-                color={`${color}`}
-              />{' '}
-              <Muscles>{days.day4}</Muscles>
-            </DayLabel>
-            <DayLabel>
-              Day 5{' '}
-              <Icon
-                name={'caret-forward-outline'}
-                size={15}
-                color={`${color}`}
-              />{' '}
-              <Muscles>{days.day5}</Muscles>
-            </DayLabel>
-            <DayLabel>
-              Day 6{' '}
-              <Icon
-                name={'caret-forward-outline'}
-                size={15}
-                color={`${color}`}
-              />{' '}
-              <Muscles>{days.day6}</Muscles>
-            </DayLabel>
-            <DayLabel>
-              Day 7{' '}
-              <Icon
-                name={'caret-forward-outline'}
-                size={15}
-                color={`${color}`}
-              />{' '}
-              <Muscles>{days.day7}</Muscles>
-            </DayLabel>
+            <DaysSection preMadePlan={preMadePlan} />
           </DaysView>
           <Description>
             <DescrioptionTitle>Description</DescrioptionTitle>
