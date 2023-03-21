@@ -7,10 +7,28 @@ export const StyledContainer = styled.SafeAreaView`
   align-items: center;
 `;
 
+export const HeaderView = styled.View`
+  flex: 0.05;
+  align-items: center;
+`;
+
+export const StyledView = styled.View`
+  flex: 1;
+  flex-direction: row;
+`;
+
 export const ScreenHeadingText = styled.Text`
+  flex: 0.33;
   color: white;
+  text-align: center;
   font-weight: bold;
   font-size: 15px;
+`;
+
+export const NewDayTouchable = styled.TouchableOpacity`
+  flex: 0.33;
+  flex-direction: row;
+  justify-content: flex-end;
 `;
 
 export const WorkoutSplitView = styled.ScrollView`
@@ -19,7 +37,7 @@ export const WorkoutSplitView = styled.ScrollView`
   width: 90%;
 `;
 
-export const PreMadePlansView = styled.TouchableOpacity`
+export const PreMadePlansTouchable = styled.TouchableOpacity`
   flex: 0.05;
   margin-bottom: 15px;
   margin-top: 10px;

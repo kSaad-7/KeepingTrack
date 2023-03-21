@@ -1,6 +1,9 @@
 import React from 'react';
 
-import {DayName, StyledTouchable} from './WorkoutSplit.styles';
+import {DayName, StyledTouchable, StyledView} from './WorkoutSplit.styles';
+
+import Icon from 'react-native-vector-icons/Ionicons';
+import {COLORS} from '../../assets/appColors/Colors';
 
 export const WorkoutSplit = ({data, onDayClick}) => {
   return data.map(day => {
@@ -8,7 +11,16 @@ export const WorkoutSplit = ({data, onDayClick}) => {
     return (
       //A workout day
       <StyledTouchable key={docId} onPress={() => onDayClick(day)}>
-        <DayName>{name}</DayName>
+        <StyledView>
+          <DayName>{name}</DayName>
+          {name === 'Rest' && (
+            <Icon
+              name={'battery-charging-outline'}
+              size={27}
+              color={COLORS.offWhite}
+            />
+          )}
+        </StyledView>
       </StyledTouchable>
     );
   });

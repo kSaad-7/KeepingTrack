@@ -15,8 +15,14 @@ export const StyledTouchable = styled.TouchableOpacity`
   justify-content: center;
 `;
 
+export const StyledView = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
 export const DayName = styled.Text`
   color: ${COLORS.offWhite}
   font-weight: bold;
   font-size: 17px;
+  margin-right: 20px;
 `;

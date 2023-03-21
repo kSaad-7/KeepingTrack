@@ -8,8 +8,6 @@ export const Container = styled.SafeAreaView`
 
 export const HeaderView = styled.View`
   flex: 0.15;
-  // align-items: center;
-  justify-content: space-between;
 `;
 
 export const StyledView = styled.View`
@@ -28,11 +26,7 @@ export const ScreenTitle = styled.Text`
 export const StatsTouchable = styled.TouchableOpacity`
   flex: 0.33;
   flex-direction: row;
-  max-height: 30px;
-  min-height: 30px;
   justify-content: flex-end;
-  align-items: center;
-  border-radius: 20px;
 `;
 
 export const FilterSection = styled.View`

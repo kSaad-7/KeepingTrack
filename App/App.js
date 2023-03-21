@@ -36,6 +36,7 @@ import {UserContext, WorkoutContext} from './ContextCreator.js';
 function App() {
   const [user, setUser] = useState(null);
   const [currentExercise, setCurrentExercise] = useState({});
+  const [currentPreMadePlan, setCurrentPreMadePlan] = useState({});
   let workoutDayRef = useRef(null); // todo: talk about how you changed it from useState -> useRef to avoid re-renders and thus fix your proble
 
   StatusBar.setBarStyle('light-content', true);
@@ -95,6 +96,8 @@ function App() {
           workoutDayRef,
           currentExercise,
           setCurrentExercise,
+          currentPreMadePlan,
+          setCurrentPreMadePlan,
         }}>
         <NavigationContainer>
           <Stack.Navigator

@@ -15,7 +15,7 @@ import {
   Muscles,
   PlanName,
   TouchableContainer,
-} from './PreMadePlanItem.styles';
+} from './PreMadePlansSection.styles';
 
 import LinearGradient from 'react-native-linear-gradient';
 import {COLORS} from '../../assets/appColors/Colors';
@@ -38,7 +38,10 @@ const DaysSection = ({preMadePlan}) => {
   });
 };
 
-export const PreMadePlanItem = ({onPreMadePlanPress}) => {
+export const PreMadePlansSection = ({
+  onPreMadePlanPress,
+  currentPreMadePlan,
+}) => {
   return preMadePlansDataSet.map(preMadePlan => {
     const {title, color, description, id} = preMadePlan;
     return (
@@ -51,11 +54,19 @@ export const PreMadePlanItem = ({onPreMadePlanPress}) => {
             height: '100%',
             borderRadius: 8,
           }}
-          locations={[0.5, 0.5]}
-          start={{x: 0.25, y: 0.15}}
+          locations={[0.45, 0.45]}
+          start={{x: 0.25, y: 0.1}}
           end={{x: 0, y: 0}}>
           <Header>
             <PlanName style={{color: `${color}`}}>{title}</PlanName>
+            {currentPreMadePlan === preMadePlan && (
+              <Icon
+                style={{left: 50}}
+                name={'ios-checkmark-circle'}
+                size={30}
+                color={COLORS.offWhite}
+              />
+            )}
           </Header>
           <DaysView>
             <DaysSection preMadePlan={preMadePlan} />
