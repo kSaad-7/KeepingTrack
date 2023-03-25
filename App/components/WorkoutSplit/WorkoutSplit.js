@@ -12,11 +12,11 @@ export const WorkoutSplit = ({data, onDayClick}) => {
       //A workout day
       <StyledTouchable key={docId} onPress={() => onDayClick(day)}>
         <StyledView>
-          <DayName>{name}</DayName>
+          {!(name === 'Rest') && <DayName>{name}</DayName>}
           {name === 'Rest' && (
             <Icon
               name={'battery-charging-outline'}
-              size={27}
+              size={30}
               color={COLORS.offWhite}
             />
           )}

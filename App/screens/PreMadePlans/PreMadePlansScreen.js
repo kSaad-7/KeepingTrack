@@ -31,7 +31,7 @@ import {db} from '../../firebase.config';
 export const PreMadePlansScreen = ({navigation}) => {
   const {currentPreMadePlan, setCurrentPreMadePlan} =
     useContext(WorkoutContext);
-  const {user} = useContext(UserContext);
+  const {user, setUser} = useContext(UserContext);
 
   const workoutSplitSubCollectionRef = collection(
     db,
@@ -86,7 +86,6 @@ export const PreMadePlansScreen = ({navigation}) => {
   const addExercises = exercisesArray => {
     // Go through each "exercises" object and make a new document
     exercisesArray.forEach(async exercise => {
-      console.log('exercise: ', exercise);
       const exerciseSubCollRef = collection(
         db,
         'users',
@@ -108,17 +107,22 @@ export const PreMadePlansScreen = ({navigation}) => {
 
   const addNewWorkoutSplit = async preMadePlan => {
     const planDaysArray = preMadePlan.days;
+    const newWorkoutSplitLength = planDaysArray.length;
+    setUser({...user, workoutSplitLength: newWorkoutSplitLength});
+    const planWorkoutDayNamesArray = preMadePlan.workoutDayNames;
     await deleteCurrentWorkoutSplit(planDaysArray);
     // Go through each day and make a new document in the sub-collection
-    planDaysArray.forEach(async (day, i) => {
+    planWorkoutDayNamesArray.forEach(async (day, i) => {
       await setDoc(doc(workoutSplitSubCollectionRef, `day${i + 1}`), {
         name: `${day}`,
         docId: `day${i + 1}`,
+        createdAt: Timestamp.fromDate(new Date()),
       });
     });
     await new Promise(r => setTimeout(r, 1500));
     addExercises(preMadePlan.exercises);
   };
+
   const handlePress = async preMadePlan => {
     setCurrentPreMadePlan(preMadePlan);
     await addNewWorkoutSplit(preMadePlan);

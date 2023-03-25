@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 
 import {COLORS} from '../../assets/appColors/Colors';
 
-import {UserContext} from '../../ContextCreator';
+import {UserContext, WorkoutContext} from '../../ContextCreator';
 
 import {SettingsItem} from '../../components/SettingsItem/SettingsItem';
 
@@ -18,7 +18,9 @@ import {
 
 export const OptionsScreen = ({navigation}) => {
   const [showOptionsAlert, setShowOptionsAlert] = useState(false);
+
   const {setUser, user} = useContext(UserContext);
+  const {setCurrentPreMadePlan} = useContext(WorkoutContext);
 
   const handleDeleteAccountPress = () => {
     navigation.navigate('DeleteAccount');
@@ -29,6 +31,7 @@ export const OptionsScreen = ({navigation}) => {
       setShowOptionsAlert(false);
     } else {
       setUser(null);
+      setCurrentPreMadePlan({});
       navigation.navigate('Login');
       setShowOptionsAlert(false);
     }

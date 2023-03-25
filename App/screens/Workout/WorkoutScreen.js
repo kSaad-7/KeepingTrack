@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {View} from 'react-native';
 
 import {db} from '../../firebase.config';
-import {collection, onSnapshot} from 'firebase/firestore';
+import {collection, onSnapshot, orderBy, query} from 'firebase/firestore';
 
 import MaterialIcon from 'react-native-vector-icons/Entypo';
 
@@ -23,17 +23,20 @@ import {
 } from './WorkoutScreen.styles';
 import {COLORS} from '../../assets/appColors/Colors';
 
+import {NewWorkoutDayModal} from '../../components/NewWorkoutDayModal/NewWorkoutDayModal';
+
 export const WorkoutScreen = ({navigation}) => {
   const [data, setData] = useState(null);
+  const [showNewDayModal, setShowNewDayModal] = useState(false);
 
   //Getting context
-  const {user} = useContext(UserContext);
+  const {user, setUser} = useContext(UserContext);
   const {workoutDayRef} = useContext(WorkoutContext);
 
   const fetchData = async () => {
     const workoutSplitRef = collection(db, 'users', user.docId, 'workoutSplit');
     let workoutSplitData = [{}];
-    onSnapshot(workoutSplitRef, docsSnap => {
+    onSnapshot(query(workoutSplitRef, orderBy('createdAt')), docsSnap => {
       workoutSplitData = docsSnap.docs.map(doc => ({
         docId: doc.id,
         ...doc.data(),
@@ -48,7 +51,7 @@ export const WorkoutScreen = ({navigation}) => {
   };
 
   const onAddNewDayPress = () => {
-    console.log('pressed');
+    setShowNewDayModal(true);
   };
 
   useEffect(() => {
@@ -73,8 +76,15 @@ export const WorkoutScreen = ({navigation}) => {
               color={COLORS.blue}
             />
           </NewDayTouchable>
+          {showNewDayModal && (
+            <NewWorkoutDayModal
+              setShowNewDayModal={setShowNewDayModal}
+              showNewDayModal={showNewDayModal}
+              user={user}
+              setUser={setUser}
+            />
+          )}
         </StyledView>
-        {/* WHEN ADDING NEW DAY, MODAL LIKE THE EXERCISE MODAL (SLIDE FROM BOTTOM) -> user enters day name */}
       </HeaderView>
       <WorkoutSplitView>
         <WorkoutSplit data={data} onDayClick={handleDayClick} />

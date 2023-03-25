@@ -17,7 +17,7 @@ import {
 
 import KeepTrackLogo from '../../assets/images/KeepTrackLogo.png';
 
-import {collection, addDoc, setDoc, doc} from 'firebase/firestore';
+import {collection, addDoc, setDoc, doc, Timestamp} from 'firebase/firestore';
 import {db} from '../../firebase.config';
 
 import {UserContext} from '../../ContextCreator';
@@ -52,6 +52,7 @@ export const SignUpScreen = ({navigation}) => {
         benchPressMax: 0,
         totalSetsCompleted: 0,
       },
+      workoutSplitLength: 7,
     };
     const newUserDocRef = await addDoc(collection(db, 'users'), userData);
     setUser({...userData, docId: newUserDocRef.id});
@@ -68,6 +69,7 @@ export const SignUpScreen = ({navigation}) => {
       await setDoc(doc(workoutSplitSubCollectionRef, `day${i}`), {
         name: `Day ${i}`,
         docId: `day${i}`,
+        createdAt: Timestamp.fromDate(new Date()),
       });
     }
   };

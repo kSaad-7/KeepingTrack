@@ -5,6 +5,7 @@ export const preMadePlansDataSet = [
     id: 1,
     title: 'Push Pull Legs',
     color: COLORS.blue,
+    workoutDayNames: ['Push', 'Pull', 'Legs', 'Rest'],
     days: ['Chest + Shoulders + Triceps', 'Back + Biceps', 'Legs', 'Rest'],
     exercises: [
       {
@@ -111,6 +112,7 @@ export const preMadePlansDataSet = [
     id: 2,
     title: 'Bro Split',
     color: COLORS.red,
+    workoutDayNames: ['Chest', 'Back', 'Arms', 'Shoulders', 'Legs', 'Rest'],
     days: ['Chest', 'Back', 'Arms', 'Shoulders', 'Legs', 'Rest'],
     exercises: [
       {
@@ -273,6 +275,15 @@ export const preMadePlansDataSet = [
     id: 3,
     title: 'Upper Lower',
     color: COLORS.purple,
+    workoutDayNames: [
+      'Upper',
+      'Lower',
+      'Rest',
+      'Upper',
+      'Lower',
+      'Rest',
+      'Rest',
+    ],
     days: [
       'Chest + Back + Shoulders + Arms',
       'Quadriceps + Hamstrings + Calves',
