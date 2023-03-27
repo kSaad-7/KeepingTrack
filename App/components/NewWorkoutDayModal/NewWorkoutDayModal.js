@@ -52,7 +52,6 @@ export const NewWorkoutDayModal = ({
       createdAt: Timestamp.fromDate(new Date()),
     });
     setUser({...user, workoutSplitLength: dayNumber});
-    // setShowNewDayModal(false);
   };
 
   return (

@@ -94,7 +94,7 @@ export const AchievementsScreen = () => {
       totalLocked: totalLocked,
       progressBarNum: progressBarNum,
       totalPoints: user.points,
-      totalSets: user.stats.totalSets,
+      totalSets: user.stats.totalSetsCompleted,
     };
   };
 

@@ -53,7 +53,7 @@ export const ExerciseInputModal = ({
 }) => {
   const [selectedExercise, setSelectedExercise] = useState(null);
 
-  const {user} = useContext(UserContext);
+  const {user, setUser} = useContext(UserContext);
   const {workoutDayRef, setCurrentExercise, currentExercise} =
     useContext(WorkoutContext);
 
@@ -121,12 +121,17 @@ export const ExerciseInputModal = ({
   const currentUserRef = doc(db, 'users', `${user.docId}`);
 
   const saveAchievements = async unlockedAchievementsArray => {
-    //Go through each unlocked achievement and update it to add the user to the list of owners
+    //Go through each unlocked achievement using forEach loop
     unlockedAchievementsArray.forEach(async achievement => {
       const achievementRef = doc(db, 'achievements', achievement);
       const docSnap = await getDoc(achievementRef);
       let achievementPoints = docSnap.data().points;
-      console.log('POINTS NEEDED TO ADD:', achievementPoints);
+      let owners = docSnap.data().owners;
+      const ownersArray = owners.map(y => y.id);
+      if (ownersArray.includes(`${user.docId}`)) {
+        console.log('Already has it');
+        return;
+      }
       // Add user to list of owners for that achivement
       await updateDoc(achievementRef, {
         owners: arrayUnion(currentUserRef),
@@ -135,6 +140,8 @@ export const ExerciseInputModal = ({
       await updateDoc(currentUserRef, {
         points: increment(achievementPoints),
       });
+      //Update user state
+      setUser({...user, points: user.points + achievementPoints});
     });
   };
 

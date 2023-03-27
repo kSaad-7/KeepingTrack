@@ -43,7 +43,7 @@ export const ExercisesScreen = ({navigation}) => {
   const [isCustomExercise, setIsCustomExercise] = useState(false);
   const [showDeleteDayAlert, setShowDeleteDayAlert] = useState(false);
 
-  const {user} = useContext(UserContext);
+  const {user, setUser} = useContext(UserContext);
   const {workoutDayRef} = useContext(WorkoutContext);
 
   const handleAddTouchablePress = () => {
@@ -85,9 +85,10 @@ export const ExercisesScreen = ({navigation}) => {
     if (userChoice === 'no') {
       setShowDeleteDayAlert(false);
     } else {
-      deleteWorkoutDay();
-      navigation.navigate('Workout');
       setShowDeleteDayAlert(false);
+      deleteWorkoutDay();
+      setUser({...user, workoutSplitLength: user.workoutSplitLength - 1});
+      navigation.navigate('Workout');
     }
   };
 
