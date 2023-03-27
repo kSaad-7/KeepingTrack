@@ -50,6 +50,8 @@ export const SignUpScreen = ({navigation}) => {
         dumbellChestPressMax: 0,
         squatMax: 0,
         benchPressMax: 0,
+        dumbellShoulderPressMax: 0,
+        totalPushUps: 0,
         totalSetsCompleted: 0,
       },
       workoutSplitLength: 7,

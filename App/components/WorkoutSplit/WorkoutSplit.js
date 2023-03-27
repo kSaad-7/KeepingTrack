@@ -1,8 +1,15 @@
 import React from 'react';
 
-import {DayName, StyledTouchable, StyledView} from './WorkoutSplit.styles';
+import {
+  DayName,
+  RestIconView,
+  StyledTouchable,
+  StyledView,
+} from './WorkoutSplit.styles';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import {COLORS} from '../../assets/appColors/Colors';
 
 export const WorkoutSplit = ({data, onDayClick}) => {
@@ -14,14 +21,19 @@ export const WorkoutSplit = ({data, onDayClick}) => {
         <StyledView>
           {!(name === 'Rest') && <DayName>{name}</DayName>}
           {name === 'Rest' && (
-            <Icon
-              name={'battery-charging-outline'}
-              size={30}
-              color={COLORS.offWhite}
-            />
+            <RestIconView>
+              <Icon name={'bed'} size={35} color={COLORS.offWhite} />
+              <MaterialCommunityIcon
+                name={'sleep'}
+                size={20}
+                color={COLORS.offWhite}
+              />
+            </RestIconView>
           )}
         </StyledView>
       </StyledTouchable>
     );
   });
 };
+
+// BUILD APP AGAIN

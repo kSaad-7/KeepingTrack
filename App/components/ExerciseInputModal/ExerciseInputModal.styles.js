@@ -20,14 +20,9 @@ export const ModalContent = styled.View`
   background-color: ${COLORS.itemGrey};
 `;
 
-export const TopHeaderView = styled.View`
-  flex: 0.05;
-  flex-direction: row;
-  justify-content: center;
-`;
-
 export const BackTouchable = styled.TouchableOpacity`
   flex-direction: row;
+  justify-content: center;
 `;
 
 export const MainContent = styled.KeyboardAvoidingView`
