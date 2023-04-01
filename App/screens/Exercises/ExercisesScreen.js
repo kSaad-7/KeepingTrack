@@ -24,6 +24,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDocs,
   onSnapshot,
   orderBy,
   query,
@@ -78,6 +79,29 @@ export const ExercisesScreen = ({navigation}) => {
       'workoutSplit',
       workoutDayRef.current.docId,
     );
+    const exercisesSubCollectionRef = collection(
+      db,
+      'users',
+      user.docId,
+      'workoutSplit',
+      workoutDayRef.current.docId,
+      'exercises',
+    );
+    const exercisesQuerySnapshot = await getDocs(exercisesSubCollectionRef);
+    if (!exercisesQuerySnapshot.empty) {
+      exercisesQuerySnapshot.forEach(async exerciseDoc => {
+        const exerciseDocRef = doc(
+          db,
+          'users',
+          user.docId,
+          'workoutSplit',
+          workoutDayRef.current.docId,
+          'exercises',
+          exerciseDoc.id,
+        );
+        await deleteDoc(exerciseDocRef);
+      });
+    }
     await deleteDoc(currentDayDocRef);
   };
 

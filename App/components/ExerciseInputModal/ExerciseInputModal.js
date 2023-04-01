@@ -126,10 +126,10 @@ export const ExerciseInputModal = ({
       const achievementRef = doc(db, 'achievements', achievement);
       const docSnap = await getDoc(achievementRef);
       let achievementPoints = docSnap.data().points;
+      //Validating if user already has achievement
       let owners = docSnap.data().owners;
-      const ownersArray = owners.map(y => y.id);
+      const ownersArray = owners.map(userOwner => userOwner.id);
       if (ownersArray.includes(`${user.docId}`)) {
-        console.log('Already has it');
         return;
       }
       // Add user to list of owners for that achivement
@@ -140,7 +140,6 @@ export const ExerciseInputModal = ({
       await updateDoc(currentUserRef, {
         points: increment(achievementPoints),
       });
-      //Update user state
       setUser({...user, points: user.points + achievementPoints});
     });
   };
@@ -154,7 +153,7 @@ export const ExerciseInputModal = ({
     //Replace any hyphens/dahses/white spaces with no space, so it one word now
     exerciseName = exerciseName.replace(/-|\s/g, '');
     const exerciseWeight = weight;
-
+    console.log(exerciseName);
     switch (exerciseName) {
       case 'dumbellchestpress':
         if (exerciseWeight >= 20) {
@@ -167,25 +166,72 @@ export const ExerciseInputModal = ({
           unlockedAchievementsArray.push('dumbellChestPress20');
         }
         await saveAchievements(unlockedAchievementsArray);
-        // KEEPS ADDING POINTS AGAIN AND AGAIN, TRY ADD ACHIEVEMENT ARRAY TO USER
-        // OR FIX IT SO IT ONLY SAVES IF USER DOESNT HAVE.
         break;
-      case 'pushups':
+      case 'benchpress':
+        if (exerciseWeight >= 50) {
+          if (exerciseWeight >= 80) {
+            if (exerciseWeight >= 100) {
+              if (exerciseWeight >= 140) {
+                if (exerciseWeight >= 180) {
+                  unlockedAchievementsArray.push('benchPress180');
+                }
+                unlockedAchievementsArray.push('benchPress140');
+              }
+              unlockedAchievementsArray.push('benchPress100');
+            }
+            unlockedAchievementsArray.push('benchPress80');
+          }
+          unlockedAchievementsArray.push('benchPress50');
+        }
+        await saveAchievements(unlockedAchievementsArray);
         break;
-      case 'happy':
-        console.log('Happy');
+      case 'dumbellshoulderpress':
+        if (exerciseWeight >= 15) {
+          if (exerciseWeight >= 25) {
+            if (exerciseWeight >= 30) {
+              if (exerciseWeight >= 40) {
+                if (exerciseWeight >= 50) {
+                  unlockedAchievementsArray.push('dumbellShoulderPress50');
+                }
+                unlockedAchievementsArray.push('dumbellShoulderPress40');
+              }
+              unlockedAchievementsArray.push('dumbellShoulderPress30');
+            }
+            unlockedAchievementsArray.push('dumbellShoulderPress25');
+          }
+          unlockedAchievementsArray.push('dumbellShoulderPress15');
+        }
+        await saveAchievements(unlockedAchievementsArray);
+
+        break;
+      case 'squat':
+        if (exerciseWeight >= 60) {
+          if (exerciseWeight >= 100) {
+            if (exerciseWeight >= 140) {
+              if (exerciseWeight >= 180) {
+                unlockedAchievementsArray.push('squat180');
+              }
+              unlockedAchievementsArray.push('squat140');
+            }
+            unlockedAchievementsArray.push('squat100');
+          }
+          unlockedAchievementsArray.push('squat60');
+        }
+        await saveAchievements(unlockedAchievementsArray);
         break;
       default:
-        console.log('Error');
+        console.log('No achievement.');
     }
+  };
 
-    // const newExercise = {
-    //   name: isCustomExercise ? name : selectedExercise.title,
-    //   weight: Number(weight),
-    //   sets: Number(sets),
-    //   reps: Number(reps),
-    //   isCustom: isCustomExercise,
-    // };
+  const saveUserChanges = async () => {
+    await updateDoc(currentUserRef, {
+      totalSetsCompleted: increment(sets),
+    });
+    setUser(prevState => ({
+      ...prevState,
+      totalSetsCompleted: Number(user.totalSetsCompleted + Number(sets)),
+    }));
   };
 
   const handleNewExercisePress = async () => {
@@ -205,6 +251,7 @@ export const ExerciseInputModal = ({
       });
       return;
     }
+    await saveUserChanges();
     await saveExcersiseToFirebase();
     await checkForAchievements();
     closeModal();

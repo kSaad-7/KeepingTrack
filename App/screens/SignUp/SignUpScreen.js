@@ -46,14 +46,7 @@ export const SignUpScreen = ({navigation}) => {
       password: signUpLog.password,
       email: signUpLog.email,
       points: 0,
-      stats: {
-        dumbellChestPressMax: 0,
-        squatMax: 0,
-        benchPressMax: 0,
-        dumbellShoulderPressMax: 0,
-        totalPushUps: 0,
-        totalSetsCompleted: 0,
-      },
+      totalSetsCompleted: 0,
       workoutSplitLength: 7,
     };
     const newUserDocRef = await addDoc(collection(db, 'users'), userData);
