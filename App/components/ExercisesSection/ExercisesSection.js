@@ -3,8 +3,6 @@ import React, {useContext} from 'react';
 
 import LinearGradient from 'react-native-linear-gradient';
 
-import IonIcon from 'react-native-vector-icons/Ionicons';
-
 import {COLORS} from '../../assets/appColors/Colors';
 
 import {
@@ -54,7 +52,6 @@ export const ExercisesSection = ({
         key={docId}
         onPress={() => handleExercisePress(exercise)}>
         <LinearGradient
-          // colors={['#3B00DB', COLORS.blue]}
           colors={['#3a1c71', COLORS.blue]}
           style={{
             height: '100%',

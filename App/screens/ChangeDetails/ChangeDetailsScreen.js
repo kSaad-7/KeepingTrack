@@ -3,6 +3,8 @@ import React, {useState, useContext} from 'react';
 
 import {UserContext} from '../../ContextCreator';
 
+import {Toast} from 'react-native-toast-message/lib/src/Toast';
+
 import {
   StyledContainer,
   BackTouchable,
@@ -14,6 +16,7 @@ import {
   ChangeTouchable,
   ChangeText,
 } from './ChangeDetailsScreen.styles';
+
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import {CustomInput} from '../../components/CustomInput/CustomInput';
@@ -67,6 +70,11 @@ export const ChangeDetailsScreen = ({navigation}) => {
       });
       setUser(prevState => ({...prevState, password: changeLog.password}));
     }
+    Toast.show({
+      type: 'success',
+      text1: 'Account details updated.',
+    });
+    navigation.navigate('Options');
   };
 
   const handleAlertAnswer = userChoice => {

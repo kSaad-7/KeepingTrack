@@ -10,7 +10,6 @@ import {
   BackTouchable,
   Container,
   ModalContent,
-  TopHeaderView,
   ModalTitleView,
   TitleText,
   StyledView,
@@ -27,9 +26,12 @@ import {Toast} from 'react-native-toast-message/lib/src/Toast';
 
 import {
   addDoc,
+  arrayUnion,
   collection,
   deleteDoc,
   doc,
+  getDoc,
+  increment,
   Timestamp,
   updateDoc,
 } from 'firebase/firestore';
@@ -51,7 +53,7 @@ export const ExerciseInputModal = ({
 }) => {
   const [selectedExercise, setSelectedExercise] = useState(null);
 
-  const {user} = useContext(UserContext);
+  const {user, setUser} = useContext(UserContext);
   const {workoutDayRef, setCurrentExercise, currentExercise} =
     useContext(WorkoutContext);
 
@@ -116,6 +118,122 @@ export const ExerciseInputModal = ({
     });
   };
 
+  const currentUserRef = doc(db, 'users', `${user.docId}`);
+
+  const saveAchievements = async unlockedAchievementsArray => {
+    //Go through each unlocked achievement using forEach loop
+    unlockedAchievementsArray.forEach(async achievement => {
+      const achievementRef = doc(db, 'achievements', achievement);
+      const docSnap = await getDoc(achievementRef);
+      let achievementPoints = docSnap.data().points;
+      //Validating if user already has achievement
+      let owners = docSnap.data().owners;
+      const ownersArray = owners.map(userOwner => userOwner.id);
+      if (ownersArray.includes(`${user.docId}`)) {
+        return;
+      }
+      // Add user to list of owners for that achivement
+      await updateDoc(achievementRef, {
+        owners: arrayUnion(currentUserRef),
+      });
+      // Update user points
+      await updateDoc(currentUserRef, {
+        points: increment(achievementPoints),
+      });
+      setUser({...user, points: user.points + achievementPoints});
+    });
+  };
+
+  const checkForAchievements = async () => {
+    var unlockedAchievementsArray = [];
+    let exerciseName = isCustomExercise
+      ? name.toLowerCase()
+      : selectedExercise.title.toLowerCase();
+
+    //Replace any hyphens/dahses/white spaces with no space, so it one word now
+    exerciseName = exerciseName.replace(/-|\s/g, '');
+    const exerciseWeight = weight;
+    console.log(exerciseName);
+    switch (exerciseName) {
+      case 'dumbellchestpress':
+        if (exerciseWeight >= 20) {
+          if (exerciseWeight >= 30) {
+            if (exerciseWeight >= 50) {
+              unlockedAchievementsArray.push('dumbellChestPress50');
+            }
+            unlockedAchievementsArray.push('dumbellChestPress30');
+          }
+          unlockedAchievementsArray.push('dumbellChestPress20');
+        }
+        await saveAchievements(unlockedAchievementsArray);
+        break;
+      case 'benchpress':
+        if (exerciseWeight >= 50) {
+          if (exerciseWeight >= 80) {
+            if (exerciseWeight >= 100) {
+              if (exerciseWeight >= 140) {
+                if (exerciseWeight >= 180) {
+                  unlockedAchievementsArray.push('benchPress180');
+                }
+                unlockedAchievementsArray.push('benchPress140');
+              }
+              unlockedAchievementsArray.push('benchPress100');
+            }
+            unlockedAchievementsArray.push('benchPress80');
+          }
+          unlockedAchievementsArray.push('benchPress50');
+        }
+        await saveAchievements(unlockedAchievementsArray);
+        break;
+      case 'dumbellshoulderpress':
+        if (exerciseWeight >= 15) {
+          if (exerciseWeight >= 25) {
+            if (exerciseWeight >= 30) {
+              if (exerciseWeight >= 40) {
+                if (exerciseWeight >= 50) {
+                  unlockedAchievementsArray.push('dumbellShoulderPress50');
+                }
+                unlockedAchievementsArray.push('dumbellShoulderPress40');
+              }
+              unlockedAchievementsArray.push('dumbellShoulderPress30');
+            }
+            unlockedAchievementsArray.push('dumbellShoulderPress25');
+          }
+          unlockedAchievementsArray.push('dumbellShoulderPress15');
+        }
+        await saveAchievements(unlockedAchievementsArray);
+
+        break;
+      case 'squat':
+        if (exerciseWeight >= 60) {
+          if (exerciseWeight >= 100) {
+            if (exerciseWeight >= 140) {
+              if (exerciseWeight >= 180) {
+                unlockedAchievementsArray.push('squat180');
+              }
+              unlockedAchievementsArray.push('squat140');
+            }
+            unlockedAchievementsArray.push('squat100');
+          }
+          unlockedAchievementsArray.push('squat60');
+        }
+        await saveAchievements(unlockedAchievementsArray);
+        break;
+      default:
+        console.log('No achievement.');
+    }
+  };
+
+  const saveUserChanges = async () => {
+    await updateDoc(currentUserRef, {
+      totalSetsCompleted: increment(sets),
+    });
+    setUser(prevState => ({
+      ...prevState,
+      totalSetsCompleted: Number(user.totalSetsCompleted + Number(sets)),
+    }));
+  };
+
   const handleNewExercisePress = async () => {
     const isNotValid = validateInputs();
     if (isNotValid) {
@@ -133,7 +251,9 @@ export const ExerciseInputModal = ({
       });
       return;
     }
+    await saveUserChanges();
     await saveExcersiseToFirebase();
+    await checkForAchievements();
     closeModal();
     Toast.show({
       type: 'success',
@@ -183,15 +303,13 @@ export const ExerciseInputModal = ({
         <Container>
           <StyledView>
             <ModalContent>
-              <TopHeaderView>
-                <BackTouchable onPress={closeModal}>
-                  <Icon
-                    name={'chevron-down-outline'}
-                    size={30}
-                    color={'#246EE9'}
-                  />
-                </BackTouchable>
-              </TopHeaderView>
+              <BackTouchable onPress={closeModal}>
+                <Icon
+                  name={'chevron-down-outline'}
+                  size={30}
+                  color={'#246EE9'}
+                />
+              </BackTouchable>
               <KeyboardAvoidingView
                 behavior={'padding'}
                 style={{
@@ -227,23 +345,20 @@ export const ExerciseInputModal = ({
                 <ExercieseInfoView>
                   <View style={{flex: 1}}>
                     <ModalInput
-                      value={`${weight}`}
+                      value={currentExercise?.weight ? `${weight}` : ''}
                       label="KG"
                       onChangeText={input => handleInput('weight', input)}
-                      defaultValue={isEditMode ? `${reps}` : ''}
                     />
                     <SetsRepsView>
                       <ModalInput
                         label="Sets"
-                        value={`${sets}`}
+                        value={currentExercise?.sets ? `${sets}` : ''}
                         onChangeText={input => handleInput('sets', input)}
-                        defaultValue={isEditMode ? `${reps}` : ''}
                       />
                       <ModalInput
-                        value={`${reps}`}
+                        value={currentExercise?.reps ? `${reps}` : ''}
                         label="Reps"
                         onChangeText={input => handleInput('reps', input)}
-                        defaultValue={isEditMode ? `${reps}` : ''}
                       />
                     </SetsRepsView>
                   </View>

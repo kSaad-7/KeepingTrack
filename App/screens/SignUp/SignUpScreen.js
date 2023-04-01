@@ -17,18 +17,12 @@ import {
 
 import KeepTrackLogo from '../../assets/images/KeepTrackLogo.png';
 
-import {collection, addDoc, setDoc, doc, updateDoc} from 'firebase/firestore';
+import {collection, addDoc, setDoc, doc, Timestamp} from 'firebase/firestore';
 import {db} from '../../firebase.config';
 
 import {UserContext} from '../../ContextCreator';
 import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import {LoadingIndicator} from '../../components/LoadingIndicator/LoadingIndicator';
-
-// ----------------------------------------------------------------
-
-// ?? TODO: Configure firebase and set it up.
-
-// ----------------------------------------------------------------
 
 export const SignUpScreen = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -51,13 +45,9 @@ export const SignUpScreen = ({navigation}) => {
       userName: signUpLog.userName,
       password: signUpLog.password,
       email: signUpLog.email,
-      achievements: [],
-      stats: {
-        dumbellChestPressMax: 0,
-        squatMax: 0,
-        benchPressMax: 0,
-        totalSetsCompleted: 0,
-      },
+      points: 0,
+      totalSetsCompleted: 0,
+      workoutSplitLength: 7,
     };
     const newUserDocRef = await addDoc(collection(db, 'users'), userData);
     setUser({...userData, docId: newUserDocRef.id});
@@ -74,6 +64,7 @@ export const SignUpScreen = ({navigation}) => {
       await setDoc(doc(workoutSplitSubCollectionRef, `day${i}`), {
         name: `Day ${i}`,
         docId: `day${i}`,
+        createdAt: Timestamp.fromDate(new Date()),
       });
     }
   };

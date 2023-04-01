@@ -22,8 +22,20 @@ export const BackTouchableText = styled.Text`
   color: ${COLORS.blue};
 `;
 
-export const EmptyView = styled.View`
-  flex: 0.33;
+export const DeleteTouchable = styled.TouchableOpacity`
+  flex: 0.2;
+  background-color: #f445;
+  border: 1px solid ${COLORS.red};
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+`;
+
+export const DeleteText = styled.Text`
+  color: ${COLORS.offWhite};
+  font-size: 13px;
+  font-weight: bold;
 `;
 
 export const TitleView = styled.View`
@@ -36,7 +48,7 @@ export const TitleView = styled.View`
 export const ScreenTitle = styled.Text`
   color: white;
   font-weight: 600;
-  font-size: 25px;
+  font-size: 20px;
   margin-right: 20px;
 `;
 

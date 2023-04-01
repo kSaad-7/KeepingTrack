@@ -8,3 +8,4 @@ export * from './DeleteAccount/DeleteAccountScreen';
 export * from './ChangeDetails/ChangeDetailsScreen';
 export * from './Exercises/ExercisesScreen';
 export * from './ChangeDayName/ChangeDayNameScreen';
+export * from './PreMadePlans/PreMadePlansScreen';

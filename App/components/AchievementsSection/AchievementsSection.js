@@ -1,27 +1,36 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 
 import {
   Container,
   Description,
+  Badge,
   PictureView,
+  Points,
+  PointsView,
   TextView,
   Title,
 } from './AchievementsSection.styles';
 
-// START BRANCH
+import AchievementBadge5 from '../../assets/images/AchievementBadge5.png';
 
 export const AchievementsSection = ({achievementsData}) => {
   return achievementsData.map(achievement => {
-    const {title, description, docId, pictureUrl} = achievement;
+    const {title, description, docId, points, doesUserHave} = achievement;
     return (
       <Container key={docId}>
         <PictureView>
-          {/* Put image component here wihth the src = pictureUrl (hosted on web) */}
+          <Badge source={AchievementBadge5} />
         </PictureView>
         <TextView>
           <Title>{title}</Title>
           <Description>{description}</Description>
         </TextView>
+        <PointsView>
+          <Points style={{color: doesUserHave ? '#49fc03' : '#f00c'}}>
+            {points}
+          </Points>
+        </PointsView>
       </Container>
     );
   });
