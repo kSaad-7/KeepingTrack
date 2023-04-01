@@ -1,4 +1,11 @@
-import {collection, doc, setDoc, Timestamp} from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  increment,
+  setDoc,
+  Timestamp,
+  updateDoc,
+} from 'firebase/firestore';
 import React, {useState} from 'react';
 import {Modal, Text} from 'react-native';
 
@@ -32,6 +39,7 @@ export const NewWorkoutDayModal = ({
   console.log(user);
 
   const handleAddDayPress = async () => {
+    const userRef = doc(db, 'users', `${user.docId}`);
     if (!dayName) {
       Toast.show({
         type: 'error',
@@ -52,6 +60,9 @@ export const NewWorkoutDayModal = ({
       createdAt: Timestamp.fromDate(new Date()),
     });
     setUser({...user, workoutSplitLength: dayNumber});
+    await updateDoc(userRef, {
+      workoutSplitLength: increment(1),
+    });
   };
 
   return (

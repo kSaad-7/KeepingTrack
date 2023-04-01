@@ -25,9 +25,11 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  increment,
   onSnapshot,
   orderBy,
   query,
+  updateDoc,
 } from 'firebase/firestore';
 import {db} from '../../firebase.config';
 
@@ -72,6 +74,7 @@ export const ExercisesScreen = ({navigation}) => {
   };
 
   const deleteWorkoutDay = async () => {
+    const userRef = doc(db, 'users', `${user.docId}`);
     let currentDayDocRef = doc(
       db,
       'users',
@@ -103,6 +106,9 @@ export const ExercisesScreen = ({navigation}) => {
       });
     }
     await deleteDoc(currentDayDocRef);
+    await updateDoc(userRef, {
+      workoutSplitLength: increment(-1),
+    });
   };
 
   const handleAlertAnswer = userChoice => {
