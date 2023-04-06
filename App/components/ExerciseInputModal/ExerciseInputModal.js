@@ -202,7 +202,6 @@ export const ExerciseInputModal = ({
           unlockedAchievementsArray.push('dumbellShoulderPress15');
         }
         await saveAchievements(unlockedAchievementsArray);
-
         break;
       case 'squat':
         if (exerciseWeight >= 60) {

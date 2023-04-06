@@ -138,7 +138,11 @@ export const PreMadePlansScreen = ({navigation}) => {
         <ScreenTitle>Select workout plan</ScreenTitle>
         <View style={{flex: 0.33}} />
       </Header>
-      <PlansView horizontal={true} showsHorizontalScrollIndicator={false}>
+      <PlansView
+        horizontal={true}
+        decelerationRate={0}
+        snapToInterval={365} //your element width
+        snapToAlignment={'center'}>
         <PreMadePlansSection
           onPreMadePlanPress={handlePress}
           currentPreMadePlan={currentPreMadePlan}
