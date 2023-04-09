@@ -1,6 +1,6 @@
 /* eslint-disable no-alert */
 import React, {useState, useContext} from 'react';
-import {Button} from 'react-native';
+import {ImageBackground} from 'react-native';
 
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 
@@ -85,11 +85,6 @@ export const LoginScreen = ({navigation}) => {
         <LoginButton onPress={handleLoginPress}>
           <LoginButtonText>Login</LoginButtonText>
         </LoginButton>
-        <Button
-          style={{color: 'red'}}
-          title="Straight to tabs"
-          onPress={() => navigation.navigate('HomeTabs')}
-        />
       </InputView>
       <RegisterView>
         <NeedAccountText>

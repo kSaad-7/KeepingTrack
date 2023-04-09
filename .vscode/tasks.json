@@ -41,7 +41,7 @@
       "type": "promptString",
       "id": "dirName",
       "description": "Enter screen/component name",
-      "default": "folderName"
+      "default": "screen/component name"
     }
   ]
 }

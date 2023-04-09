@@ -23,6 +23,7 @@ import {
   ChangeDayNameScreen,
   AchievementStatsScreen,
   PreMadePlansScreen,
+  StartScreen,
 } from './screens/index';
 
 import {UserContext, WorkoutContext} from './ContextCreator.js';
@@ -102,9 +103,10 @@ function App() {
         <NavigationContainer>
           <Stack.Navigator
             screenOptions={{headerShown: false}}
-            initialRouteName="Login">
+            initialRouteName="Start">
             <Stack.Screen name="HomeTabs" component={HomeTabs} />
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Start" component={StartScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="PreMadePlans" component={PreMadePlansScreen} />
             <Stack.Screen
