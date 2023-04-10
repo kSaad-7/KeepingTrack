@@ -144,6 +144,12 @@ export const ExerciseInputModal = ({
     });
   };
 
+  const checkTotalSets = () => {
+    totalSets += sets;
+    console.log('Sets:', totalSets);
+    console.log(user.totalSetsCompleted);
+  };
+
   const checkForAchievements = async () => {
     var unlockedAchievementsArray = [];
     let exerciseName = isCustomExercise
@@ -153,7 +159,9 @@ export const ExerciseInputModal = ({
     //Replace any hyphens/dahses/white spaces with no space, so it one word now
     exerciseName = exerciseName.replace(/-|\s/g, '');
     const exerciseWeight = weight;
-    console.log(exerciseName);
+
+    checkTotalSets();
+
     switch (exerciseName) {
       case 'dumbellchestpress':
         if (exerciseWeight >= 20) {

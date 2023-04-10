@@ -21,8 +21,6 @@ export const LeaderboardsScreen = () => {
     });
   };
 
-  console.log(leaderboardsData);
-
   useEffect(() => {
     fetchLeaderboard();
   }, []);

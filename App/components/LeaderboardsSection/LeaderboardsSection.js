@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
-import styled from 'styled-components';
 
 import {COLORS} from '../../assets/appColors/Colors';
+
 import {UserContext} from '../../ContextCreator';
 
 import {Points, StyledView, UserName} from './LeaderboardsSection.styles';
@@ -16,6 +16,7 @@ export const LeaderboardsSection = ({leaderboardsData}) => {
     }
     return (
       <StyledView
+        key={userName}
         // eslint-disable-next-line react-native/no-inline-styles
         style={{
           borderWidth: isUser ? 1 : 0,
