@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {StatusBar} from 'react-native';
+import {Image, StatusBar, Text, View} from 'react-native';
 
 import {COLORS} from './assets/appColors/Colors';
 
@@ -58,13 +58,13 @@ function App() {
     return <Icon name={iconName} size={23} color={color} />;
   };
 
-  const Tab = createBottomTabNavigator();
+  const UserTab = createBottomTabNavigator();
   const Stack = createNativeStackNavigator();
 
   // eslint-disable-next-line react/no-unstable-nested-components
-  const HomeTabs = () => {
+  const UserTabs = () => {
     return (
-      <Tab.Navigator
+      <UserTab.Navigator
         screenOptions={({route}) => ({
           tabBarIcon: ({focused, color}) => {
             return getIcon(focused, color, route);
@@ -80,30 +80,11 @@ function App() {
           headerShown: false,
         })}
         initialRouteName="Workout">
-        <Tab.Screen name="Leaderboards" component={LeaderboardsScreen} />
-        <Tab.Screen name="Acheivements" component={AchievementsScreen} />
-        <Tab.Screen name="Workout" component={WorkoutScreen} />
-        <Tab.Screen name="Options" component={OptionsScreen} />
-      </Tab.Navigator>
-    );
-  };
-
-  // eslint-disable-next-line react/no-unstable-nested-components
-  const Tabs = () => {
-    return (
-      <Stack.Navigator
-        screenOptions={{headerShown: false}}
-        initialRouteName="Start">
-        <Stack.Screen name="HomeTabs" component={HomeTabs} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="Start" component={StartScreen} />
-        <Stack.Screen name="SignUp" component={SignUpScreen} />
-        <Stack.Screen name="PreMadePlans" component={PreMadePlansScreen} />
-        <Stack.Screen name="DeleteAccount" component={DeleteAccountScreen} />
-        <Stack.Screen name="ChangeDetails" component={ChangeDetailsScreen} />
-        <Stack.Screen name="Exercises" component={ExercisesScreen} />
-        <Stack.Screen name="ChangeDayName" component={ChangeDayNameScreen} />
-      </Stack.Navigator>
+        <UserTab.Screen name="Leaderboards" component={LeaderboardsScreen} />
+        <UserTab.Screen name="Acheivements" component={AchievementsScreen} />
+        <UserTab.Screen name="Workout" component={WorkoutScreen} />
+        <UserTab.Screen name="Options" component={OptionsScreen} />
+      </UserTab.Navigator>
     );
   };
 
@@ -140,8 +121,24 @@ function App() {
     checkIfUserHasToken();
   }, []);
 
+  // if (isInitalLoading) {
+  //   return <LoadingIndicator />;
+  // }
   if (isInitalLoading) {
-    return <LoadingIndicator />;
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: COLORS.backgroundBlack,
+        }}>
+        <Image
+          style={{height: '50%', width: '100%'}}
+          source={require('./assets/images/KeepTrackLogo.png')}
+        />
+      </View>
+    );
   }
 
   return (
@@ -159,11 +156,10 @@ function App() {
           setCurrentPreMadePlan,
         }}>
         <NavigationContainer>
-          {userToken ? <HomeTabs /> : <Tabs />}
-          {/* <Stack.Navigator
+          <Stack.Navigator
             screenOptions={{headerShown: false}}
-            initialRouteName="Start">
-            <Stack.Screen name="HomeTabs" component={HomeTabs} />
+            initialRouteName={userToken ? 'HomeTabs' : 'Start'}>
+            <Stack.Screen name="HomeTabs" component={UserTabs} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Start" component={StartScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
@@ -181,7 +177,7 @@ function App() {
               name="ChangeDayName"
               component={ChangeDayNameScreen}
             />
-          </Stack.Navigator> */}
+          </Stack.Navigator>
         </NavigationContainer>
         <Toast config={toastConfig} />
       </WorkoutContext.Provider>

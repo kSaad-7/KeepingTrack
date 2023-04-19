@@ -16,6 +16,8 @@ import {
   AccountView,
 } from './OptionsScreen.styles';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export const OptionsScreen = ({navigation}) => {
   const [showOptionsAlert, setShowOptionsAlert] = useState(false);
 
@@ -26,12 +28,22 @@ export const OptionsScreen = ({navigation}) => {
     navigation.navigate('DeleteAccount');
   };
 
+  const deleteUserToken = async () => {
+    try {
+      const value = await AsyncStorage.removeItem('userToken');
+      setUser(null);
+      setCurrentPreMadePlan({});
+      console.log(value);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const handleAlertAnswer = userChoice => {
     if (userChoice === 'no') {
       setShowOptionsAlert(false);
     } else {
-      setUser(null);
-      setCurrentPreMadePlan({});
+      deleteUserToken();
       navigation.navigate('Login');
       setShowOptionsAlert(false);
     }
