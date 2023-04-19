@@ -1,6 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, {useContext, useEffect, useState} from 'react';
-import {KeyboardAvoidingView, Modal, View} from 'react-native';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  Modal,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -144,10 +150,22 @@ export const ExerciseInputModal = ({
     });
   };
 
-  const checkTotalSets = () => {
-    totalSets += sets;
-    console.log('Sets:', totalSets);
-    console.log(user.totalSetsCompleted);
+  const checkTotalSets = async unlockedAchievementsArray => {
+    console.log(
+      'sets + sets: ',
+      Number(user.totalSetsCompleted) + Number(sets),
+    );
+    if (Number(user.totalSetsCompleted) + Number(sets) > 10) {
+      if (Number(user.totalSetsCompleted) + Number(sets) > 50) {
+        if (Number(user.totalSetsCompleted) + Number(sets) > 100) {
+          unlockedAchievementsArray.push('totalSets100');
+        }
+        unlockedAchievementsArray.push('totalSets50');
+      }
+      unlockedAchievementsArray.push('totalSets10');
+    }
+    console.log(unlockedAchievementsArray);
+    await saveAchievements(unlockedAchievementsArray);
   };
 
   const checkForAchievements = async () => {
@@ -160,7 +178,7 @@ export const ExerciseInputModal = ({
     exerciseName = exerciseName.replace(/-|\s/g, '');
     const exerciseWeight = weight;
 
-    checkTotalSets();
+    checkTotalSets(unlockedAchievementsArray);
 
     switch (exerciseName) {
       case 'dumbellchestpress':
@@ -241,6 +259,8 @@ export const ExerciseInputModal = ({
     }));
   };
 
+  console.log(user.totalSetsCompleted);
+
   const handleNewExercisePress = async () => {
     const isNotValid = validateInputs();
     if (isNotValid) {
@@ -307,86 +327,88 @@ export const ExerciseInputModal = ({
         onRequestClose={() => {
           setShowInputModal(false);
         }}>
-        <Container>
-          <StyledView>
-            <ModalContent>
-              <BackTouchable onPress={closeModal}>
-                <Icon
-                  name={'chevron-down-outline'}
-                  size={30}
-                  color={'#246EE9'}
-                />
-              </BackTouchable>
-              <KeyboardAvoidingView
-                behavior={'padding'}
-                style={{
-                  flex: 1,
-                  marginVertical: '5%',
-                }}>
-                <ModalTitleView>
-                  <TitleText>
-                    {isEditMode ? 'Edit Exercise' : 'Create new exercise'}
-                  </TitleText>
-                </ModalTitleView>
-                <SearchExerciseView>
-                  {!isCustomExercise ? (
-                    <AutoCompleteInput
-                      initalValue={isEditMode ? {id: dataSetId} : {id: ''}}
-                      onSelectItem={setSelectedExercise}
-                      dataSet={autoCompleteDataSet}
-                    />
-                  ) : (
-                    <View style={{flex: 0.4}} />
-                  )}
-                  <ChangeInputTouchable
-                    isCustomExercise={isCustomExercise}
-                    setIsCustomExercise={setIsCustomExercise}
-                    setSelectedExercise={setSelectedExercise}
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+          <Container>
+            <StyledView>
+              <ModalContent>
+                <BackTouchable onPress={closeModal}>
+                  <Icon
+                    name={'chevron-down-outline'}
+                    size={30}
+                    color={'#246EE9'}
                   />
-                  {isCustomExercise && (
-                    <CustomExerciseInput
-                      onChangeText={input => handleInput('name', input)}
-                    />
-                  )}
-                </SearchExerciseView>
-                <ExercieseInfoView>
-                  <View style={{flex: 1}}>
-                    <ModalInput
-                      value={currentExercise?.weight ? `${weight}` : ''}
-                      label="KG"
-                      onChangeText={input => handleInput('weight', input)}
-                    />
-                    <SetsRepsView>
-                      <ModalInput
-                        label="Sets"
-                        value={currentExercise?.sets ? `${sets}` : ''}
-                        onChangeText={input => handleInput('sets', input)}
+                </BackTouchable>
+                <KeyboardAvoidingView
+                  behavior={'padding'}
+                  style={{
+                    flex: 1,
+                    marginVertical: '5%',
+                  }}>
+                  <ModalTitleView>
+                    <TitleText>
+                      {isEditMode ? 'Edit Exercise' : 'Create new exercise'}
+                    </TitleText>
+                  </ModalTitleView>
+                  <SearchExerciseView>
+                    {!isCustomExercise ? (
+                      <AutoCompleteInput
+                        initalValue={isEditMode ? {id: dataSetId} : {id: ''}}
+                        onSelectItem={setSelectedExercise}
+                        dataSet={autoCompleteDataSet}
                       />
-                      <ModalInput
-                        value={currentExercise?.reps ? `${reps}` : ''}
-                        label="Reps"
-                        onChangeText={input => handleInput('reps', input)}
+                    ) : (
+                      <View style={{flex: 0.4}} />
+                    )}
+                    <ChangeInputTouchable
+                      isCustomExercise={isCustomExercise}
+                      setIsCustomExercise={setIsCustomExercise}
+                      setSelectedExercise={setSelectedExercise}
+                    />
+                    {isCustomExercise && (
+                      <CustomExerciseInput
+                        onChangeText={input => handleInput('name', input)}
                       />
-                    </SetsRepsView>
-                  </View>
-                </ExercieseInfoView>
-                <ButtonView>
-                  <ExerciseButton onPress={handleNewExercisePress}>
-                    <ButtonText>
-                      {isEditMode ? 'Confirm changes' : 'Create exercise'}
-                    </ButtonText>
-                  </ExerciseButton>
-                  {isEditMode && (
-                    <DeleteButton onPress={handleDeletePress}>
-                      <ButtonText>Delete exercise</ButtonText>
-                    </DeleteButton>
-                  )}
-                </ButtonView>
-              </KeyboardAvoidingView>
-            </ModalContent>
-          </StyledView>
-          <Toast />
-        </Container>
+                    )}
+                  </SearchExerciseView>
+                  <ExercieseInfoView>
+                    <View style={{flex: 1}}>
+                      <ModalInput
+                        value={currentExercise?.weight ? `${weight}` : ''}
+                        label="KG"
+                        onChangeText={input => handleInput('weight', input)}
+                      />
+                      <SetsRepsView>
+                        <ModalInput
+                          label="Sets"
+                          value={currentExercise?.sets ? `${sets}` : ''}
+                          onChangeText={input => handleInput('sets', input)}
+                        />
+                        <ModalInput
+                          value={currentExercise?.reps ? `${reps}` : ''}
+                          label="Reps"
+                          onChangeText={input => handleInput('reps', input)}
+                        />
+                      </SetsRepsView>
+                    </View>
+                  </ExercieseInfoView>
+                  <ButtonView>
+                    <ExerciseButton onPress={handleNewExercisePress}>
+                      <ButtonText>
+                        {isEditMode ? 'Confirm changes' : 'Create exercise'}
+                      </ButtonText>
+                    </ExerciseButton>
+                    {isEditMode && (
+                      <DeleteButton onPress={handleDeletePress}>
+                        <ButtonText>Delete exercise</ButtonText>
+                      </DeleteButton>
+                    )}
+                  </ButtonView>
+                </KeyboardAvoidingView>
+              </ModalContent>
+            </StyledView>
+            <Toast />
+          </Container>
+        </TouchableWithoutFeedback>
       </Modal>
     </GestureRecognizer>
   );

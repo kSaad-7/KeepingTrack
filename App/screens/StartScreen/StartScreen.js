@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import styled from 'styled-components';
 
 import {COLORS} from '../../assets/appColors/Colors';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const StartScreen = ({navigation}) => {
   return (
@@ -24,7 +26,7 @@ export const StartScreen = ({navigation}) => {
           <ButtonText>Login</ButtonText>
         </LoginButton>
         <RegisterButton onPress={() => navigation.navigate('SignUp')}>
-          <ButtonText>Sign up</ButtonText>
+          <ButtonText>Create a new account</ButtonText>
         </RegisterButton>
       </ButtonView>
     </ImageBackgroundContainer>

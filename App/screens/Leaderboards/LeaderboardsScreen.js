@@ -1,10 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, SafeAreaView} from 'react-native';
+import {Text, View, SafeAreaView, Button} from 'react-native';
 
 import {Container, Header, Leaderboards} from './LeaderboardsScreen.styles';
 import {db} from '../../firebase.config';
 import {collection, onSnapshot, orderBy, query} from 'firebase/firestore';
 import {LeaderboardsSection} from '../../components/LeaderboardsSection/LeaderboardsSection';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const LeaderboardsScreen = () => {
   const [leaderboardsData, setLeaderboardsData] = useState([{}]);

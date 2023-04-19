@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {StatusBar} from 'react-native';
 
 import {COLORS} from './assets/appColors/Colors';
@@ -21,27 +21,29 @@ import {
   ChangeDetailsScreen,
   ExercisesScreen,
   ChangeDayNameScreen,
-  AchievementStatsScreen,
   PreMadePlansScreen,
   StartScreen,
 } from './screens/index';
 
 import {UserContext, WorkoutContext} from './ContextCreator.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {doc, getDoc, getDocs} from 'firebase/firestore';
+import {db} from './firebase.config';
+import {LoadingIndicator} from './components/LoadingIndicator/LoadingIndicator';
 
-// ----------------------------------------------------------------
-// TODO:
-// TODO:
-// TODO:
-// ----------------------------------------------------------------
+// TODO  -------------------
+// change all of the navigators so that they properly work.
+// TODO  -------------------
 
 function App() {
   const [user, setUser] = useState(null);
   const [currentExercise, setCurrentExercise] = useState({});
   const [currentPreMadePlan, setCurrentPreMadePlan] = useState({});
+  const [userToken, setUserToken] = useState(null);
+  const [isInitalLoading, setIsInitalLoading] = useState(false);
   let workoutDayRef = useRef(null); // todo: talk about how you changed it from useState -> useRef to avoid re-renders and thus fix your proble
 
   StatusBar.setBarStyle('light-content', true);
-
   const getIcon = (focused, color, route) => {
     let iconName = '';
     if (route.name === 'Leaderboards') {
@@ -73,7 +75,7 @@ function App() {
           tabBarStyle: {
             height: 70,
             backgroundColor: COLORS.backgroundBlack,
-            borderTopColor: COLORS.backgroundBlack, // ?????? This or white, decide later ??????
+            borderTopColor: COLORS.backgroundBlack,
           },
           headerShown: false,
         })}
@@ -85,6 +87,62 @@ function App() {
       </Tab.Navigator>
     );
   };
+
+  // eslint-disable-next-line react/no-unstable-nested-components
+  const Tabs = () => {
+    return (
+      <Stack.Navigator
+        screenOptions={{headerShown: false}}
+        initialRouteName="Start">
+        <Stack.Screen name="HomeTabs" component={HomeTabs} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Start" component={StartScreen} />
+        <Stack.Screen name="SignUp" component={SignUpScreen} />
+        <Stack.Screen name="PreMadePlans" component={PreMadePlansScreen} />
+        <Stack.Screen name="DeleteAccount" component={DeleteAccountScreen} />
+        <Stack.Screen name="ChangeDetails" component={ChangeDetailsScreen} />
+        <Stack.Screen name="Exercises" component={ExercisesScreen} />
+        <Stack.Screen name="ChangeDayName" component={ChangeDayNameScreen} />
+      </Stack.Navigator>
+    );
+  };
+
+  const getUserToken = async () => {
+    try {
+      const value = await AsyncStorage.getItem('userToken');
+      if (value !== null) {
+        console.log(value);
+        return value;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const checkIfUserHasToken = async () => {
+    setIsInitalLoading(true);
+    const token = await getUserToken();
+    setUserToken(token);
+    if (token) {
+      const docRef = doc(db, 'users', `${token}`);
+      const userSnapshot = await getDoc(docRef);
+      if (userSnapshot.exists()) {
+        console.log('Document data:', userSnapshot.data());
+        setUser({...userSnapshot.data(), docId: userSnapshot.id});
+      } else {
+        console.log('No such document!');
+      }
+    }
+    setIsInitalLoading(false);
+  };
+
+  useEffect(() => {
+    checkIfUserHasToken();
+  }, []);
+
+  if (isInitalLoading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <UserContext.Provider
@@ -101,7 +159,8 @@ function App() {
           setCurrentPreMadePlan,
         }}>
         <NavigationContainer>
-          <Stack.Navigator
+          {userToken ? <HomeTabs /> : <Tabs />}
+          {/* <Stack.Navigator
             screenOptions={{headerShown: false}}
             initialRouteName="Start">
             <Stack.Screen name="HomeTabs" component={HomeTabs} />
@@ -122,7 +181,7 @@ function App() {
               name="ChangeDayName"
               component={ChangeDayNameScreen}
             />
-          </Stack.Navigator>
+          </Stack.Navigator> */}
         </NavigationContainer>
         <Toast config={toastConfig} />
       </WorkoutContext.Provider>

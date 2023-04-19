@@ -15,12 +15,10 @@ import {Toast} from 'react-native-toast-message/lib/src/Toast';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {db} from '../../firebase.config';
 import {LoginButtonText} from '../../screens/Login/LoginScreen.styles';
-import {CustomInput} from '../CustomInput/CustomInput';
 
 import {
   BackTouchable,
   Container,
-  InputView,
   MainContent,
   ModalContent,
   ModalTitle,
@@ -36,7 +34,6 @@ export const NewWorkoutDayModal = ({
   setUser,
 }) => {
   const [dayName, setDayName] = useState('');
-  console.log(user);
 
   const handleAddDayPress = async () => {
     const userRef = doc(db, 'users', `${user.docId}`);
