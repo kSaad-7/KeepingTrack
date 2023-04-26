@@ -151,10 +151,6 @@ export const ExerciseInputModal = ({
   };
 
   const checkTotalSets = async unlockedAchievementsArray => {
-    console.log(
-      'sets + sets: ',
-      Number(user.totalSetsCompleted) + Number(sets),
-    );
     if (Number(user.totalSetsCompleted) + Number(sets) > 10) {
       if (Number(user.totalSetsCompleted) + Number(sets) > 50) {
         if (Number(user.totalSetsCompleted) + Number(sets) > 100) {
@@ -164,7 +160,6 @@ export const ExerciseInputModal = ({
       }
       unlockedAchievementsArray.push('totalSets10');
     }
-    console.log(unlockedAchievementsArray);
     await saveAchievements(unlockedAchievementsArray);
   };
 
@@ -258,8 +253,6 @@ export const ExerciseInputModal = ({
       totalSetsCompleted: Number(user.totalSetsCompleted + Number(sets)),
     }));
   };
-
-  console.log(user.totalSetsCompleted);
 
   const handleNewExercisePress = async () => {
     const isNotValid = validateInputs();

@@ -52,7 +52,7 @@ export const ExercisesSection = ({
         key={docId}
         onPress={() => handleExercisePress(exercise)}>
         <LinearGradient
-          colors={['#3a1c71', COLORS.blue]}
+          colors={[COLORS.blue, '#66ff0088']}
           style={{
             height: '100%',
             borderRadius: 8,

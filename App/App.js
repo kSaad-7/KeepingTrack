@@ -121,9 +121,6 @@ function App() {
     checkIfUserHasToken();
   }, []);
 
-  // if (isInitalLoading) {
-  //   return <LoadingIndicator />;
-  // }
   if (isInitalLoading) {
     return (
       <View
