@@ -60,10 +60,6 @@ export const OptionsScreen = ({navigation}) => {
   return (
     <StyledContainer>
       <ScreenTitle>Settings</ScreenTitle>
-      <ThemeView>
-        <SettingHeaderText>Theme</SettingHeaderText>
-        <SettingsItem title="Switch theme" iconName={'chevron-forward-sharp'} />
-      </ThemeView>
       <AccountView>
         <SettingHeaderText>Account</SettingHeaderText>
         <SettingsItem

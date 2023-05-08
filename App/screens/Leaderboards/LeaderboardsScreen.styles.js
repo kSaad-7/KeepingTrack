@@ -12,7 +12,5 @@ export const Header = styled.View`
 `;
 
 export const Leaderboards = styled.ScrollView`
-  flex: 0.9;
-  margin: 0% 3%;
   // background-color: ${COLORS.blue};
 `;

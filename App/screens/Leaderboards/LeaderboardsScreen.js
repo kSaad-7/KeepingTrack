@@ -6,8 +6,6 @@ import {db} from '../../firebase.config';
 import {collection, onSnapshot, orderBy, query} from 'firebase/firestore';
 import {LeaderboardsSection} from '../../components/LeaderboardsSection/LeaderboardsSection';
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 export const LeaderboardsScreen = () => {
   const [leaderboardsData, setLeaderboardsData] = useState([{}]);
 
@@ -34,9 +32,16 @@ export const LeaderboardsScreen = () => {
           Leaderboards
         </Text>
       </Header>
-      <Leaderboards contentContainerStyle={{alignItems: 'center'}}>
-        <LeaderboardsSection leaderboardsData={leaderboardsData} />
-      </Leaderboards>
+      <View style={{flex: 1, padding: 10}}>
+        <Leaderboards
+          contentContainerStyle={{
+            alignItems: 'center',
+            flex: 1,
+            paddingBottom: 60,
+          }}>
+          <LeaderboardsSection leaderboardsData={leaderboardsData} />
+        </Leaderboards>
+      </View>
     </Container>
   );
 };

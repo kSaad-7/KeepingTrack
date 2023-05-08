@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import {COLORS} from '../../assets/appColors/Colors';
 
 export const StyledView = styled.View`
-  width: 100%;
-  height: 40%;
+  width: 90%;
+  height: 50px;
   margin: 15px;
   flex-direction: row;
   align-items: center;
