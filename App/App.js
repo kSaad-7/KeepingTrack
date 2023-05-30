@@ -1,5 +1,5 @@
-import React, {useState, useRef} from 'react';
-import {StatusBar} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
+import {Image, StatusBar, Text, View} from 'react-native';
 
 import {COLORS} from './assets/appColors/Colors';
 
@@ -21,26 +21,24 @@ import {
   ChangeDetailsScreen,
   ExercisesScreen,
   ChangeDayNameScreen,
-  AchievementStatsScreen,
   PreMadePlansScreen,
+  StartScreen,
 } from './screens/index';
 
 import {UserContext, WorkoutContext} from './ContextCreator.js';
-
-// ----------------------------------------------------------------
-// TODO:
-// TODO:
-// TODO:
-// ----------------------------------------------------------------
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {doc, getDoc} from 'firebase/firestore';
+import {db} from './firebase.config';
 
 function App() {
   const [user, setUser] = useState(null);
   const [currentExercise, setCurrentExercise] = useState({});
   const [currentPreMadePlan, setCurrentPreMadePlan] = useState({});
+  const [userToken, setUserToken] = useState(null);
+  const [isInitalLoading, setIsInitalLoading] = useState(false);
   let workoutDayRef = useRef(null); // todo: talk about how you changed it from useState -> useRef to avoid re-renders and thus fix your proble
 
   StatusBar.setBarStyle('light-content', true);
-
   const getIcon = (focused, color, route) => {
     let iconName = '';
     if (route.name === 'Leaderboards') {
@@ -55,13 +53,13 @@ function App() {
     return <Icon name={iconName} size={23} color={color} />;
   };
 
-  const Tab = createBottomTabNavigator();
+  const UserTab = createBottomTabNavigator();
   const Stack = createNativeStackNavigator();
 
   // eslint-disable-next-line react/no-unstable-nested-components
-  const HomeTabs = () => {
+  const UserTabs = () => {
     return (
-      <Tab.Navigator
+      <UserTab.Navigator
         screenOptions={({route}) => ({
           tabBarIcon: ({focused, color}) => {
             return getIcon(focused, color, route);
@@ -72,18 +70,67 @@ function App() {
           tabBarStyle: {
             height: 70,
             backgroundColor: COLORS.backgroundBlack,
-            borderTopColor: COLORS.backgroundBlack, // ?????? This or white, decide later ??????
+            borderTopColor: COLORS.backgroundBlack,
           },
           headerShown: false,
         })}
         initialRouteName="Workout">
-        <Tab.Screen name="Leaderboards" component={LeaderboardsScreen} />
-        <Tab.Screen name="Acheivements" component={AchievementsScreen} />
-        <Tab.Screen name="Workout" component={WorkoutScreen} />
-        <Tab.Screen name="Options" component={OptionsScreen} />
-      </Tab.Navigator>
+        <UserTab.Screen name="Leaderboards" component={LeaderboardsScreen} />
+        <UserTab.Screen name="Acheivements" component={AchievementsScreen} />
+        <UserTab.Screen name="Workout" component={WorkoutScreen} />
+        <UserTab.Screen name="Options" component={OptionsScreen} />
+      </UserTab.Navigator>
     );
   };
+
+  const getUserToken = async () => {
+    try {
+      const value = await AsyncStorage.getItem('userToken');
+      if (value !== null) {
+        return value;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const checkIfUserHasToken = async () => {
+    setIsInitalLoading(true);
+    const token = await getUserToken();
+    setUserToken(token);
+    if (token) {
+      const docRef = doc(db, 'users', `${token}`);
+      const userSnapshot = await getDoc(docRef);
+      if (userSnapshot.exists()) {
+        setUser({...userSnapshot.data(), docId: userSnapshot.id});
+      } else {
+        console.log('No such document!');
+      }
+    }
+    setIsInitalLoading(false);
+  };
+
+  useEffect(() => {
+    checkIfUserHasToken();
+  }, []);
+
+  if (isInitalLoading) {
+    return (
+      <View
+        // eslint-disable-next-line react-native/no-inline-styles
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: COLORS.backgroundBlack,
+        }}>
+        <Image
+          style={{height: '50%', width: '100%'}}
+          source={require('./assets/images/KeepTrackLogo.png')}
+        />
+      </View>
+    );
+  }
 
   return (
     <UserContext.Provider
@@ -102,9 +149,10 @@ function App() {
         <NavigationContainer>
           <Stack.Navigator
             screenOptions={{headerShown: false}}
-            initialRouteName="Login">
-            <Stack.Screen name="HomeTabs" component={HomeTabs} />
+            initialRouteName={userToken ? 'HomeTabs' : 'Start'}>
+            <Stack.Screen name="HomeTabs" component={UserTabs} />
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Start" component={StartScreen} />
             <Stack.Screen name="SignUp" component={SignUpScreen} />
             <Stack.Screen name="PreMadePlans" component={PreMadePlansScreen} />
             <Stack.Screen

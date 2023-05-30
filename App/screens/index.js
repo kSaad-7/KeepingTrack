@@ -9,3 +9,4 @@ export * from './ChangeDetails/ChangeDetailsScreen';
 export * from './Exercises/ExercisesScreen';
 export * from './ChangeDayName/ChangeDayNameScreen';
 export * from './PreMadePlans/PreMadePlansScreen';
+export * from './StartScreen/StartScreen';

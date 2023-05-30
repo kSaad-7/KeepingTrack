@@ -1,6 +1,7 @@
 /* eslint-disable no-alert */
 import React, {useState, useContext} from 'react';
-import {Button} from 'react-native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {CustomInput} from '../../components/CustomInput/CustomInput';
 
@@ -38,6 +39,14 @@ export const LoginScreen = ({navigation}) => {
     setLoginLog({...loginLog, [key]: value});
   };
 
+  const storeUserToken = async value => {
+    try {
+      await AsyncStorage.setItem('userToken', value);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   const handleLoginPress = async () => {
     const loginQuery = query(
       collection(db, 'users'),
@@ -60,6 +69,7 @@ export const LoginScreen = ({navigation}) => {
     if (!user) {
       return;
     } else if (user) {
+      storeUserToken(user.id);
       setUser({...userData, docId: user.id});
       navigation.navigate('HomeTabs');
       setLoginLog({email: null, password: null});
@@ -85,11 +95,6 @@ export const LoginScreen = ({navigation}) => {
         <LoginButton onPress={handleLoginPress}>
           <LoginButtonText>Login</LoginButtonText>
         </LoginButton>
-        <Button
-          style={{color: 'red'}}
-          title="Straight to tabs"
-          onPress={() => navigation.navigate('HomeTabs')}
-        />
       </InputView>
       <RegisterView>
         <NeedAccountText>

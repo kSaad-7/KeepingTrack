@@ -35,5 +35,3 @@ export const WorkoutSplit = ({data, onDayClick}) => {
     );
   });
 };
-
-// BUILD APP AGAIN

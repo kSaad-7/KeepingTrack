@@ -13,13 +13,6 @@ export const ScreenTitle = styled.Text`
   font-size: 15px;
 `;
 
-export const ThemeView = styled.View`
-  flex: 0.3;
-  width: 100%;
-  align-items: center;
-  margin-top: 30px;
-`;
-
 export const SettingHeaderText = styled.Text`
   color: white;
   font-size: 20px;
@@ -29,7 +22,7 @@ export const SettingHeaderText = styled.Text`
 `;
 
 export const AccountView = styled.View`
-  flex: 0.2;
+  flex: 0.5;
   width: 100%;
   justify-content: center;
   align-items: center;

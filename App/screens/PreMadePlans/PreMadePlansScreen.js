@@ -110,7 +110,8 @@ export const PreMadePlansScreen = ({navigation}) => {
     const newWorkoutSplitLength = planDaysArray.length;
     setUser({...user, workoutSplitLength: newWorkoutSplitLength});
     const planWorkoutDayNamesArray = preMadePlan.workoutDayNames;
-    await deleteCurrentWorkoutSplit(planDaysArray);
+    await deleteCurrentWorkoutSplit(planDaysArray); // delete all exercises and workout days of current split
+
     // Go through each day and make a new document in the sub-collection
     planWorkoutDayNamesArray.forEach(async (day, i) => {
       await setDoc(doc(workoutSplitSubCollectionRef, `day${i + 1}`), {
@@ -138,7 +139,11 @@ export const PreMadePlansScreen = ({navigation}) => {
         <ScreenTitle>Select workout plan</ScreenTitle>
         <View style={{flex: 0.33}} />
       </Header>
-      <PlansView horizontal={true} showsHorizontalScrollIndicator={false}>
+      <PlansView
+        horizontal={true}
+        decelerationRate={0}
+        snapToInterval={365} //each workout splits width in pixels
+        snapToAlignment={'center'}>
         <PreMadePlansSection
           onPreMadePlanPress={handlePress}
           currentPreMadePlan={currentPreMadePlan}

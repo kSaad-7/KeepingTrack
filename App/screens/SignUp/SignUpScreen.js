@@ -70,7 +70,6 @@ export const SignUpScreen = ({navigation}) => {
   };
 
   const handleLoginPress = async () => {
-    hideNavigationBar(); // TODO: ?? !! ?? !! HIDE WHEN APP OPENS ?? ?? !!
     navigation.navigate('Login');
   };
 
