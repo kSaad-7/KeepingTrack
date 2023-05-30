@@ -43,7 +43,7 @@ export const LoginScreen = ({navigation}) => {
     try {
       await AsyncStorage.setItem('userToken', value);
     } catch (e) {
-      // error handling
+      console.log(e);
     }
   };
 

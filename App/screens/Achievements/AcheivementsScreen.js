@@ -43,6 +43,7 @@ export const AchievementsScreen = () => {
       for (let i = 0; i < owners.length; i++) {
         // Check if the ID of the owner is the same as the users
         if (owners[i].id === user.docId) {
+          //If true, make doesUserHave = true
           achievement.doesUserHave = true;
           return;
         }

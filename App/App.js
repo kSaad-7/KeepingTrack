@@ -27,13 +27,8 @@ import {
 
 import {UserContext, WorkoutContext} from './ContextCreator.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {doc, getDoc, getDocs} from 'firebase/firestore';
+import {doc, getDoc} from 'firebase/firestore';
 import {db} from './firebase.config';
-import {LoadingIndicator} from './components/LoadingIndicator/LoadingIndicator';
-
-// TODO  -------------------
-// change all of the navigators so that they properly work.
-// TODO  -------------------
 
 function App() {
   const [user, setUser] = useState(null);
@@ -92,7 +87,6 @@ function App() {
     try {
       const value = await AsyncStorage.getItem('userToken');
       if (value !== null) {
-        console.log(value);
         return value;
       }
     } catch (e) {
@@ -108,7 +102,6 @@ function App() {
       const docRef = doc(db, 'users', `${token}`);
       const userSnapshot = await getDoc(docRef);
       if (userSnapshot.exists()) {
-        console.log('Document data:', userSnapshot.data());
         setUser({...userSnapshot.data(), docId: userSnapshot.id});
       } else {
         console.log('No such document!');
@@ -124,6 +117,7 @@ function App() {
   if (isInitalLoading) {
     return (
       <View
+        // eslint-disable-next-line react-native/no-inline-styles
         style={{
           flex: 1,
           justifyContent: 'center',

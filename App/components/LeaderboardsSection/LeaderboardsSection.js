@@ -15,6 +15,7 @@ export const LeaderboardsSection = ({leaderboardsData}) => {
       isUser = true;
     }
     return (
+      //JSX Element returned
       <StyledView
         key={userName}
         // eslint-disable-next-line react-native/no-inline-styles

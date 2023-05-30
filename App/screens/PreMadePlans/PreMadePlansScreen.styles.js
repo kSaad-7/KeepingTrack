@@ -33,5 +33,4 @@ export const BackTouchableText = styled.Text`
 export const PlansView = styled.ScrollView`
   flex: 1;
   margin-top: 50px;
-  // background-color: green;
 `;
